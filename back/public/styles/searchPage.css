@@ -1,0 +1,344 @@
+body {
+    margin: 0;
+    background-color: #E0E3E7;
+}
+
+
+h1, p, a {
+    font-family: "nanum gothic";
+    text-align: center; 
+}
+
+
+h2 {
+    color: white;
+    font-size: 38px;
+}
+
+
+h2 {
+    font-family: 'source sans pro';
+    font-size: 3em;
+    margin-bottom: 0.2em;
+    margin-top: 0;
+}
+
+.navLink:hover {
+    color:white;
+}
+nav {
+    width: 100%;
+    background-color: #2D2D2D;
+    height: 3.5em;
+    display: flex;
+    /* align-items: center; */
+}
+
+
+ul {
+    padding-left: 0;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+
+li {
+    list-style-type: none;
+}
+
+
+a {
+    text-decoration: none;
+    font-family: "nanum gothic";
+    font-size: 1.1em;
+    color: #9d9d9d
+}
+
+a:hover{
+    color:white;
+}
+
+
+h3 {
+    font-family: "source sans pro";
+    color: white;
+    align-self: flex-start;
+    border-bottom: 1px solid white;
+    font-size: 20px;
+    margin-left: 25px;
+}
+
+i:hover {
+    color: darkred;
+}
+
+form {
+    margin-top: 4em;
+    margin-bottom: 10em;
+    height: 25vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+#search {
+    margin-left: 0.8em;
+    margin-right: 1em;
+}
+
+
+input {
+    height:3em;
+    width: 55em;
+}
+
+
+input::placeholder{
+    font-size: 1.5em;
+}
+
+
+section {
+    margin: 5em 0;
+}
+
+
+.listing {
+    display: flex;
+    margin: 8em 0;
+    background-size: cover;
+    background-position: center; 
+}
+
+
+.movieInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    
+    width: 100%;
+}
+
+
+p {
+    font-size: .9em;
+    color: white;
+    flex-direction: flex-start;
+}
+
+
+i {
+   font-size: 1.5em;
+}
+
+
+.like {
+    display: flex;
+    align-items: center;
+    justify-self: flex-start;
+}
+
+
+.paragraph {
+    font-size: 16px;
+    font-family: "source sans pro";
+    align-self: flex-start;
+    text-indent:50px;
+    margin-top: 0;
+}
+
+
+.symbols {
+    display: flex;
+    justify-content: space-around;
+    width: 30%;
+}
+
+
+
+.backgroundColor {
+    margin: 0;
+    width: 100%;
+    display: flex;
+}
+
+
+/* *****************************DETAILED EXPANSION CSS********************************************* */
+
+.titleAndDescription {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.show {
+    margin-top: 0;
+}
+
+
+.header {
+    display: flex;
+}
+
+
+.detailTitle {
+    
+    width: 100%;
+    font-family: "source sans pro";
+    color: white;
+    font-size: 5em;
+    margin-top: 0;
+    justify-self: center;
+    margin-bottom: 0;
+}
+
+
+.about {
+    margin: 0;
+}
+
+
+.descriptionTitle {
+    display: inline-block;
+    font-size: 1.5em;
+}
+
+
+.descriptionText {
+    color: white;
+    font-family: "source sans pro";
+    margin-left: 3em;
+    font-size: 1.15em;
+    margin-top: 0;
+    text-align: left;
+    display: inline-block;
+}
+
+
+.show {
+    background-size: cover;
+    background-position: center;
+}
+
+
+.cast {
+    display: flex; 
+    justify-content: space-between;
+    padding-top: 50px;
+    padding-left: 1em;
+    padding-right: 1em;
+    background-color: rgba(49,50,55, 0.3);
+}
+
+
+.person {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.actorName {
+    color: white;
+    margin-top: 0.5em;
+    margin-bottom: 0;
+}
+
+
+.castAndCrew {
+    background-color: rgba(49,50,55, 0.8); 
+}
+
+
+.castTitle {
+    display: inline-block;
+    font-size: 2.5em;
+    margin-top: 3em;
+    margin-bottom: 0;
+    margin-left: 2.5em;
+}
+
+
+.whiteLine {
+    color: white;
+}
+
+
+.crew {
+    display: flex; 
+    justify-content: space-around;
+    padding-left: 1em;
+    padding-right: 1em;
+    background: rgba(49,50,55, 0.3);
+    align-items: center;
+}
+
+
+.crewTitle {
+    display: inline-block;
+    font-size: 2.5em;
+    margin-top: 1em;
+    margin-bottom: 0.3;
+    margin-left: 2.5em;
+}
+
+
+.horizontal {
+    position: relative;
+    top: 3em;
+}
+
+
+.subInfo {
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.leftColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.network {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.type {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.numberOfEps {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.runTime {
+    display: flex;
+    flex-direction: column;
+}
+
+
+div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

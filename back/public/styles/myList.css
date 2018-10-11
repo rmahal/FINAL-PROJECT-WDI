@@ -1,0 +1,170 @@
+nav {
+    background-color: #2D2D2D;
+    height: 3.5em;
+    display: flex;
+}
+
+
+ul {
+    padding-left: 0;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+
+li {
+    list-style-type: none;
+}
+
+
+a {
+    text-decoration: none;
+    font-family: "nanum-gothic";
+    font-size: 1.1em;
+    color: #9d9d9d
+}
+
+
+h1 {
+    text-align: left;
+    font-family: "Nanum Gothic";
+    margin-top: 3em;
+    margin-left: 2em;
+    border-bottom: 1px solid black;
+    display: inline-block;
+}
+
+
+.navLink:hover {
+    color:white;
+}
+
+
+body {
+    margin: 0;
+}
+
+
+a {
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+section {
+    margin: 5em 0;
+}
+
+.listing {
+    display: flex;
+    margin: 8em 0;
+    background-size: cover;
+    background-position: center;
+    
+}
+
+
+
+.movieInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    background-color:rgba(49, 50, 55, 0.8);
+    width: 100%;
+}
+
+
+
+
+p {
+    font-size: .9em;
+    color: white;
+    flex-direction: flex-start;
+}
+
+
+
+i {
+   font-size: 1.5em;
+}
+
+
+
+.like {
+    display: flex;
+    align-items: center;
+    justify-self: flex-start;
+
+}
+
+
+.paragraph {
+    font-size: 16px;
+    font-family: "source sans pro";
+    align-self: flex-start;
+    text-indent:50px;
+    margin-top: 0;
+}
+
+
+
+.symbols {
+    display: flex;
+    justify-content: space-around;
+    width: 30%;
+}
+
+body {
+    margin: 0;
+    background-color: #E0E3E7;
+}
+
+
+h1, p, a {
+
+    font-family: "nanum gothic";
+    text-align: center;
+    
+}
+
+h2 {
+    color: white;
+    font-size: 38px;
+}
+
+h2 {
+    font-family: 'source sans pro';
+    font-size: 3em;
+    margin-bottom: 0.2em;
+    margin-top: 0;
+}
+
+
+h3 {
+    font-family: "source sans pro";
+    color: white;
+    align-self: flex-start;
+    border-bottom: 1px solid white;
+    font-size: 20px;
+    margin-left: 25px;
+
+   
+
+}
+
+i:hover {
+    color: darkred;
+    
+}

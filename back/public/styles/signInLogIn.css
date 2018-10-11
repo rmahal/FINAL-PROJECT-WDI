@@ -1,0 +1,125 @@
+body {
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../pictures/movieCollage.jpg');
+    background-position: center;
+    background-size: cover;
+}
+
+
+.formSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+form {
+    height: 25em;
+    width: 50em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; 
+    border: 2px solid #1A321E;
+    background-color:#F3F3F3;
+}
+
+
+button {
+    height: 3em;
+    width: 30em;
+    margin-bottom: 3em;   
+}
+
+
+input[type="text"] {
+    font-size:20px;
+    max-width: 80%;
+    height: 2em;
+    width: 100%;    
+}
+
+
+input[type="password"] {
+    font-size:20px;
+    max-width: 80%;
+    height: 2em;
+    width: 100%;
+}
+
+
+h2 {
+    font-family: "Nanum Gothic";
+    color: #333333;
+    font-size: 3em;
+}
+
+
+article {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 20em;
+    width: 40em;
+}
+
+
+#submitBtn {
+    border-radius: 0.3em;
+    box-shadow: inset 0px 0px 30px 45px #217d3b , 0px 0px 0px 0px darkgreen;
+    color: #FFFFE7;
+    transition:  0.5s, color 0.1s 0.25s;  
+}
+
+
+#submitBtn:hover {
+    box-shadow: inset 0px 0px 0px 0px green, 0px 0px 20px 10px green;
+    color: #217d3b;
+}
+
+
+#signUpBtn {
+    border-radius: 0.3em;
+    box-shadow: inset 0px 0px 30px 45px #217d3b , 0px 0px 0px 0px darkgreen;
+    color: #FFFFE7;
+    transition:  0.5s, color 0.1s 0.25s;
+}
+
+
+#signUpBtn:hover {
+    box-shadow: inset 0px 0px 0px 0px green, 0px 0px 20px 10px green;
+    color: #217d3b;
+}
+
+
+p {
+    font-family: "Nanum Gothic"
+}
+
+
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    border-bottom: 1px solid black;    
+}
+
+
+
+@media screen and (max-width: 530px) {
+    input[type="text"] {
+        font-size:20px;
+        max-width: 60%;
+        height: 2em;
+        width: 100%;
+        
+    }
+    
+    input[type="password"] {
+        font-size:20px;
+        max-width: 60%;
+        height: 2em;
+        width: 100%;
+    }
+}

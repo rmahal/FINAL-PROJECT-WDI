@@ -1,0 +1,26 @@
+[
+    {
+        "Name": "Raja",
+        "Email": "raj@raj.com",
+        "Phone": "123-456-7890",
+        "Address": "111 abc street",
+        "CountryCode": "US",
+        "JobTitle": "Software Engineer",
+    },
+    {
+        "Name": "Mom",
+        "Email": "raj@raj.com",
+        "Phone": "123-456-7890",
+        "Address": "111 abc street",
+        "CountryCode": "US",
+        "JobTitle": "Software Engineer",
+    },
+    {
+        "Name": "Dad",
+        "Email": "raj@raj.com",
+        "Phone": "123-456-7890",
+        "Address": "111 abc street",
+        "CountryCode": "US",
+        "JobTitle": "Software Engineer",
+    }
+]

@@ -1,0 +1,52 @@
+[
+    {
+        "cityName": "Bangkok",
+        "country": "Thailand",
+        "imageUrl": "String"
+    },
+    {
+        "cityName": "London",
+        "country": "United Kingdom",
+        "imageUrl": "String"
+    },
+    {
+        "cityName": "Paris",
+        "country": "France",
+        "imageUrl": "String"
+    },
+    {
+        "cityName": "Dubai",
+        "country": "United Arab Emirates",
+        "imageUrl": "String"
+    },
+    {
+        "cityName": "Singapore",
+        "country": "Singapore",
+        "imageUrl": "String"
+    },
+    {
+        "cityName": "New York City",
+        "country": "United States",
+        "imageUrl": "String"
+    },
+    {
+        "cityName": " Kuala Lumpur",
+        "country": "Malaysia",
+        "imageUrl": "String"
+    },
+    {
+        "cityName": "Tokyo",
+        "country": "Japan",
+        "imageUrl": "String"
+    },
+    {
+        "cityName": "Istanbul",
+        "country": "Turkey",
+        "imageUrl": "String"
+    },
+    {
+        "cityName": "Seoul",
+        "country": "South Korea",
+        "imageUrl": "String"
+    }
+]

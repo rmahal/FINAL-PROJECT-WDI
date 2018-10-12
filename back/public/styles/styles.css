@@ -3,8 +3,11 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 main{
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
 }
 
 form{
@@ -19,4 +22,9 @@ form{
 
 .results{
     margin: auto;
+}
+
+footer {
+    position : absolute;
+    bottom : 0;
 }

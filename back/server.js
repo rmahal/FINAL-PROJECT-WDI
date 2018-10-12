@@ -21,6 +21,9 @@ app.get("/", (req,res)=>{
 app.get("/org", (req,res)=>{
     res.sendFile('views/orgchart.html', {root: __dirname});
 })
+app.get("/userprofile", (req,res)=>{
+    res.sendFile('views/userprofile.html', {root: __dirname});
+})
 
 app.listen(3000, () => {
     console.log('Backend server listening on port 3000 ...')

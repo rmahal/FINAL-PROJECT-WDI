@@ -10,12 +10,12 @@ $( document ).ready(function() {
     }else{
       $.ajax({
         method: "GET",
-        url: 'http://localhost:3001/',
+        url: 'http://localhost:3001/allemployees/',
         success: function success(succ) {
             console.log('success')
             console.log(succ)
             for(var i=0; i<succ.length;i++){
-              $(".results").append("<p>"+succ[i].FirstName+" "+succ[i].LastName+"</p><p>Postion: "+succ[i].JobTitle+"</p><br><hr>")
+              $(".results").append("<p><a  href='/userprofile/"+succ[i]._id+"'>"+succ[i].FirstName+" "+succ[i].LastName+"</a></p><p>Postion: "+succ[i].JobTitle+"</p><br><hr>")
             }
         },
         error: function error(err){

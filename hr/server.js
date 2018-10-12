@@ -10,7 +10,7 @@ app.use(function(req, res, next) {
 });
 
 
-app.get("/", (req,res)=>{
+app.get("/allemployees", (req,res)=>{
     
     db.Employee.find({}, (err, usersFound) => {
         if(err){
@@ -23,7 +23,7 @@ app.get("/", (req,res)=>{
 
 
 
-app.get("/api/populate/:id", (req,res)=>{
+app.get("/employee/manager/populate/:id", (req,res)=>{
     
 
     db.Employee.find({_id: req.params.id}, (err, uFound) => {
@@ -38,46 +38,24 @@ app.get("/api/populate/:id", (req,res)=>{
             res.json(success)
     })
 
-
-
-    // let user = []
-
-    // let userFound = {}
-    
-    // db.Employee.find({_id: req.params.id}, (err, uFound) => {
-    //     if(err){
-    //         res.status(401);
-    //     }else{
-    //         user.push(uFound)
-    //         console.log(uFound)
-    //         userFound=uFound
-    //     }
-    // })
-    // let chainOfCommand = []
-    // chainOfCommand.push(userFound)
-    // let notNull = true
-    // let id = userFound.manager
-    // console.log("USER : ",userFound)
-    // console.log("Manager ID: "+id)
-    // while(notNull){
-    //     db.Employee.find({_id: id}, (err, newFound) => {
-    //         if(err){
-    //             res.status(401);
-    //         }else if(newFound.manager === null){
-    //             notNull = false
-
-    //         }else{
-    //             chainOfCommand.push(newFound)
-
-    //         }
-    //     })
-    //     id = userFound.manager
-    // }
-    // user.push(chainOfCommand)
-
-    // res.json(user)
 })
 
+app.get("/employee/hr/populate/:id", (req,res)=>{
+    
+
+    db.Employee.find({_id: req.params.id}, (err, uFound) => {
+        if(err){
+            res.status(401);
+        }else{
+            console.log("hi")
+        }
+    })
+        .populate("manager")
+        .exec((err, success) =>{
+            res.json(success)
+    })
+    
+})
 
 
 app.listen(3001, () => {

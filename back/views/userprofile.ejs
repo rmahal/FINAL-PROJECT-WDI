@@ -15,7 +15,12 @@
     <header>
         <nav>
         </nav>
-        <h1>Users:</h1>
+        
+        <h1>User:</h1>
+        <h4>Name: <%= user[0].FirstName %> <%= user[0].LastName %></h4>
+        <h4>Job Tite: <%= user[0].JobTitle %></h4>
+        <h4>Phone #: <%= user[0].Phone %></h4>
+        <h4>Manager: <a href=<%= "/userprofile/"+manager[0]._id %>><%= manager[0].FirstName %> <%= manager[0].LastName %></a></h4>
     </header>
     <div class="userList">
     </div>

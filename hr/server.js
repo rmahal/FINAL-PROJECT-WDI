@@ -68,6 +68,42 @@ app.get("/employee/hr/populate/:id", (req,res)=>{
     
 })
 
+app.get("/findUnderlings/:id", (req,res)=>{
+    let id = req.params.id
+    console.log("ID: "+id)
+    db.Employee.find({manager: id}, (err,succ)=>{
+        console.log(succ)
+        res.json(succ)
+    })
+})
+
+
+app.get("/test/:id", (req, res) =>{
+    let id = req.params.id
+    list = [];
+    function asyncLoop(limit, cb) {
+
+        if (limit !== null) {
+            db.Employee.findOne({_id: id}).exec( (err, manFound) => {
+                id = manFound._id
+                console.log("Found ID: "+id)
+                console.log("manFound: ", manFound)
+                list.push(manFound);
+                limit = manFound.manager
+                asyncLoop(limit, cb);
+            });
+        } else {
+            cb();
+        }
+    }
+    asyncLoop(0, function() {
+        callback({_id: id});
+    });
+
+    console.log("FULL LIST:")
+    console.log(list)
+})
+
 
 app.listen(3001, () => {
     console.log('HR server listening on port 3001 ...')

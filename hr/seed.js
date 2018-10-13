@@ -53,9 +53,9 @@ let leftEmployeeLM = {
 }
 
 let rightEmployeeLM = {
-    "FirstName": "Ozan",
-    "LastName": "Neale",
-    "Email": "ozan@fakeORG.com",
+    "FirstName": "Yisroel",
+    "LastName": "Gutierrez",
+    "Email": "yisroel@fakeORG.com",
     "Phone": "1799567890",
     "Address": "111 abc street",
     "CountryCode": "US",
@@ -65,9 +65,9 @@ let rightEmployeeLM = {
 }
 
 let leftEmployeeRM = {
-    "FirstName": "Ozan",
-    "LastName": "Neale",
-    "Email": "ozan@fakeORG.com",
+    "FirstName": "Damian",
+    "LastName": "Robins",
+    "Email": "damian@fakeORG.com",
     "Phone": "1714561190",
     "Address": "111 abc street",
     "CountryCode": "US",
@@ -77,9 +77,9 @@ let leftEmployeeRM = {
 }
 
 let rightEmployeeRM = {
-    "FirstName": "Ozan",
-    "LastName": "Neale",
-    "Email": "ozan@fakeORG.com",
+    "FirstName": "Mollie",
+    "LastName": "Thornton",
+    "Email": "mollie@fakeORG.com",
     "Phone": "6784567890",
     "Address": "111 abc street",
     "CountryCode": "US",
@@ -141,7 +141,7 @@ db.Employee.deleteMany({}, (err, deletedShows) => {
 
                         db.Employee.create(rightEmployeeLM, (err, savedrightEmployeeLM) => {
 
-                            db.Employee.create(rightEmployeeRM, (err, savedrightEmployeeRM) => {
+                            db.Employee.create(leftEmployeeRM, (err, savedleftEmployeeRM) => {
 
                                 db.Employee.create(rightEmployeeRM, (err, savedrightEmployeeRM) => {
 

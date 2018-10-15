@@ -2,7 +2,8 @@ const mongoose = require('../db/connection')
 Schema = mongoose.Schema;
 
 const UserextSchema = new mongoose.Schema({
-    hrUID: String,
+    _id: Number,
+    hrUID: Number,
     PhotoURL: String,
     OverviewText: String,
 })

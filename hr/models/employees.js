@@ -2,18 +2,20 @@ const mongoose = require('../db/connection')
 Schema = mongoose.Schema;
 
 const EmployeeSchema = new mongoose.Schema({
+    _id: Number,
     FirstName: String,
     LastName: String,
     Email: String,
-    Phone: Number,
+    Phone: String,
     Address: String,
     CountryCode: {
         type: String,
         maxlength: 2
     },
     JobTitle: String,
-    manager: {type: Schema.Types.ObjectId, ref: "Employee"},
-    HRrep: {type: Schema.Types.ObjectId, ref: "Employee"},
+    Org: String,
+    manager: {type: Schema.Types.Number, ref: "Employee"},
+    HRrep: {type: Schema.Types.Number, ref: "Employee"},
 })
 
 

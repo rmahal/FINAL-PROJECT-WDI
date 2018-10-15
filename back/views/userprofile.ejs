@@ -15,11 +15,21 @@
         <nav>
         </nav>
         
-        <h1>User:</h1>
-        <h4>Name: <%= user[0].FirstName %> <%= user[0].LastName %></h4>
-        <h4>Job Tite: <%= user[0].JobTitle %></h4>
-        <h4>Phone #: <%= user[0].Phone %></h4>
-        <h4>Manager: <a href=<%= "/userprofile/"+manager[0]._id %>><%= manager[0].FirstName %> <%= manager[0].LastName %></a></h4>
+        <h1>User DB:</h1>
+        <h4>Name: <%= userInfo.user[0].FirstName %></h4>
+        <h4>Job Tite: <%= userInfo.user[0].JobTitle %></h4>
+        <h4>Phone #: <%= userInfo.user[0].Phone %></h4>
+        <h4>Manager: 
+            <a href= <% typeof userInfo.chainofcommand[1] !='undefined' ?  "/"+userInfo.user[0].FirstName : 'hi' %>>
+            </a>
+        </h4>
+
+        <h4>Contact DB:  <%= contactsInfo[1].Label %> , <%= contactsInfo[1].Value %> </h4>
+
+        <h4>Userext DB:  Overview Text:, <%= UserextInfo[0].OverviewText %> </h4>
+
+        <h4>Tags DB:  <%= TagsInfo[0].tag.TagName %> , <%= TagsInfo[1].tag.TagName %> </h4>
+            
     </header>
     <div class="userList">
     </div>

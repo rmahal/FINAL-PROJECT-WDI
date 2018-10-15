@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sign In</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="/styles/signInLogIn.css" />
+    
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous" defer></script>
+    <script src="/scripts/login.js" defer></script>
+</head>
+<body>
+    <section class="formSection">
+        <form>
+            <h2>Login</h2>
+            <div class="loginErrors"></div>
+            <article class=inputs>
+            <input id="email" type="text" name="email" placeholder="Email">
+            <input type = "password" name="password" placeholder="Password">
+            <button id="submitBtn" type="submit">Log In</button>
+            <p>Don't have an account? <span><a href="/signup">Sign up here!</a></span></p>
+        </form>
+    </section>
+</body>
+</html>

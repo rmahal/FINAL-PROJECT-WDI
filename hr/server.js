@@ -35,6 +35,47 @@ app.get("/employee/:id", (req,res)=>{
 })
 
 
+app.get("/employee/email/:email", (req,res)=>{
+
+    db.Employee.findOne({Email: req.params.email}, (err, uFound) => {
+        if(err){
+            res.status(401);
+        }else{
+            res.json(uFound)
+        }
+    })
+})
+
+
+
+app.get("/superLOOKUP/:id", (req, res) => {
+    let superFound = {
+        user: {},
+        chainofcommand: [],
+        underlings: []
+    }
+    let id = req.params.id
+    db.Employee.find({_id: id}, (err, userFound) => {
+        if(err){
+            res.status(401);
+        }else{
+            superFound.user = userFound
+            db.Employee.find({manager: id}, (err,succ)=>{
+                if(err){
+                    res.status(401);
+                }else{
+                    superFound.underlings = succ
+                    getOneStepUp(id).then(chain =>{
+                        superFound.chainofcommand = chain
+                        console.log("IM FINISHED HERE IS THE SUPER FOUND:")
+                        console.log(superFound)
+                        res.json(superFound)
+                    })
+                }
+            })
+        }   
+    })
+})
 
 app.get("/employee/manager/populate/:id", (req,res)=>{
     
@@ -72,6 +113,9 @@ app.get("/findUnderlings/:id", (req,res)=>{
     let id = req.params.id
     console.log("ID: "+id)
     db.Employee.find({manager: id}, (err,succ)=>{
+        if(err){
+            res.status(404)
+        }
         console.log(succ)
         res.json(succ)
     })
@@ -80,29 +124,50 @@ app.get("/findUnderlings/:id", (req,res)=>{
 
 app.get("/test/:id", (req, res) =>{
     let id = req.params.id
-    list = [];
-    function asyncLoop(limit, cb) {
 
-        if (limit !== null) {
-            db.Employee.findOne({_id: id}).exec( (err, manFound) => {
-                id = manFound._id
-                console.log("Found ID: "+id)
-                console.log("manFound: ", manFound)
-                list.push(manFound);
-                limit = manFound.manager
-                asyncLoop(limit, cb);
-            });
-        } else {
-            cb();
+    let userChain
+    getOneStepUp(id).then(user =>{
+        //user.json()
+        console.log("USER: ",user)
+        console.log("IM FINISHED")
+        res.json(user)
+
+
+    })
+
+    //console.log("USERCHAIN: ",userChain)
+
+    //res.json(user)
+
+
+})
+
+
+
+
+
+
+async function getOneStepUp(id) {
+    let listOfCommand = [];
+    let inLoop = true
+    let user
+    
+    while(inLoop){
+        user = await db.Employee.findOne({_id: id});
+        console.log("Thing reponse")
+        console.log(user)
+        listOfCommand.push(user)
+        if(user.manager === null || user.manager === undefined){
+            inLoop = false
+        }else{
+            console.log("this was hit val is",user.manager)
+            id = user.manager
         }
     }
-    asyncLoop(0, function() {
-        callback({_id: id});
-    });
+    console.log("\n\n\n\n CHAIN OF COMMAND:", listOfCommand)
+    return listOfCommand;
+}
 
-    console.log("FULL LIST:")
-    console.log(list)
-})
 
 
 app.listen(3001, () => {

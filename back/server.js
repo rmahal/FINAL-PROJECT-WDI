@@ -92,6 +92,9 @@ app.get('/userprofile/:id', (req, res) => {
                     console.log(errTwo)
                     res.status(404)
                 }
+                console.log("successUserext")
+                console.log(successUserext)
+                
                 db.Tagjoin.find({user: id})
                     .populate('tag')
                     .exec( (errThree, successTags) => {
@@ -311,6 +314,13 @@ app.post('/login', (req, res) => {
         });
     })
 });
+
+app.post('/verifyForProf', verifyToken, (req, res) => {
+    let verified= jwt.verify(req.token, 'vampires')
+    console.log({isVerified: verified})
+
+    ejs.render("",{verified: verified})
+})
 
 
 app.post('/verify', verifyToken, (req, res) => {

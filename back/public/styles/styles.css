@@ -53,7 +53,10 @@ a{
     margin: auto;
     margin-bottom: 1em;
     background-color: white;
+    border-radius: 50px;
+    border-style: solid;
 }
+
 
 .flexin{
     display:flex;

@@ -5,7 +5,7 @@ $.ajax({
       console.log('success')
       console.log(succ)
       for(var i=0; i<succ.length;i++){
-        $(".results").append("<div class='cardrow'><a href='/userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+"</p></div></a></div>")
+        $(".results").append("<div class='borderround'><div class='cardrow'><a href='/userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+"</p></div></a></div></div>")
       }
   },
   error: function error(err){

@@ -1,30 +1,21 @@
 $( document ).ready(function() {
     checkForLogin()
-
     console.log("Document ready");
     console.log("Test Variable: ")
 
     $('form').on('submit', e=>{
         e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: '/verify',  
-            beforeSend: function (xhr) {   
-                xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.token);
-            }
-      
-          }).done(function (response) {
+
             console.log($('form').serialize())
-            let hrid=response.hrID
+            let pageId = parseInt($("#editButton").data("id")[0])
             $.ajax({
                 method: 'PUT',
                 data: $('form').serialize(),
-                url: "/userext/"+hrid ,
+                url: "/userext/"+pageId ,
                 success: titleSuccess,
                 error: titleError
             
             });
-        })
     
     
             function titleSuccess (response) {
@@ -34,7 +25,7 @@ $( document ).ready(function() {
                 console.log(response)
             }
     })
-})
+});
 
 function checkForLogin(){
     if(localStorage.length > 0){
@@ -52,15 +43,18 @@ function checkForLogin(){
         console.log("response: ")
         console.log(response)
         let hrid=response.hrID
-        user = { email: response.email, hrid: response.hrid, _id: response._id }
+        user = { email: response.email, hrid: response.hrID, _id: response._id }
         
         let url="/userprofile/"+hrid
-        console.log(url)
         $("#profileLink").attr("href",url)
         if(response.email.length > 0){
-        let welcome = "Welcome, "+response.email
-        console.log(welcome)
-        $("#welcome").html(welcome)
+            let welcome = "Welcome, "+response.email
+            $("#welcome").html(welcome)
+        }
+        let userButton = parseInt($("#editButton").data("id")[0])
+        let managerButton = parseInt($("#editButton").data("id")[1])
+        if((response.hrID === userButton)||(response.hrID === managerButton)){
+        $("#editButton").append("                                    <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@getbootstrap'>Edit Profile</button>")
         }
         const email = response.email
       }).fail(function (e1,e2,e3) {

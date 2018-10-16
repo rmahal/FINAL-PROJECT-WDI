@@ -51,8 +51,9 @@
                     <article>
                         <h3><%= userInfo.user[0].FirstName %>
                             <%= userInfo.user[0].LastName %></h3>
-                            <div><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Edit Profile</button>
-
+                            <div>
+                                <div id="editButton" data-id=["<%= userInfo.user[0]._id%>","<%= userInfo.user[0].manager%>"]>
+                                </div>
                                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                   <div class="modal-dialog" role="document">
                                     <div class="modal-content">
@@ -69,8 +70,12 @@
                                                     <input type="text" class="form-control" name="overview">
                                                     <p id="reportees">Profile Picture Url</p>
                                                     <input type="text" name="profpic"/>
+                                                    <br/>
                                                     <p id="reportees">Backdrop Picture Url</p>
                                                     <input type="text" name="bdpic"/>
+                                                    <br/>
+                                                    <br/>
+                                                    <br/>
                                                     <input type="submit" value="Upload Info"/>
                                                  </form>
                                           </div>

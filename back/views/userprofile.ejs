@@ -23,21 +23,85 @@
 </head>
 <body>
     <header>
-        <nav>
-        </nav>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="/">Project_HR</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse navbar-text" id="navbarText">
+                      <ul class="navbar-nav my-2 my-sm-0">
+                        <li class="nav-item my-2 my-sm-0">
+                          <a id="profileLink" class="nav-link" href="/userprofile/">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/search">Search</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li id="welcome" class="nav-item right">
+                        </li>
+                    </ul>
+                    </div>
+                </nav>
+    </header>
+        <% images = UserextInfo.map((elem) => {
+            return '<div class="backdrop" style="background-image:url('+elem.BackdropURL+')"><div class="crow"><img src="'+elem.PhotoURL+'" width="200px"/>'; 
+                    }) -%>
+                <p><%- images.join(" ") %></p>
+                    <article>
+                        <h3><%= userInfo.user[0].FirstName %>
+                            <%= userInfo.user[0].LastName %></h3>
+                            <div><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Edit Profile</button>
 
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body">
+                                          <div class="form-group">
+                                                <form>
+                                                    <label id="reportees" for="recipient-name" class="col-form-label">Overview Info:</label>
+                                                    <input type="text" class="form-control" name="overview">
+                                                    <p id="reportees">Profile Picture Url</p>
+                                                    <input type="text" name="profpic"/>
+                                                    <p id="reportees">Backdrop Picture Url</p>
+                                                    <input type="text" name="bdpic"/>
+                                                    <input type="submit" value="Upload Info"/>
+                                                 </form>
+                                          </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                    </article>
+                    </div>
+                </div>
+                <div class="infoContainer">
+                <% overview = UserextInfo.map((elem) => {
+                    return '<p>' + elem.OverviewText + '</p>';
+                }) -%>
+                <h4>Overview:</h4><h6> &nbsp;<%- overview.join(" , &nbsp; ") %></h6>
+            
+                
+  
+                <% tags = TagsInfo.map((elem) => {
+                    return '' + elem.tag.TagName + '';
+                }) -%>
+                <h4>Tags:</h4><h5> &nbsp;<%- tags.join(" , &nbsp; ") %></h5>
 
-        <h1>User DB:</h1>
+                <% contacts = contactsInfo.map((elem) => {
+                    return '<p>' + elem.Label + ' : ' + elem.Value + '</p>';
+                }) -%>
+                <p>Additonal Contacts: &nbsp;<%- contacts.join("&nbsp;") %></p>
 
-            <article>
-                <h2><%= userInfo.user[0].FirstName %></h1>
-                <h3><%= userInfo.user[0].LastName %></p>
-            </article>
-
-
-
-
-            <h2>Chain of commands DB:</h2>
+            </div>
+            <h2 id="reportees">Chain of command</h2>
             <% for(let i = userInfo.chainofcommand.length-1 ; i >= 0; i--) { %>
                 <div class="card">
                     <!-- <img src="img_avatar.png" alt="Avatar" style="width:100%"> -->
@@ -54,12 +118,17 @@
                     <% } %>
                 </div>
                 <% } %>
-
-
-
+        <% if(userInfo.underlings.length !== 0){ %>
+        <h3 id="reportees">Reportees</h3>
+        <% } %>
+        <div class="underlings">
+            <% entries = userInfo.underlings.map((elem, index) => {
+                    return '<div class="cardrow"><a href="/userprofile/'+ elem._id + '"><div class="container"><h4><b>' + elem.FirstName + ' ' + elem.LastName + '</b></h4><p>' + elem.JobTitle + '</p></div></a></div>';
+                }) -%>
+            <p><%- entries.join(" &mdash; ") %></p>
+        </div>
 
             
-    </header>
     <div class="userList">
     </div>
     <footer class="page-footer font-small bg-light">

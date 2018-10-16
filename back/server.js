@@ -119,12 +119,38 @@ app.get('/signup', function signUpPage(req, res) {
 })
 
 
-app.post('/userext/:hrid', (req, res)=>{
-    let updatedInfo = req.body.OverviewText
-    db.Userext.findOneAndUpdate({hrID: req.params.hrid}, updatedInfo,{upsert:true}, function(err, succ){
-        if (err) return res.send(500, { error: err });
-        return res.send("succesfully saved");
-    });
+app.get('/tags/:id', (req, res) =>{
+
+    db.Tagjoin.find({user: req.params.id})
+                    .populate('tag')
+                    .exec( (errThree, successTags) => {
+                    if(errThree){
+                        console.log(errTwo)
+                        res.status(404)
+                    }else{
+                        res.json(successTags)
+                    }
+                })
+})
+
+app.put('/userext/:hrid', (req, res)=>{
+    let updatedText = req.body.OverviewText
+    let updatedPhoto = req.body.Photo
+    let hrID = req.params.hrid
+
+    let savedInfo = {
+        hrUID: hrID,
+        PhotoURL: updatedPhoto,
+        OverviewText: updatedText,
+    }
+    console.log(req.body)
+    db.Userext.findOneAndUpdate({hrUID: req.params.hrid}, savedInfo,{new: true}, (err, succ)=>{
+        if (err){
+            return res.send(500, { error: err })
+        }else{
+            return res.send(succ);
+        }
+    })
 })
 
 

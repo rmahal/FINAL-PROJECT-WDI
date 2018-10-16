@@ -1,8 +1,5 @@
 $( document ).ready(function() {
     checkForLogin()
-    console.log("Document ready");
-    console.log("Test Variable: ")
-
     $('form').on('submit', e=>{
         e.preventDefault();
 
@@ -25,6 +22,16 @@ $( document ).ready(function() {
                 console.log(response)
             }
     })
+
+
+
+    $('#logout').on('click', e=>{
+        e.preventDefault();
+        localStorage.clear();
+        window.location = "/";
+        
+    });
+
 });
 
 function checkForLogin(){

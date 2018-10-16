@@ -1,0 +1,28 @@
+body{
+    background-image: url("/img/homeback.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#jumb{
+    margin: auto;
+    width: 80%;
+
+}
+
+.centerBox{
+        margin-top:7em;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center; 
+}
+
+.center{
+    text-align:center;
+}
+.flexin{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+}

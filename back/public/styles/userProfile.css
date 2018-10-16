@@ -73,7 +73,7 @@ footer {
 
 
 .userList{
-    margin-bottom:3em;
+    margin-bottom:5em;
 }
 
 img {
@@ -89,6 +89,8 @@ img {
 #reportees{
     text-align: center;
     text-decoration: underline;
+    margin-bottom: 1em;
+    margin-top:1em;
 }
 
 .backdrop{
@@ -103,7 +105,31 @@ article{
 
 .infoContainer{
     background-color: #D3D3D3;
-    width: 100%;
+    width: 85%;
     margin: auto;
     text-align: center;
+}
+
+.flexin{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.mdash{
+    margin: auto 0;
+}
+
+.contactDiv{
+    text-align: justify;
+}
+
+
+.additionalDiv{
+    text-align: justify;
+}
+
+
+.tagDiv{
+    text-align: justify;
 }

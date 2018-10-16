@@ -1,7 +1,10 @@
+/* https://i.pinimg.com/originals/e3/5b/1f/e35b1fda28b11abff0395ae3d3b1e359.jpg */
 body{
     background-image: url("https://i.pinimg.com/originals/e3/5b/1f/e35b1fda28b11abff0395ae3d3b1e359.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+    /* height: 100%;
+    width: 100%; */
 }
 
 main{
@@ -61,6 +64,7 @@ a{
 .flexin{
     display:flex;
     flex-direction: row;
+    margin: auto;
 }
 
 .form-control{

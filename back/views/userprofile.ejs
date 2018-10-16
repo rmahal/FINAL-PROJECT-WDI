@@ -38,7 +38,11 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">
-                        <li id="welcome" class="nav-item right">
+                        <li class="nav-item">
+                            <a id="welcome" class="nav-link" ></a>
+                        </li>
+                        <li>
+                            <a id="logout" class="nav-link" href="/">Logout</a>
                         </li>
                     </ul>
                     </div>
@@ -67,12 +71,12 @@
                                           <div class="form-group">
                                                 <form>
                                                     <label id="reportees" for="recipient-name" class="col-form-label">Overview Info:</label>
-                                                    <input type="text" class="form-control" name="overview">
+                                                    <input type="text" id="overview" class="form-control" name="overview">
                                                     <p id="reportees">Profile Picture Url</p>
-                                                    <input type="text" name="profpic"/>
+                                                    <input type="text" id="profpic" name="profpic"/>
                                                     <br/>
                                                     <p id="reportees">Backdrop Picture Url</p>
-                                                    <input type="text" name="bdpic"/>
+                                                    <input type="text" id="bdpic" name="bdpic"/>
                                                     <br/>
                                                     <br/>
                                                     <br/>
@@ -88,24 +92,42 @@
                     </div>
                 </div>
                 <div class="infoContainer">
-                <% overview = UserextInfo.map((elem) => {
-                    return '<p>' + elem.OverviewText + '</p>';
-                }) -%>
-                <h4>Overview:</h4><h6> &nbsp;<%- overview.join(" , &nbsp; ") %></h6>
-            
-                
-  
-                <% tags = TagsInfo.map((elem) => {
-                    return '' + elem.tag.TagName + '';
-                }) -%>
-                <h4>Tags:</h4><h5> &nbsp;<%- tags.join(" , &nbsp; ") %></h5>
-
-                <% contacts = contactsInfo.map((elem) => {
-                    return '<p>' + elem.Label + ' : ' + elem.Value + '</p>';
-                }) -%>
-                <p>Additonal Contacts: &nbsp;<%- contacts.join("&nbsp;") %></p>
-
+                    <hr />
+                    <div>
+                        <h3><%= userInfo.user[0].JobTitle %></h3>
+                        <h4><%= userInfo.user[0].Org %></h4>
+                        <br>
+                    </div>
+                    <div>
+                        <% overview = UserextInfo.map((elem) => {
+                            return '<p id="otext">' + elem.OverviewText + '</p>';
+                        }) -%>
+                        <h4>Overview:</h4><h6> &nbsp;<%- overview.join(" , &nbsp; ") %></h6>
+                    </div>
+                    <hr />
+                    <div class ="flexin">
+                    <div class="tagDiv">
+                        <% tags = TagsInfo.map((elem) => {
+                            return '<button type="button" class="btn btn-info">' + elem.tag.TagName + '</button>';
+                        }) -%>
+                        <h5>Tags:</h5><h5> &nbsp;<%- tags.join("&nbsp;") %></h5>
+                    </div>
+                    <div class="contactDiv">
+                        <h5>Contact:</h5>
+                        <p>Phone: <%= userInfo.user[0].Phone %></p>
+                        <p>Email: <%= userInfo.user[0].Email %></p>
+                        <p>Address: <%= userInfo.user[0].Address %></p>
+                    </div>
+                    <div class="additionalDiv">
+                        <% contacts = contactsInfo.map((elem) => {
+                            return '<a href="https://www.'+elem.Value+'">' + elem.Label + ' ' + elem.Value + '</a><br/>';
+                        }) -%>
+                        <h5>Additonal Contacts:</h5><p>&nbsp;<%- contacts.join("&nbsp;") %></p>
+                    </div>
+                 </div>
+                 <hr />
             </div>
+
             <h2 id="reportees">Chain of command</h2>
             <% for(let i = userInfo.chainofcommand.length-1 ; i >= 0; i--) { %>
                 <div class="card">
@@ -130,7 +152,7 @@
             <% entries = userInfo.underlings.map((elem, index) => {
                     return '<div class="cardrow"><a href="/userprofile/'+ elem._id + '"><div class="container"><h4><b>' + elem.FirstName + ' ' + elem.LastName + '</b></h4><p>' + elem.JobTitle + '</p></div></a></div>';
                 }) -%>
-            <p><%- entries.join(" &mdash; ") %></p>
+            <p><%- entries.join(" <p class='mdash'>&mdash;</p> ") %></p>
         </div>
 
             

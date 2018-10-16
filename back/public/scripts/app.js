@@ -29,7 +29,13 @@ $( document ).ready(function() {
 
   
   
-  
+      $('#logout').on('click', e=>{
+        e.preventDefault();
+        localStorage.clear();
+        window.location = "/";
+        
+    });
+
     
   });
   

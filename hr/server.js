@@ -145,7 +145,7 @@ app.get("/test/:id", (req, res) =>{
 
 
 
-
+//Asynchronous function that goes through managers untill it reaches the CEO to give you the list of managers above you
 
 async function getOneStepUp(id) {
     let listOfCommand = [];

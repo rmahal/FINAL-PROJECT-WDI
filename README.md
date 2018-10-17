@@ -46,25 +46,27 @@
 
 ```javascript                       
 
-//Raj
 
-
-    db.User.find({userName: username}, (err, userFound) => {
-        if(err){
-            res.status(401);
-        }
-        if(userFound < 1){
-            res.status(404).json({message: "USER NOT FOUND"})
+async function getOneStepUp(id) {
+    let listOfCommand = [];
+    let inLoop = true
+    let user
+    
+    while(inLoop){
+        user = await db.Employee.findOne({_id: id});
+        console.log("Thing reponse")
+        console.log(user)
+        listOfCommand.push(user)
+        if(user.manager === null || user.manager === undefined){
+            inLoop = false
         }else{
-            let uid = userFound[0]._id;
-            console.log("user found: ", uid)
-            db.Like.find({_user: uid})
-                .populate('_flix')
-                .exec( (err, succ) => {
-                    res.json(succ);
-                })
+            console.log("this was hit val is",user.manager)
+            id = user.manager
         }
-    })
+    }
+    console.log("\n\n\n\n CHAIN OF COMMAND:", listOfCommand)
+    return listOfCommand;
+}
 
 
 ```

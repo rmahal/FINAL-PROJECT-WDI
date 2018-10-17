@@ -170,6 +170,6 @@ async function getOneStepUp(id) {
 
 
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(3001, () => {
     console.log('HR server listening on port 3001 ...')
 })

@@ -23,6 +23,7 @@
     "mongoose": "^5.3.4",
     "multer": "^1.4.1",
     "node-fetch": "^2.2.0",
-    "orgchart": "^2.1.2"
+    "orgchart": "^2.1.2",
+    "vcards-js": "^2.9.0"
   }
 }

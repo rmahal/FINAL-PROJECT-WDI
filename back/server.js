@@ -7,6 +7,7 @@ const fetch = require("node-fetch")
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const multer = require('multer')
+var vCard = require('vcards-js')
 const app = express()
 const bodyParser = require('body-parser');
 var salt = bcrypt.genSaltSync();
@@ -56,6 +57,28 @@ app.use(express.static('public'))
 
 app.get("/", (req, res) => {
     res.render('index')
+})
+
+
+
+app.post("/vcard", (req,res)=>{
+
+vCard = vCard();
+
+//set properties
+vCard.firstName = 'Eric';
+vCard.middleName = 'J';
+vCard.lastName = 'Nesser';
+vCard.organization = 'ACME Corporation';
+
+//set content-type and disposition including desired filename
+res.set('Content-Type', 'text/vcard; name="enesser.vcf"');
+res.set('Content-Disposition', 'inline; filename="enesser.vcf"');
+
+//send the response
+res.send(vCard.getFormattedString());
+
+
 })
 
 app.get("/search", (req,res)=>{
@@ -380,5 +403,7 @@ function signJwt(){
 
 
 app.listen(3000, () => {
+    console.log("Test Dirname")
+    console.log(__dirname)
     console.log('Backend server listening on port 3000 ...')
 })

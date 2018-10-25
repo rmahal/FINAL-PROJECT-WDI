@@ -8,7 +8,7 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!-- My CSS -->
-    <link rel="stylesheet" type="text/css" media="screen" href="/styles/userProfile.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/userProfile.css" />
     <!-- JQuery CDN -->
     <script
     src="https://code.jquery.com/jquery-3.3.1.js"
@@ -19,7 +19,7 @@
     <!-- BootStrap CDN -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous" defer></script>
     <!-- My JS-->
-    <script src="/scripts/userprofile.js" defer></script>
+    <script src="../scripts/userprofile.js" defer></script>
 </head>
 <body>
     <header>
@@ -31,10 +31,10 @@
                     <div class="collapse navbar-collapse navbar-text" id="navbarText">
                       <ul class="navbar-nav my-2 my-sm-0">
                         <li class="nav-item my-2 my-sm-0">
-                          <a id="profileLink" class="nav-link" href="/userprofile/">Profile</a>
+                          <a id="profileLink" class="nav-link" href="/110">Profile</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="/search">Search</a>
+                          <a class="nav-link" href="search">Search</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">
@@ -132,7 +132,7 @@
             <% for(let i = userInfo.chainofcommand.length-1 ; i >= 0; i--) { %>
                 <div class="card">
                     <!-- <img src="img_avatar.png" alt="Avatar" style="width:100%"> -->
-                    <a href="/userprofile/<%= userInfo.chainofcommand[i]._id%>">
+                    <a href="<%= userInfo.chainofcommand[i]._id%>">
                         <div class="container">
                             <h4><b><%= userInfo.chainofcommand[i].FirstName %> <%= userInfo.chainofcommand[i].LastName %></b></h4> 
                             <p><%= userInfo.chainofcommand[i].JobTitle %></p> 
@@ -150,7 +150,7 @@
         <% } %>
         <div class="underlings">
             <% entries = userInfo.underlings.map((elem, index) => {
-                    return '<div class="cardrow"><a href="/userprofile/'+ elem._id + '"><div class="container"><h4><b>' + elem.FirstName + ' ' + elem.LastName + '</b></h4><p>' + elem.JobTitle + '</p></div></a></div>';
+                    return '<div class="cardrow"><a href="'+ elem._id + '"><div class="container"><h4><b>' + elem.FirstName + ' ' + elem.LastName + '</b></h4><p>' + elem.JobTitle + '</p></div></a></div>';
                 }) -%>
             <p><%- entries.join(" <p class='mdash'>&mdash;</p> ") %></p>
         </div>

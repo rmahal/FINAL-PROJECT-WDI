@@ -1,7 +1,7 @@
 $( document ).ready(function() {
     checkForLogin()
     $('form').on('submit', e=>{
-        e.preventDefault();
+        //e.preventDefault();
 
             console.log($('form').serialize())
             let pageId = parseInt($("#editButton").data("id")[0])
@@ -28,7 +28,7 @@ $( document ).ready(function() {
     $('#logout').on('click', e=>{
         e.preventDefault();
         localStorage.clear();
-        window.location = "/";
+
         
     });
 
@@ -66,9 +66,6 @@ function checkForLogin(){
         const email = response.email
       }).fail(function (e1,e2,e3) {
           console.log(e2);
-          window.location = "/login"
       });
-    }else{
-      window.location = "/"
     }
   }

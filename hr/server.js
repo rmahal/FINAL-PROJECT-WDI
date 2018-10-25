@@ -171,5 +171,6 @@ async function getOneStepUp(id) {
 
 
 app.listen(3001, () => {
+    console.log(__dirname)
     console.log('HR server listening on port 3001 ...')
 })

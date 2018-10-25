@@ -1,17 +1,17 @@
-$.ajax({
-  method: "GET",
-  url: 'https://rmahal.com/projects/empdir/hr/allemployees',
-  success: function success(succ) {
-      console.log('success')
-      console.log(succ)
-      for(var i=0; i<succ.length;i++){
-        $(".results").append("<div class='borderround'><div class='cardrow'><a href='userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+"</p></div></a></div></div>")
-      }
-  },
-  error: function error(err){
-    console.log(err)
-  }
-})
+// $.ajax({
+//   method: "GET",
+//   url: 'https://rmahal.com/projects/empdir/hr/allemployees',
+//   success: function success(succ) {
+//       console.log('success')
+//       console.log(succ)
+//       for(var i=0; i<succ.length;i++){
+//         $(".results").append("<div class='borderround'><div class='cardrow'><a href='userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+"</p></div></a></div></div>")
+//       }
+//   },
+//   error: function error(err){
+//     console.log(err)
+//   }
+// })
 
 $( document ).ready(function() {
 
@@ -20,19 +20,47 @@ $( document ).ready(function() {
     console.log("Document ready");
 
 
-      $("#myInput").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $(".results div").filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-      });
+      // $("#myInput").on("keyup", function() {
+      //   var value = $(this).val().toLowerCase();
+      //   $(".results div").filter(function() {
+      //     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      //   });
+      // });
 
+
+      $("#search").on("click", function(){
+        let val = $("#myInput").val()
+        console.log(val)
+
+        $.ajax({
+          method: "GET",
+          url: 'http://localhost:3001/search/employees/'+val,
+          success: function success(succ) {
+              console.log('success')
+              console.log(succ)
+              if(succ.length > 0){
+                $(".results").empty()
+              for(var i=0; i<succ.length;i++){
+                $(".results").append("<div class='borderround'><div class='cardrow'><a href='userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+"</p></div></a></div></div>")
+              }
+              }else{
+                $(".results").empty()
+                $(".results").append("<div class='borderround'><div class='cardrow'><div class='container'><h4><p>No results found please try again</p></h4></div></div>")
+              }
+          },
+          error: function error(err){
+            console.log(err)
+          }
+        })
+        
+      })
   
+
+
   
       $('#logout').on('click', e=>{
         e.preventDefault();
         localStorage.clear();;
-        
     });
 
     

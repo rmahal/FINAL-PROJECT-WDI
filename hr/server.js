@@ -109,6 +109,26 @@ app.get("/employee/hr/populate/:id", (req,res)=>{
     
 })
 
+app.get("/search/employees/:search", (req,res)=>{
+    let search=req.params.search
+    console.log("Search: "+search)
+    db.Employee.find({ $text : { $search: search } }, (err,succ)=>{
+        if(err){
+            res.status(404)
+        }
+        console.log(succ.length)
+        if(succ.length === 0){
+
+            res.json({"ERROR":"No results found please try again"})
+        }else{
+        //console.log(succ)
+        res.json(succ)
+        }
+    })
+
+})
+
+
 app.get("/findUnderlings/:id", (req,res)=>{
     let id = req.params.id
     console.log("ID: "+id)

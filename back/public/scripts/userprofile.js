@@ -66,6 +66,7 @@ function checkForLogin(){
         const email = response.email
       }).fail(function (e1,e2,e3) {
           console.log(e2);
+       
       });
     }
   }

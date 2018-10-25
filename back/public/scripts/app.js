@@ -1,11 +1,11 @@
 $.ajax({
   method: "GET",
-  url: 'http://localhost:3001/allemployees/',
+  url: 'https://rmahal.com/projects/empdir/hr/allemployees',
   success: function success(succ) {
       console.log('success')
       console.log(succ)
       for(var i=0; i<succ.length;i++){
-        $(".results").append("<div class='borderround'><div class='cardrow'><a href='/userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+"</p></div></a></div></div>")
+        $(".results").append("<div class='borderround'><div class='cardrow'><a href='userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+"</p></div></a></div></div>")
       }
   },
   error: function error(err){
@@ -31,23 +31,20 @@ $( document ).ready(function() {
   
       $('#logout').on('click', e=>{
         e.preventDefault();
-        localStorage.clear();
-        window.location = "/";
+        localStorage.clear();;
         
     });
 
     
   });
   
-  
-
-  function onSignIn(googleUser) {
+   function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
     console.log('Name: ' + profile.getName());
     console.log('Image URL: ' + profile.getImageUrl());
     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-  }
+  } 
 
 function checkForLogin(){
   if(localStorage.length > 0){
@@ -67,7 +64,7 @@ function checkForLogin(){
       let hrid=response.hrID
       user = { email: response.email, hrid: response.hrid, _id: response._id }
       
-      let url="/userprofile/"+hrid
+      let url="userprofile/"+hrid
       console.log(url)
       $("#profileLink").attr("href",url)
       if(response.email.length > 0){
@@ -77,12 +74,10 @@ function checkForLogin(){
       }
     }).fail(function (e1,e2,e3) {
         console.log(e2);
-        
+ 
     });
   }
 }
-
-
 
   
   

@@ -52,7 +52,9 @@ app.get("/superLOOKUP/:id", (req, res) => {
     let superFound = {
         user: {},
         chainofcommand: [],
-        underlings: []
+        underlings: [],
+        hrInfo: {},
+        managerInfo: {}
     }
     let id = req.params.id
     db.Employee.find({_id: id}, (err, userFound) => {
@@ -65,11 +67,27 @@ app.get("/superLOOKUP/:id", (req, res) => {
                     res.status(401);
                 }else{
                     superFound.underlings = succ
-                    getOneStepUp(id).then(chain =>{
-                        superFound.chainofcommand = chain
-                        console.log("IM FINISHED HERE IS THE SUPER FOUND:")
-                        console.log(superFound)
-                        res.json(superFound)
+                    console.log("User Found HR: ")
+                    console.log(superFound.user.HRrep)
+                    db.Employee.find({_id: superFound.user[0].HRrep}, (err,hrFound)=>{
+                        if(err){
+                            res.status(401);
+                        }else{
+                            superFound.hrInfo = hrFound
+                            db.Employee.find({_id: superFound.user[0].manager}, (err,managerFound)=>{
+                                if(err){
+                                    res.status(401);
+                                }else{
+                                superFound.managerInfo = managerFound
+                                getOneStepUp(id).then(chain =>{
+                                    superFound.chainofcommand = chain
+                                    console.log("IM FINISHED HERE IS THE SUPER FOUND:")
+                                    console.log(superFound)
+                                    res.json(superFound)
+                                })
+                                }
+                            })
+                        }
                     })
                 }
             })
@@ -147,19 +165,9 @@ app.get("/test/:id", (req, res) =>{
 
     let userChain
     getOneStepUp(id).then(user =>{
-        //user.json()
-        console.log("USER: ",user)
         console.log("IM FINISHED")
         res.json(user)
-
-
     })
-
-    //console.log("USERCHAIN: ",userChain)
-
-    //res.json(user)
-
-
 })
 
 
@@ -174,17 +182,13 @@ async function getOneStepUp(id) {
     
     while(inLoop){
         user = await db.Employee.findOne({_id: id});
-        console.log("Thing reponse")
-        console.log(user)
         listOfCommand.push(user)
         if(user.manager === null || user.manager === undefined){
             inLoop = false
         }else{
-            console.log("this was hit val is",user.manager)
             id = user.manager
         }
     }
-    console.log("\n\n\n\n CHAIN OF COMMAND:", listOfCommand)
     return listOfCommand;
 }
 

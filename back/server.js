@@ -99,6 +99,7 @@ app.get('/userprofile/:id', (req, res) => {
     console.log("ID: "+id)
     var url = "http://localhost:3001/superLOOKUP/"+id
     console.log("URL: "+url)
+    let userMap
     fetch(url)
     .then(response => response.json())
     .then(response => {
@@ -124,14 +125,23 @@ app.get('/userprofile/:id', (req, res) => {
                     if(errThree){
                         console.log(errTwo)
                         res.status(404)
+                    
                     }
+                    console.log("\n\nUSER EXT: \n")
                     console.log(successUserext)
+                    db.Userext.find({}, (errallUEXT,succUserExt)=>{
+                        if(errallUEXT){
+                            res.status(404)
+                        }else{
 
-                    res.render('userprofile',{
-                        userInfo: response,
-                        contactsInfo: successContacts,
-                        UserextInfo: successUserext,
-                        TagsInfo: successTags,
+                            res.render('userprofile',{
+                                userInfo: response,
+                                contactsInfo: successContacts,
+                                UserextInfo: successUserext,
+                                allImages: {},
+                                TagsInfo: successTags,
+                            })
+                        }
                     })
                 })
             })

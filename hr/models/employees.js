@@ -7,7 +7,13 @@ const EmployeeSchema = new mongoose.Schema({
     LastName: String,
     Email: String,
     Phone: String,
-    Address: String,
+    Street: String,
+    City: String,
+    State: {
+        type: String,
+        maxlength: 2
+    },
+    ZipCode: Number,
     CountryCode: {
         type: String,
         maxlength: 2

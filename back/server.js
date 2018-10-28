@@ -116,8 +116,6 @@ app.get('/userprofile/:id', (req, res) => {
                     console.log(errTwo)
                     res.status(404)
                 }
-                console.log("successUserext")
-                console.log(successUserext)
                 
                 db.Tagjoin.find({user: id})
                     .populate('tag')
@@ -129,17 +127,33 @@ app.get('/userprofile/:id', (req, res) => {
                     }
                     console.log("\n\nUSER EXT: \n")
                     console.log(successUserext)
-                    db.Userext.find({}, (errallUEXT,succUserExt)=>{
+                    db.Userext.find({}, (errallUEXT, succUserExt)=>{
                         if(errallUEXT){
                             res.status(404)
                         }else{
-
-                            res.render('userprofile',{
-                                userInfo: response,
-                                contactsInfo: successContacts,
-                                UserextInfo: successUserext,
-                                allImages: {},
-                                TagsInfo: successTags,
+                            getImages(response.underlings).then(chain =>{
+                                if(response.chainofcommand.length > 0){
+                                getManagerImages(response.chainofcommand[1]).then(managerChain =>{
+                                    res.render('userprofile',{
+                                        userInfo: response,
+                                        contactsInfo: successContacts,
+                                        UserextInfo: successUserext,
+                                        TagsInfo: successTags,
+                                        allImages: chain,
+                                        managerImage: managerChain
+                                    })
+                                })
+                                }else{
+                                    console.log("I was hit no manager")
+                                    res.render('userprofile',{
+                                        userInfo: response,
+                                        contactsInfo: successContacts,
+                                        UserextInfo: successUserext,
+                                        TagsInfo: successTags,
+                                        allImages: chain,
+                                        managerImage: [101,"http://www.whur.com/wp-content/uploads/2014/10/African-American-Female-Executive.jpg"]
+                                    })
+                                }
                             })
                         }
                     })
@@ -147,7 +161,7 @@ app.get('/userprofile/:id', (req, res) => {
             })
         })
     })
-});
+})
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
@@ -405,8 +419,62 @@ function signJwt(){
 
 
 
+async function getImages(arr) {
+    let userimages = []
+    let smallArr = []
+    let user
+    let id
+    let photo
+    //console.log("ARR: ")
+    //console.log(arr)
+    if(arr.length > 0 ){
+        console.log("before loop")
+    for(let i =0; i< arr.length; i++){
+        console.log("after loop")
+        console.log(arr[i]._id)
+        user = await db.Userext.findOne({_id: arr[i]._id})
+        //console.log("USer: ")
+        //console.log(user._id)
+        id = user._id
+        photo = user.PhotoURL
+        smallArr = [id, photo]
+        userimages.push(smallArr)
+    }
+
+    //manImg = await db.Userext.findOne({_id: manager._id})
+    //smallArr = [man.id, manImg.PhotoURL]
+    //userimages.push(smallArr)
+    console.log("userimages done")
+
+    return userimages;
+    }else{
+        console.log("no images")
+        return userimages
+    }
+}
 
 
+async function getManagerImages(manager) {
+    let smallArr = []
+    let user
+    let id
+    let photo
+    console.log("Response")
+    console.log(manager)
+    if(manager !== undefined){
+        console.log("If hit")
+        user = await db.Userext.findOne({_id: manager._id})
+        console.log("user hit")
+        console.log(user)
+        id = user._id
+        photo = user.PhotoURL
+        smallArr = [id, photo]
+ 
+        return smallArr
+    }else{
+        return smallArr
+    }
+}
 
 
 

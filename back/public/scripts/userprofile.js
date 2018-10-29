@@ -1,5 +1,30 @@
 $( document ).ready(function() {
-    checkForLogin()
+    //checkForLogin()
+
+        $.ajax({
+            method: 'GET',
+            data: {
+                firstName: "Raj",
+                lastName: "Mahal",
+                jobTitle: "Software Developer",
+                workPhone: "209-505-8988",
+                organization: "Test"
+            },
+            url: "http://localhost:3000/vcard" ,
+            success: cardSuccess,
+            error: cardError
+        })
+        
+        function cardSuccess(response){
+            console.log(response)
+            //window.location = '/vcard'
+        }
+        function cardError(error){
+            console.log(error)
+        }
+
+
+
     $('form').on('submit', e=>{
         //e.preventDefault();
 

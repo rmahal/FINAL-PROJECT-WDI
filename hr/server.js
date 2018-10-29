@@ -53,8 +53,8 @@ app.get("/superLOOKUP/:id", (req, res) => {
         user: {},
         chainofcommand: [],
         underlings: [],
-        hrInfo: {},
-        managerInfo: {}
+        hrInfo: [],
+        managerInfo: []
     }
     let id = req.params.id
     db.Employee.find({_id: id}, (err, userFound) => {

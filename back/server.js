@@ -7,10 +7,12 @@ const fetch = require("node-fetch")
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const multer = require('multer')
-var vCard = require('vcards-js')
+let vCard = require('vcards-js')
 const app = express()
 const bodyParser = require('body-parser');
-var salt = bcrypt.genSaltSync();
+const favicon = require('serve-favicon')
+const path = require('path')
+let salt = bcrypt.genSaltSync();
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(function(req, res, next) {
@@ -19,6 +21,9 @@ app.use(function(req, res, next) {
     next()
 });
 
+app.use(favicon(path.join(__dirname, 'public/img/', 'favicon.ico')))
+//console.log(express.static('public/img/favicon.ico'))
+console.log("STATIC PATH")
 
 const multerConfig = {
     
@@ -61,22 +66,24 @@ app.get("/", (req, res) => {
 
 
 
-app.post("/vcard", (req,res)=>{
+app.get("/vcard", (req,res)=>{
 
-vCard = vCard();
-
+vCardret = vCard();
+console.log("DATA")
+console.log(req.query)
 //set properties
-vCard.firstName = 'Eric';
-vCard.middleName = 'J';
-vCard.lastName = 'Nesser';
-vCard.organization = 'ACME Corporation';
-
+vCardret.firstName = req.query.firstName;
+vCardret.lastName = req.query.lastName;
+vCardret.job = req.query.jobTitle;
+vCardret.workPhone = req.query.workPhone;
+vCardret.organization = req.query.organization;
+//console.log(vCardret)
 //set content-type and disposition including desired filename
-res.set('Content-Type', 'text/vcard; name="enesser.vcf"');
-res.set('Content-Disposition', 'inline; filename="enesser.vcf"');
+res.set('Content-Type', 'text/vcard; name="profile.vcf"');
+res.set('Content-Disposition', 'inline; filename="profile.vcf"');
 
 //send the response
-res.send(vCard.getFormattedString());
+res.send(vCardret.getFormattedString());
 
 
 })
@@ -90,7 +97,7 @@ app.get("/org", (req,res)=>{
 })
 
 app.post('/upload',multer(multerConfig).single('photo'),function(req,res){
-    console.log(req.body)
+    console.log(req.params.data)
     res.send('Complete!');
  })
 
@@ -203,6 +210,20 @@ app.get('/signup', function signUpPage(req, res) {
     
 })
 
+app.get('/tagSearch' , (req, res) => {
+    res.render('tagSearch')
+})
+
+app.get('/allTags', (req, res) => {
+    db.Tag.find({}, (err, succTags)=>{
+        if(err){
+            console.log(err)
+            res.status(400)
+        }else{
+            res.json(succTags)
+        }
+    })
+})
 
 app.get('/tags/:id', (req, res) =>{
 
@@ -417,26 +438,56 @@ function signJwt(){
 }
 
 
-
-
 async function getImages(arr) {
     let userimages = []
     let smallArr = []
-    let user
+    let userExtReportee
     let id
     let photo
-    //console.log("ARR: ")
-    //console.log(arr)
+    console.log("ARR: ")
+    console.log(arr)
+
     if(arr.length > 0 ){
         console.log("before loop")
-    for(let i =0; i< arr.length; i++){
-        console.log("after loop")
+    for(let i =0; i < arr.length; i++){
+        console.log("loop start")
+        console.log("Iteration: "+i)
         console.log(arr[i]._id)
-        user = await db.Userext.findOne({_id: arr[i]._id})
-        //console.log("USer: ")
-        //console.log(user._id)
-        id = user._id
-        photo = user.PhotoURL
+        id = parseInt(arr[i]._id)
+        console.log("ID IN IMAGES: ")
+        console.log(parseInt(id))
+        userExtReportee = await db.Userext.findOne({'hrUID': ""+id}, (err, succ)=>{
+            if(err){
+                console.log("Error was hit userext reportees: ")
+                console.log(err)
+                return {}
+            }else{
+                console.log("Success was hit userext reportees: ")
+                console.log(succ)
+                return succ
+            }
+        })
+        // .then(function(value) {
+        //     console.log("userext then hit")
+        //     console.log(value)
+        //     return value
+        //       // here I choose if I want to resolve or reject.
+        //   })
+        //   .catch(function(err) {
+        //     console.log("userext catch hit")
+        //     return Promise.reject(["rejected", err])
+        //   })
+        console.log("await done for userext ")
+        console.log(userExtReportee)
+        if(userExtReportee === null){
+            // sleep(500).then(() => {
+            //     console.log("SLEEPING")
+            //   })
+            console.log("user is NULL")
+
+        }
+        id = userExtReportee._id
+        photo = userExtReportee.PhotoURL
         smallArr = [id, photo]
         userimages.push(smallArr)
     }
@@ -454,6 +505,10 @@ async function getImages(arr) {
 }
 
 
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+
 async function getManagerImages(manager) {
     let smallArr = []
     let user
@@ -463,7 +518,17 @@ async function getManagerImages(manager) {
     console.log(manager)
     if(manager !== undefined){
         console.log("If hit")
-        user = await db.Userext.findOne({_id: manager._id})
+        user = await db.Userext.findOne({_id: manager._id}, (err, succ)=>{
+            if(err){
+                console.log("Error was hit userext manager: ")
+                console.log(err)
+                return {}
+            }else{
+                console.log("Success was hit userext manager: ")
+                console.log(succ)
+                return succ
+            }
+        })
         console.log("user hit")
         console.log(user)
         id = user._id
@@ -475,9 +540,6 @@ async function getManagerImages(manager) {
         return smallArr
     }
 }
-
-
-
 
 
 app.listen(3000, () => {

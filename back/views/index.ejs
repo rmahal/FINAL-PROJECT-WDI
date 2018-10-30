@@ -35,7 +35,7 @@
         <!-- Google signin function html -->
          <div class="g-signin2" data-onsuccess="onSignIn"></div>
          <!-- Google signout function-->
-                <a href="#" onclick="signOut();">Sign out</a>
+                <!-- <a href="#" onclick="signOut();">Sign out</a> -->
               <!--  <a class="btn btn-primary btn-lg" href="login" role="button">Login</a> -->
                 </div>
                 <div class="center">
@@ -50,20 +50,23 @@
         </div>
     </main>
 <script>
-function onSignIn(googleUser) {
-  var profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  localStorage.setItem("token", profile)
-  localStorage.setItem("id", profile.getId())
-  console.log('Name: ' + profile.getName())
-  localStorage.setItem("name", profile.getName())
-  console.log('Image URL: ' + profile.getImageUrl())
-  localStorage.setItem("img", profile.getImageUrl())
-  console.log('Email: ' + profile.getEmail()) // This is null if the 'email' scope is not present.
-  localStorage.setItem("email", profile.getEmail())
-}
+  function onSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log(profile)
+    //localStorage.setItem("token", profile)
+    localStorage.setItem("id", profile.getId())
+    console.log('Name: ' + profile.getName())
+    localStorage.setItem("name", profile.getName())
+    console.log('Image URL: ' + profile.getImageUrl())
+    localStorage.setItem("img", profile.getImageUrl())
+    console.log('Email: ' + profile.getEmail()) // This is null if the 'email' scope is not present.
+    localStorage.setItem("email", profile.getEmail())
+    console.log("donce with items")
+    console.log(localStorage.length)
+  }
 </script>
-<script>
+<!-- <script>
   function signOut() {
     let auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
@@ -71,6 +74,6 @@ function onSignIn(googleUser) {
       localStorage.clear();
     });
   }
-</script>
+</script> -->
 </body>
 </html>

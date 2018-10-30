@@ -15,10 +15,11 @@
 
 $( document ).ready(function() {
 
-    checkForLogin();
-
+    //checkForLogin();
     console.log("Document ready");
-
+    if(localStorage.getItem("id") === null){
+      window.location.assign("/")
+    }
 
       // $("#myInput").on("keyup", function() {
       //   var value = $(this).val().toLowerCase();
@@ -41,7 +42,7 @@ $( document ).ready(function() {
               if(succ.length > 0){
                 $(".results").empty()
               for(var i=0; i<succ.length;i++){
-                $(".results").append("<div class='borderround'><div class='cardrow'><a href='userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+"</p></div></a></div></div>")
+                $(".results").append("<div class='borderround'><div class='cardrow'><a href='../userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+", "+succ[i].CountryCode+"</p><p>"+succ[i].Email+"</p><p> +1 "+succ[i].Phone+"</p></div></a></div></div>")
               }
               }else{
                 $(".results").empty()

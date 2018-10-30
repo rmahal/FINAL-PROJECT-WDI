@@ -4,7 +4,7 @@ const ejs = require('ejs')
 const cors = require('cors')
 const axios = require('axios')
 const fetch = require("node-fetch")
-const bcrypt = require('bcrypt')
+//const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const multer = require('multer')
 let vCard = require('vcards-js')
@@ -12,8 +12,9 @@ const app = express()
 const bodyParser = require('body-parser');
 const favicon = require('serve-favicon')
 const path = require('path')
-let salt = bcrypt.genSaltSync();
-app.set('view engine', 'ejs')
+//alet salt = bcrypt.genSaltSync();
+
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*")
@@ -21,8 +22,15 @@ app.use(function(req, res, next) {
     next()
 });
 
-app.use(favicon(path.join(__dirname, 'public/img/', 'favicon.ico')))
-//console.log(express.static('public/img/favicon.ico'))
+
+app.use(cors())
+
+app.use(express.static('public'))
+
+app.set('view engine', 'ejs')
+app.use(favicon(path.join(__dirname, '/public/img/','favicon.ico')))
+console.log(__dirname+'/public/img/'+'favicon.ico')
+
 console.log("STATIC PATH")
 
 const multerConfig = {
@@ -31,33 +39,30 @@ const multerConfig = {
         destination: function(req, file, next){
             next(null, './public/img');
             },   
-             
-             //Then give the file a unique name
-             filename: function(req, file, next){
-                 console.log(file);
-                 const ext = file.mimetype.split('/')[1];
-                 next(null, file.fieldname + '-' + Date.now() + '.'+ext);
-               }
-             }),
-             fileFilter: function(req, file, next){
+            
+            //Then give the file a unique name
+            filename: function(req, file, next){
+                console.log(file);
+                const ext = file.mimetype.split('/')[1];
+                next(null, file.fieldname + '-' + Date.now() + '.'+ext);
+            }
+            }),
+            fileFilter: function(req, file, next){
                 if(!file){
-                  next();
+                    next();
                 }
-              const image = file.mimetype.startsWith('image/');
-              if(image){
+            const image = file.mimetype.startsWith('image/');
+            if(image){
                 console.log('photo uploaded');
                 next(null, true);
-              }else{
+            }else{
                 console.log("file not supported");
                 
                 return next();
-              }
-          }
-        }
+            }
+    }
+}
 
-app.use(cors())
-
-app.use(express.static('public'))
 
 
 app.get("/", (req, res) => {
@@ -71,6 +76,9 @@ app.get("/vcard", (req,res)=>{
 vCardret = vCard();
 console.log("DATA")
 console.log(req.query)
+if(req.query === null || req.query === ""){
+    res.status(404)
+}
 //set properties
 vCardret.firstName = req.query.firstName;
 vCardret.lastName = req.query.lastName;
@@ -82,8 +90,13 @@ vCardret.organization = req.query.organization;
 res.set('Content-Type', 'text/vcard; name="profile.vcf"');
 res.set('Content-Disposition', 'inline; filename="profile.vcf"');
 
+let name = __dirname+"/vcf/"+req.query.firstName+"-"+req.query.lastName+".vcf"
+console.log(name)
+console.log("Routing")
+vCardret.saveToFile(name);
+
 //send the response
-res.send(vCardret.getFormattedString());
+res.sendFile(name);
 
 
 })
@@ -97,9 +110,9 @@ app.get("/org", (req,res)=>{
 })
 
 app.post('/upload',multer(multerConfig).single('photo'),function(req,res){
-    console.log(req.params.data)
+    //console.log(req.params.data)
     res.send('Complete!');
- })
+})
 
 app.get('/userprofile/:id', (req, res) => {
     var id = req.params.id;
@@ -117,7 +130,7 @@ app.get('/userprofile/:id', (req, res) => {
                 console.log(err)
                 res.status(404)
             }
-            console.log(successContacts)
+            //console.log(successContacts)
             db.Userext.find({hrUID: id}, (errTwo, successUserext)=>{
                 if(errTwo){
                     console.log(errTwo)
@@ -172,8 +185,8 @@ app.get('/userprofile/:id', (req, res) => {
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
-       req.isLogged = true
-       return next();
+        req.isLogged = true
+        return next();
     }
     res.redirect('/');
 }
@@ -263,7 +276,7 @@ app.put('/userext/:hrid', (req, res)=>{
 })
 
 
-
+/*
 app.post('/signup', (req,res)=>{
     console.log("email: "+req.body.email)
     var emailres = req.body.email;
@@ -382,6 +395,7 @@ app.post('/login', (req, res) => {
         });
     })
 });
+*/
 
 app.post('/verifyForProf', verifyToken, (req, res) => {
     let verified= jwt.verify(req.token, 'vampires')
@@ -444,19 +458,19 @@ async function getImages(arr) {
     let userExtReportee
     let id
     let photo
-    console.log("ARR: ")
-    console.log(arr)
+    //console.log("ARR: ")
+    //console.log(arr)
 
     if(arr.length > 0 ){
-        console.log("before loop")
+        //console.log("before loop")
     for(let i =0; i < arr.length; i++){
-        console.log("loop start")
-        console.log("Iteration: "+i)
-        console.log(arr[i]._id)
+        //console.log("loop start")
+        //console.log("Iteration: "+i)
+        //console.log(arr[i]._id)
         id = parseInt(arr[i]._id)
         console.log("ID IN IMAGES: ")
         console.log(parseInt(id))
-        userExtReportee = await db.Userext.findOne({'hrUID': ""+id}, (err, succ)=>{
+        userExtReportee = await db.Userext.findOne({'hrUID': id}, (err, succ)=>{
             if(err){
                 console.log("Error was hit userext reportees: ")
                 console.log(err)
@@ -477,8 +491,8 @@ async function getImages(arr) {
         //     console.log("userext catch hit")
         //     return Promise.reject(["rejected", err])
         //   })
-        console.log("await done for userext ")
-        console.log(userExtReportee)
+        //console.log("await done for userext ")
+        //console.log(userExtReportee)
         if(userExtReportee === null){
             // sleep(500).then(() => {
             //     console.log("SLEEPING")
@@ -514,8 +528,8 @@ async function getManagerImages(manager) {
     let user
     let id
     let photo
-    console.log("Response")
-    console.log(manager)
+    //console.log("Response")
+    //console.log(manager)
     if(manager !== undefined){
         console.log("If hit")
         user = await db.Userext.findOne({_id: manager._id}, (err, succ)=>{
@@ -530,7 +544,7 @@ async function getManagerImages(manager) {
             }
         })
         console.log("user hit")
-        console.log(user)
+        //console.log(user)
         id = user._id
         photo = user.PhotoURL
         smallArr = [id, photo]
@@ -542,8 +556,8 @@ async function getManagerImages(manager) {
 }
 
 
-app.listen(3000, () => {
+app.listen(3002, () => {
     console.log("Test Dirname")
     console.log(__dirname)
-    console.log('Backend server listening on port 3000 ...')
+    console.log('Backend server listening on port 3002 ...')
 })

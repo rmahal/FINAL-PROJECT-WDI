@@ -18,7 +18,9 @@ $( document ).ready(function() {
     checkForLogin();
 
     console.log("Document ready");
-
+    if(localStorage.getItem("id") === null){
+      window.location.assign("/")
+    }
 
       $("#myInput").on("keyup", function() {
         var value = $(this).val().toLowerCase();

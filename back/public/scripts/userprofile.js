@@ -1,5 +1,8 @@
 $( document ).ready(function() {
     //checkForLogin()
+    if(localStorage.getItem("id") === null){
+        window.location.assign("/")
+      }
 
         $.ajax({
             method: 'GET',
@@ -10,7 +13,7 @@ $( document ).ready(function() {
                 workPhone: "209-505-8988",
                 organization: "Test"
             },
-            url: "http://localhost:3000/vcard" ,
+            url: "http://localhost:3002/vcard" ,
             success: cardSuccess,
             error: cardError
         })
@@ -77,7 +80,7 @@ function checkForLogin(){
         let hrid=response.hrID
         user = { email: response.email, hrid: response.hrID, _id: response._id }
         
-        let url="/userprofile/"+hrid
+        let url="userprofile/"+hrid
         $("#profileLink").attr("href",url)
         if(response.email.length > 0){
             let welcome = "Welcome, "+response.email

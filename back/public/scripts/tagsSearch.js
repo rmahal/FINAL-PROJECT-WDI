@@ -1,6 +1,6 @@
 $.ajax({
   method: "GET",
-  url: 'http://localhost:3000/allTags',
+  url: 'https://rmahal.com/projects/empdir/hr/allTags',
   success: function success(succ) {
       console.log('success')
       console.log(succ)

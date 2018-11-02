@@ -50,14 +50,14 @@ $( document ).ready(function() {
 
         $.ajax({
           method: "GET",
-          url: 'http://localhost:3001/search/employees/'+val,
+          url: 'https://rmahal.com/projects/empdir/hr/search/employees/'+val,
           success: function success(succ) {
               console.log('success')
               console.log(succ)
               if(succ.length > 0){
                 $(".results").empty()
               for(var i=0; i<succ.length;i++){
-                $(".results").append("<div class='profile-pic'><div class='profile-pic'><a href='../userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+", "+succ[i].CountryCode+"</p><p>"+succ[i].Email+"</p><p> +1 "+succ[i].Phone+"</p></div></a></div></div>")
+                $(".results").append("<div class='profile-pic'><div class='profile-pic'><a href='userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+", "+succ[i].CountryCode+"</p><p>"+succ[i].Email+"</p><p> +1 "+succ[i].Phone+"</p></div></a></div></div>")
               }
               }else{
                 $(".results").empty()

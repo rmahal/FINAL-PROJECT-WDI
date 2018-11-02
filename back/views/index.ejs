@@ -55,14 +55,14 @@
     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
     console.log(profile)
     //localStorage.setItem("token", profile)
-    localStorage.setItem("id", profile.getId())
+    window.localStorage.setItem("id", profile.getId())
     console.log('Name: ' + profile.getName())
-    localStorage.setItem("name", profile.getName())
+    window.localStorage.setItem("name", profile.getName())
     console.log('Image URL: ' + profile.getImageUrl())
-    localStorage.setItem("img", profile.getImageUrl())
+    window.localStorage.setItem("img", profile.getImageUrl())
     console.log('Email: ' + profile.getEmail()) // This is null if the 'email' scope is not present.
-    localStorage.setItem("email", profile.getEmail())
-    console.log("donce with items")
+    window.localStorage.setItem("email", profile.getEmail())
+    console.log("Done with items")
     console.log(localStorage.length)
   }
 </script>

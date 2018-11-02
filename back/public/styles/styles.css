@@ -1,10 +1,13 @@
 /* https://i.pinimg.com/originals/e3/5b/1f/e35b1fda28b11abff0395ae3d3b1e359.jpg */
 body{
     background-image: url("https://i.pinimg.com/originals/e3/5b/1f/e35b1fda28b11abff0395ae3d3b1e359.jpg");
+    /* Full height */
+    height: 100vh; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    /* height: 100%;
-    width: 100%; */
 }
 
 main{

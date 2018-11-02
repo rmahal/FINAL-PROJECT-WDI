@@ -65,7 +65,7 @@
         <div class="col-lg-12 text-left">
             <nav class="custom-breadcrumb" aria-label="breadcrumb">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Board of Directors </a></li>
+                <li class="breadcrumb-item"><a href="" class="inactiveLink">Board of Directors </a></li>
                     <% for(let i = userInfo.chainofcommand.length-1 ; i >= 0; i--) { %>
                         <li class="breadcrumb-item"><a href="<%= userInfo.chainofcommand[i]._id%>">
                                     <%= userInfo.chainofcommand[i].FirstName %> <%= userInfo.chainofcommand[i].LastName %>
@@ -137,31 +137,31 @@
                       <li class="media">
                         <img class="mr-3" src="../img/email.svg" alt="Generic placeholder image">
                         <div class="media-body">
-                          <h5 class="mt-0 mb-1"><%= userInfo.user[0].Email %></h5>
+                          <h5 class="mt-0 mb-1"><a href="mailto:<%= userInfo.user[0].Email %>"><%= userInfo.user[0].Email %></a></h5>
                         </div>
                       </li>
                     <li class="media">
                         <img class="mr-3" src="../img/phone.svg" alt="Generic placeholder image">
                         <div class="media-body">
-                          <h5 class="mt-0 mb-1">+1 <%= userInfo.user[0].Phone %></h5>
+                          <h5 class="mt-0 mb-1"><a href="tel:1<%= userInfo.user[0].Phone %>" >+1 <%= userInfo.user[0].Phone %></a></h5>
                         </div>
                       </li>
                     <li class="media">
                         <img class="mr-3" src="../img/mobile.svg" alt="Generic placeholder image">
                         <div class="media-body">
-                          <h5 class="mt-0 mb-1">+1 <%= userInfo.user[0].Phone %></h5>
+                          <h5 class="mt-0 mb-1"><a href="tel:1<%= userInfo.user[0].Phone %>" >+1 <%= userInfo.user[0].Phone %></a></h5>
                         </div>
                       </li>
                     </ul>
              </div>
-            
+             <% if(contactsInfo.length > 0){ %>
             <div class="card card2">
                 <h3>More Info</h3>
                 <% for(let i = 0 ; i < contactsInfo.length; i++) { %>
                 <p><strong><%= contactsInfo[i].Label %> :</strong> <%= contactsInfo[i].Value %></p>
                 <% } %>
              </div>
-            
+             <% } %>
             <div class="card card3">
                 <h3>Address</h3>
                 <p><%= userInfo.user[0].Street %>, <%= userInfo.user[0].City %>, <%= userInfo.user[0].State %> <%= userInfo.user[0].ZipCode %></p>
@@ -177,15 +177,16 @@
             
         </div>
         <div class="col-lg-9">
-            <div class="row profile-part-4">
-               <div class="col-lg-12">
+            <% if(userInfo.underlings.length > 0){ %>
+          <div class="row profile-part-4">
+            <div class="col-lg-12"> 
                    <h2 class="section-tittle">
                       Reports
                         <nav class="custom-breadcrumb" aria-label="breadcrumb">
                           <ol class="breadcrumb">
                             <li class="breadcrumb-item active"><a ><%= userInfo.chainofcommand.length %> Directs</a></li>
-                            <li class="breadcrumb-item active"><a ><%= userInfo.underlings.length %> Total </a></li>
-                              <li class="breadcrumb-item active" aria-current="page">Org Chart</li>
+                            <!-- <li class="breadcrumb-item active"><a ><%= userInfo.underlings.length %> Total </a></li>
+                              <li class="breadcrumb-item active" aria-current="page">Org Chart</li> -->
                           </ol>
                         </nav>
                    </h2>
@@ -207,7 +208,9 @@
                             </ul>
                             </div>
                         </div>
+                      <% } %>
                     </div>
+
                 </div>
             </div>
             <% if(userInfo.hrInfo.length>0){ %>
@@ -218,11 +221,11 @@
                    </h2>
                    <p class="additional-info"><span class="span1">HR Manager</span><span class="span2"><a href="<%= userInfo.hrInfo[0]._id %>"><%= userInfo.hrInfo[0].FirstName %> <%= userInfo.hrInfo[0].LastName %> </a> </span></p>
                 </div>
+                <% } %>
             </div>
-            <% } %>
-        </div>  
-      </div>
-    </div> 
+          </div>  
+        </div>
+      </div> 
       
       <footer class="footer">
           <div class="container-fluid">

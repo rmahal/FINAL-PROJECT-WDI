@@ -1,5 +1,10 @@
 body{
-    background-image: url("/img/homeback.png");
+    background-image: url("../img/homeback.png");
+    /* Full height */
+    height: 100vh; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }

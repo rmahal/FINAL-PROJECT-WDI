@@ -8,6 +8,11 @@ body {
 }
 
 
+.inactiveLink {
+    pointer-events: none;
+    cursor: default;
+ }
+
 .sidebar{
 position:absolute;
 right:0px;

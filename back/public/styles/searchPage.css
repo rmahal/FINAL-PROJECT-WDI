@@ -9,6 +9,14 @@ h1, p, a {
     text-align: center; 
 }
 
+.profile-pic {
+    background-color: #fff;
+    padding: 5px;
+    float: left;
+    margin-top: -110px;
+    box-shadow: 10px 5px 32px #00000045;
+}
+
 
 h2 {
     color: white;

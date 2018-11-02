@@ -28,8 +28,23 @@ $( document ).ready(function() {
       //   });
       // });
 
+      // let input = document.getElementById("myInput");
+      // input.addEventListener("keydown", (event) => {
+      //   event.preventDefault();
+      //   if (event.keyCode === 13) {
+      //     document.getElementById("search").click();
+      //   }
+      //   return ""
+      // })
 
-      $("#search").on("click", function(){
+      $("#myInput").keypress((e)=>{
+        if (e.keyCode === 13) {
+              e.preventDefault();
+              document.getElementById("search").click();
+            }
+      })
+
+      $("#search").on("click", ()=>{
         let val = $("#myInput").val()
         console.log(val)
 
@@ -42,11 +57,11 @@ $( document ).ready(function() {
               if(succ.length > 0){
                 $(".results").empty()
               for(var i=0; i<succ.length;i++){
-                $(".results").append("<div class='borderround'><div class='cardrow'><a href='../userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+", "+succ[i].CountryCode+"</p><p>"+succ[i].Email+"</p><p> +1 "+succ[i].Phone+"</p></div></a></div></div>")
+                $(".results").append("<div class='profile-pic'><div class='profile-pic'><a href='../userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+", "+succ[i].CountryCode+"</p><p>"+succ[i].Email+"</p><p> +1 "+succ[i].Phone+"</p></div></a></div></div>")
               }
               }else{
                 $(".results").empty()
-                $(".results").append("<div class='borderround'><div class='cardrow'><div class='container'><h4><p>No results found please try again</p></h4></div></div>")
+                $(".results").append("<div class='profile-pic'><div class='profile-pic'><div class='profile-pic'><h4><p>No results found please try again</p></h4></div></div>")
               }
           },
           error: function error(err){
@@ -65,7 +80,7 @@ $( document ).ready(function() {
     });
 
     
-  });
+});
   
    function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();

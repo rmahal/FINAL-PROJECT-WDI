@@ -102,7 +102,19 @@ res.sendFile(name);
 })
 
 app.get("/search", (req,res)=>{
-    res.render('search')
+    let search = {
+        value: ""
+    }
+
+    if(req.query.search !== undefined ){
+        console.log("I was hit query val")
+        search.value = req.query.search
+    }else{
+        console.log("I was hit, no query val")
+        search.value = ""
+    }
+    console.log(search)
+    res.render('search', search)
 })
 
 app.get("/org", (req,res)=>{

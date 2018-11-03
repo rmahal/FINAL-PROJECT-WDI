@@ -2,7 +2,7 @@ const mongoose = require('../db/connection')
 Schema = mongoose.Schema;
 
 const EmployeeSchema = new mongoose.Schema({
-    _id: Number,
+    _id: String,
     FirstName: String,
     LastName: String,
     Email: String,

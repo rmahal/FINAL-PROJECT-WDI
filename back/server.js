@@ -90,7 +90,7 @@ vCardret.organization = req.query.organization;
 res.set('Content-Type', 'text/vcard; name="profile.vcf"');
 res.set('Content-Disposition', 'inline; filename="profile.vcf"');
 
-let name = __dirname+"/vcf/"+req.query.firstName+"-"+req.query.lastName+".vcf"
+let name = __dirname+"/public/vcf/"+req.query.id+".vcf"
 console.log(name)
 console.log("Routing")
 vCardret.saveToFile(name);
@@ -117,7 +117,7 @@ app.post('/upload',multer(multerConfig).single('photo'),function(req,res){
 app.get('/userprofile/:id', (req, res) => {
     var id = req.params.id;
     console.log("ID: "+id)
-    var url = "http://localhost:3001/superLOOKUP/"+id
+    var url = "https://rmahal.com/projects/empdir/hr/superLOOKUP/"+id
     console.log("URL: "+url)
     let userMap
     fetch(url)
@@ -147,11 +147,11 @@ app.get('/userprofile/:id', (req, res) => {
                     }
                     console.log("\n\nUSER EXT: \n")
                     console.log(successUserext)
-                    db.Userext.find({}, (errallUEXT, succUserExt)=>{
-                        if(errallUEXT){
-                            res.status(404)
-                        }else{
-                            getImages(response.underlings).then(chain =>{
+                    // db.Userext.find({}, (errallUEXT, succUserExt)=>{
+                        // if(errallUEXT){
+                        //     res.status(404)
+                        // }else{
+                                getImages(response.underlings).then(chain =>{
                                 if(response.chainofcommand.length > 0){
                                 getManagerImages(response.chainofcommand[1]).then(managerChain =>{
                                     res.render('userprofile',{
@@ -175,8 +175,8 @@ app.get('/userprofile/:id', (req, res) => {
                                     })
                                 }
                             })
-                        }
-                    })
+                        //}
+                    //})
                 })
             })
         })

@@ -175,7 +175,7 @@
                     <button type="button" class="btn btn-info"><%= TagsInfo[i].tag.TagName %> </button>
                 <% } %>
              </div>
-            
+            <a href="../vcf/<%= userInfo.user[0]._id %>.vcf">v c f</a>
             
         </div>
         <div class="col-lg-9">
@@ -253,6 +253,12 @@
                  </div>
               </div>
           </div>
+          <span id="id" data-id="<%= userInfo.user[0]._id %>"></span>
+          <span id="firstName" data-id="<%= userInfo.user[0].FirstName %>"></span>
+          <span id="lastName" data-id="<%= userInfo.user[0].LastName %>"></span>
+          <span id="jobTitle" data-id="<%= userInfo.user[0].JobTitle %>"></span>
+          <span id="workPhone" data-id="<%= userInfo.user[0].Phone %>"></span>
+          <span id="organization" data-id="<%= userInfo.user[0].Org %>"></span>
       </footer>
       <script>
           function signout() {

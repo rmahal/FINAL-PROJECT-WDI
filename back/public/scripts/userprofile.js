@@ -5,7 +5,7 @@ $( document ).ready(function() {
     let zone = $("#timeZone").attr("data-id")
     $.ajax({
         method: 'GET',
-        url: "    http://api.timezonedb.com/v2.1/get-time-zone?key=LF4OCMBPWOOA&format=json&by=zone&zone="+zone ,
+        url: "    https://api.timezonedb.com/v2.1/get-time-zone?key=LF4OCMBPWOOA&format=json&by=zone&zone="+zone ,
         success: apiSuccess,
         error: apiError
     })
@@ -40,15 +40,23 @@ $( document ).ready(function() {
         window.location.assign("/")
       }
 
+      let id = $("#id").attr("data-id")
+      let firstName = $("#firstName").attr("data-id")
+      let lastName = $("#lastName").attr("data-id")
+      let jobTitle = $("#jobTitle").attr("data-id")
+      let workPhone = $("#workPhone").attr("data-id")
+      let organization = $("#organization").attr("data-id")
+
+
         $.ajax({
             method: 'GET',
             data: {
-                id: "1234",
-                firstName: "Raj",
-                lastName: "Mahal",
-                jobTitle: "Software Developer",
-                workPhone: "209-505-8988",
-                organization: "Test"
+                id: id,
+                firstName: firstName,
+                lastName: lastName,
+                jobTitle: jobTitle,
+                workPhone: workPhone,
+                organization: organization
             },
             url: "http://localhost:3002/vcard" ,
             success: cardSuccess,

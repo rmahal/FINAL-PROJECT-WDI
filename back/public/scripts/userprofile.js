@@ -1,4 +1,40 @@
 $( document ).ready(function() {
+
+    console.log("Val")
+    console.log($("#timeZone").attr("data-id"))
+    let zone = $("#timeZone").attr("data-id")
+    $.ajax({
+        method: 'GET',
+        url: "    http://api.timezonedb.com/v2.1/get-time-zone?key=LF4OCMBPWOOA&format=json&by=zone&zone="+zone ,
+        success: apiSuccess,
+        error: apiError
+    })
+
+    function getDayOfWeek(date) {
+        var dayOfWeek = new Date(date).getDay();
+        if(dayOfWeek === 6){
+            dayOfWeek = 0
+        }else{
+            dayOfWeek += 1
+        }    
+        return isNaN(dayOfWeek) ? null : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
+      }
+    
+    function apiSuccess(response){
+        console.log(response)
+        let time = response.formatted.slice(11, (response.formatted.length-3))
+        console.log(response.formatted.slice(0,10));
+        let format = getDayOfWeek(response.formatted.slice(0,10))+" "+time
+        $("#timeZone").text(format)
+        //window.location = '/vcard'
+    }
+    function apiError(error){
+        console.log(error)
+    }
+
+
+
+
     //checkForLogin()
     if(localStorage.getItem("id") === null){
         window.location.assign("/")

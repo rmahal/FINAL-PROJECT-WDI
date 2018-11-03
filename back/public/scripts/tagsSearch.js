@@ -60,10 +60,10 @@ $( document ).ready(function() {
 
 
   
-      $('#logout').on('click', e=>{
-        e.preventDefault();
-        localStorage.clear();;
-    });
+    //   $('#logout').on('click', e=>{
+    //     e.preventDefault();
+    //     localStorage.clear();;
+    // });
 
     
   });

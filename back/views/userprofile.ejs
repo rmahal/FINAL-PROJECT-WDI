@@ -94,7 +94,7 @@
                     <div class="designation"><%= userInfo.user[0].JobTitle %>, <%= userInfo.user[0].Org %></div>
                     <div class="more-deatils">
                        <span class="flag"><img src="../img/united-states.svg"></span> 
-                       <span class="time"><%= userInfo.user[0].State %>, <%= userInfo.user[0].CountryCode %> <%= userInfo.user[0].TimeZone %></span>  
+                       <span class="time"><%= userInfo.user[0].State %>, <%= userInfo.user[0].CountryCode %>,  <span id="timeZone" data-id="<%= userInfo.user[0].TimeZone %>"></span></span>  
                      </div>
                 </div>
             </div>

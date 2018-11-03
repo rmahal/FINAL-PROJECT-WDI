@@ -18,6 +18,7 @@ const EmployeeSchema = new mongoose.Schema({
         type: String,
         maxlength: 2
     },
+    TimeZone: String,
     JobTitle: String,
     Org: String,
     manager: {type: Schema.Types.Number, ref: "Employee"},

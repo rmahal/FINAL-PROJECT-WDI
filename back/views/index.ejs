@@ -25,8 +25,8 @@
     <main>
     <div class="centerBox">
             <div class="jumbotron" id="jumb">
-              <h1 class="display-4 center">Welcome to ACME!</h1>
-              <p class="lead">This is a basic employee portal that, once signed in, connects to another backend api and allows employees to find more information on how to contact each other.</p>
+              <h1 class="display-4 center">ACME Employee Directory!</h1>
+              <p class="lead">This is a basic employee portal and allows employees to find more information on how to contact each other.</p>
               <hr class="my-4">
               <div class="flexin">
                 <div class="center">
@@ -38,13 +38,12 @@
                 <!-- <a href="#" onclick="signOut();">Sign out</a> -->
               <!--  <a class="btn btn-primary btn-lg" href="login" role="button">Login</a> -->
                 </div>
-                <div class="center">
+                <!-- <div class="center">
                 <p>Or you can skip to the search page here!</p>
                 
            
               <a class="btn btn-primary btn-lg" href="search" role="button">Search Page</a>
-            </div>
-
+            </div> -->
               </div>
             </div>
         </div>
@@ -64,6 +63,7 @@
     window.localStorage.setItem("email", profile.getEmail())
     console.log("Done with items")
     console.log(localStorage.length)
+    window.location.assign("search")
   }
 </script>
 <!-- <script>

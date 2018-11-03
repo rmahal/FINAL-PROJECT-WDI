@@ -1,6 +1,6 @@
 $.ajax({
   method: "GET",
-  url: 'https://rmahal.com/projects/empdir/hr/allTags',
+  url: 'https://rmahal.com/projects/empdir/back/allTags',
   success: function success(succ) {
       console.log('success')
       console.log(succ)
@@ -15,7 +15,7 @@ $.ajax({
 
 $( document ).ready(function() {
 
-    checkForLogin();
+    //checkForLogin();
 
     console.log("Document ready");
     if(localStorage.getItem("id") === null){

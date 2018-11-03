@@ -66,9 +66,10 @@ app.get("/superLOOKUP/:id", (req, res) => {
                 if(err){
                     res.status(401);
                 }else{
+                    console.log(userFound)
                     superFound.underlings = succ
                     console.log("User Found HR: ")
-                    console.log(superFound.user.HRrep)
+                    console.log(userFound.HRrep)
                     db.Employee.find({_id: superFound.user[0].HRrep}, (err,hrFound)=>{
                         if(err){
                             res.status(401);

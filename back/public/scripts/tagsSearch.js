@@ -1,12 +1,13 @@
 $.ajax({
   method: "GET",
-  url: 'https://rmahal.com/projects/empdir/back/allTags',
+  url: 'http://localhost:3002/allTags',
   success: function success(succ) {
-      console.log('success')
-      console.log(succ)
-      for(var i=0; i<succ.length;i++){
-        $(".results").append("<div class='borderround'><div class='cardrow'><a href='tags/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].TagName+" </p></div></a></div></div>")
-      }
+    console.log('success')
+    console.log(succ)
+    for(var i=0; i<succ.length;i++){
+      console.log("appending")
+      $("table tbody").append("<tr><th scope='row'>"+i+"</th><td>-</td><td><a href= 'tags/'"+succ[i].tag[0]._id>+">"+succ[i].tag[0].TagName+" </a></td><td>-</td><td># "+succ[i].count+"</td></tr>") 
+    }
   },
   error: function error(err){
     console.log(err)
@@ -24,57 +25,13 @@ $( document ).ready(function() {
 
       $("#myInput").on("keyup", function() {
         var value = $(this).val().toLowerCase();
-        $(".results div").filter(function() {
+        $(".list-unstyled li").filter(function() {
           $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
       });
-
-
-    //   $("#search").on("click", function(){
-    //     let val = $("#myInput").val()
-    //     console.log(val)
-
-    //     $.ajax({
-    //       method: "GET",
-    //       url: 'http://localhost:3001/search/employees/'+val,
-    //       success: function success(succ) {
-    //           console.log('success')
-    //           console.log(succ)
-    //           if(succ.length > 0){
-    //             $(".results").empty()
-    //           for(var i=0; i<succ.length;i++){
-    //             $(".results").append("<div class='borderround'><div class='cardrow'><a href='userprofile/"+succ[i]._id+"'><div class='container'><h4><b>"+succ[i].FirstName+" "+succ[i].LastName+"</b></h4><p>"+succ[i].JobTitle+" of "+succ[i].Org+"</p></div></a></div></div>")
-    //           }
-    //           }else{
-    //             $(".results").empty()
-    //             $(".results").append("<div class='borderround'><div class='cardrow'><div class='container'><h4><p>No results found please try again</p></h4></div></div>")
-    //           }
-    //       },
-    //       error: function error(err){
-    //         console.log(err)
-    //       }
-    //     })
-        
-      //})
-  
-
-
-  
-    //   $('#logout').on('click', e=>{
-    //     e.preventDefault();
-    //     localStorage.clear();;
-    // });
-
     
   });
-  
-   function onSignIn(googleUser) {
-    var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-  } 
+
 
 function checkForLogin(){
   if(localStorage.length > 0){

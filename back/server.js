@@ -101,20 +101,35 @@ res.sendFile(name);
 
 })
 
-app.get("/search", (req,res)=>{
-    let search = {
-        value: ""
-    }
+app.post("/getImages", (req, res) =>{
+    console.log(req.body.employees)
+    getImages(req.body.employees).then(empResults =>{
+        res.json({
+            userInfo: empResults,
+        })
+    }).catch((error) => {
+        console.log(error);
+        res.status(404)
+    })
 
-    if(req.query.search !== undefined ){
+    res.status(200)
+})
+
+
+app.get("/search", (req,res)=>{
+    //console.log("SEARCH REQ:")
+    //console.log(req)
+    let value= ""
+
+    if(req.query.search !== undefined || req.query.search !== "" ){
         console.log("I was hit query val")
-        search.value = req.query.search
+        value = req.query.search
     }else{
         console.log("I was hit, no query val")
-        search.value = ""
+        value = ""
     }
-    console.log(search)
-    res.render('search', search)
+    console.log(value)
+    res.render('search', {search: value})
 })
 
 app.get("/org", (req,res)=>{
@@ -125,6 +140,24 @@ app.post('/upload',multer(multerConfig).single('photo'),function(req,res){
     //console.log(req.params.data)
     res.send('Complete!');
 })
+
+
+
+app.get('/tagProfile/:id', (req, res) => {
+    var id = req.params.id;
+    
+    console.log("ID: "+id)
+    fetch('http://localhost:3001/getEmployees', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({a: 1, b: 'Textual content'})
+    })
+    
+})
+
 
 app.get('/userprofile/:id', (req, res) => {
     var id = req.params.id;
@@ -143,13 +176,13 @@ app.get('/userprofile/:id', (req, res) => {
                 res.status(404)
             }
             //console.log(successContacts)
-            db.Userext.find({hrUID: id}, (errTwo, successUserext)=>{
+            db.Userext.find({hrUID: parseInt(id)}, (errTwo, successUserext)=>{
                 if(errTwo){
                     console.log(errTwo)
                     res.status(404)
                 }
                 
-                db.Tagjoin.find({user: id})
+                db.Tagjoin.find({user: parseInt(id)})
                     .populate('tag')
                     .exec( (errThree, successTags) => {
                     if(errThree){
@@ -157,12 +190,26 @@ app.get('/userprofile/:id', (req, res) => {
                         res.status(404)
                     
                     }
+                    console.log("TAGS:")
+                    let tagIds = successTags.map(tagId =>{
+                        return tagId.tag
+                    })
+                    console.log("TAG ID: ")
+                    console.log(tagIds)
+
+                    console.log("SUCCESS TAG")
+                    console.log(successTags)
+                    let allTags = getTag(tagIds)
+                    //console.log(getTag(tagIds))
+
                     console.log("\n\nUSER EXT: \n")
                     console.log(successUserext)
                     // db.Userext.find({}, (errallUEXT, succUserExt)=>{
                         // if(errallUEXT){
                         //     res.status(404)
                         // }else{
+                            console.log("ALL TAGS")
+                            console.log(allTags)
                                 getImages(response.underlings).then(chain =>{
                                 if(response.chainofcommand.length > 0){
                                 getManagerImages(response.chainofcommand[1]).then(managerChain =>{
@@ -240,15 +287,78 @@ app.get('/tagSearch' , (req, res) => {
 })
 
 app.get('/allTags', (req, res) => {
-    db.Tag.find({}, (err, succTags)=>{
-        if(err){
-            console.log(err)
+
+    db.Tagjoin.aggregate([{"$group" : {_id:"$tag", count:{$sum:1}}},{$sort:{"count":-1}}], (err, result) => {
+        if (err) {
             res.status(400)
-        }else{
-            res.json(succTags)
+        } else {
+            //console.log( result )
+            getTagInfo(result).then(finished=>{
+                res.json(finished)
+            })
+            console.log("test")
+            //console.log(ids)
+            console.log("done ids")
+            //res.json(result)
+
         }
     })
 })
+
+async function getTag(result) {
+    console.log(result[0])
+    let tag = []
+    let foundTag
+
+    for(let i=0; i<result.length; i++){
+
+        foundTag = await db.Tag.find( { _id : result[i] }, (err, succTag)=>{
+            if (err) {
+                console.log(err)
+            } else {
+                return succTag
+            }  
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+
+        tag.push({tag: foundTag})
+
+    }
+    console.log("sending off data")
+    console.log(tag)
+    return tag
+}
+
+
+
+async function getTagInfo(result) {
+    console.log(result[0].count)
+    let tag = []
+    let foundTag
+
+    for(let i=0; i<result.length; i++){
+
+        foundTag = await db.Tag.find( { _id : result[i] }, (err, succTag)=>{
+            if (err) {
+                console.log(err)
+            } else {
+                return succTag
+            }  
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+
+        tag.push({tag: foundTag, count: result[i].count})
+
+    }
+    console.log("sending off data")
+    console.log(tag)
+    return tag
+}
+
 
 app.get('/tags/:id', (req, res) =>{
 
@@ -259,6 +369,8 @@ app.get('/tags/:id', (req, res) =>{
                         console.log(errTwo)
                         res.status(404)
                     }else{
+                        console.log("in exec")
+                        console.log(successTags)
                         res.json(successTags)
                     }
                 })
@@ -470,19 +582,19 @@ async function getImages(arr) {
     let userExtReportee
     let id
     let photo
-    //console.log("ARR: ")
-    //console.log(arr)
+    console.log("ARR: ")
+    console.log(arr)
 
-    if(arr.length > 0 ){
+    if(arr.length > 0 && arr !== undefined ){
         //console.log("before loop")
     for(let i =0; i < arr.length; i++){
         //console.log("loop start")
-        //console.log("Iteration: "+i)
-        //console.log(arr[i]._id)
+        console.log("Iteration: "+i)
+        console.log(arr[i]._id)
         id = parseInt(arr[i]._id)
         console.log("ID IN IMAGES: ")
-        console.log(parseInt(id))
-        userExtReportee = await db.Userext.findOne({'hrUID': id}, (err, succ)=>{
+        console.log(id)
+        userExtReportee = await db.Userext.findOne({hrUID: parseInt(id)}, (err, succ)=>{
             if(err){
                 console.log("Error was hit userext reportees: ")
                 console.log(err)
@@ -493,6 +605,24 @@ async function getImages(arr) {
                 return succ
             }
         })
+        // db.Userext.findOne({'hrUID': id})
+        //     .then( value => {
+        //         console.log("userext then hit")
+        //         console.log(value)
+
+        //         id = value._id
+        //         photo = value.PhotoURL
+        //         smallArr = [id, photo]
+        //         userimages.push(smallArr)
+        //         return "value"
+        //           // here I choose if I want to resolve or reject.
+        //     })
+        //     .catch(function(err) {
+        //         console.log("userext catch hit")
+        //         return Promise.reject(["rejected", err])
+        //     })
+
+
         // .then(function(value) {
         //     console.log("userext then hit")
         //     console.log(value)
@@ -540,11 +670,13 @@ async function getManagerImages(manager) {
     let user
     let id
     let photo
-    //console.log("Response")
-    //console.log(manager)
-    if(manager !== undefined){
+
+    console.log("Response")
+    console.log(manager)
+    if(manager){
         console.log("If hit")
-        user = await db.Userext.findOne({_id: manager._id}, (err, succ)=>{
+        id = parseInt(manager._id)
+        user = await db.Userext.findOne({hrUID: parseInt(id)}, (err, succ)=>{
             if(err){
                 console.log("Error was hit userext manager: ")
                 console.log(err)
@@ -554,15 +686,18 @@ async function getManagerImages(manager) {
                 console.log(succ)
                 return succ
             }
+        }).then(finish =>{
+
+            console.log("user hit")
+            console.log(finish)
+            id = finish._id
+            photo = finish.PhotoURL
+            smallArr = [id, photo]
+
         })
-        console.log("user hit")
-        //console.log(user)
-        id = user._id
-        photo = user.PhotoURL
-        smallArr = [id, photo]
- 
         return smallArr
     }else{
+        console.log("skipped cause null")
         return smallArr
     }
 }

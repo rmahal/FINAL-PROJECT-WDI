@@ -1,3 +1,11 @@
+if(localStorage.getItem("name") === null){
+    window.location.assign("/")
+  }else{
+    $("#fullname").text(localStorage.getItem("name"))
+    let googleimg = localStorage.getItem("img")
+    $(".googleImg").attr("src", googleimg)
+}
+
 $( document ).ready(function() {
 
     console.log("Val")
@@ -70,6 +78,22 @@ $( document ).ready(function() {
         function cardError(error){
             console.log(error)
         }
+
+
+
+    $("#searchBar").keypress((e)=>{
+        if (e.keyCode === 13) {
+                e.preventDefault();
+                document.getElementById("searchButton").click();
+            }
+        })
+
+        $("#searchButton").on("click", ()=>{
+        let val = $("#searchBar").val()
+        console.log(val)
+        window.location.assign("../search?search="+val)
+    })
+
 
 
 

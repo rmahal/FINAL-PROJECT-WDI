@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-mongoose.connect( process.env.MONGODB_URI || "mongodb://localhost/Projec-HR", {useNewUrlParser: true});
+mongoose.connect( process.env.MONGODB_URI || "mongodb://localhost/project-hr", {useNewUrlParser: true});
 
 //require and export models
 module.exports.Contact = require('./contacts')

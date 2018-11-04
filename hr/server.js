@@ -172,6 +172,36 @@ app.get("/test/:id", (req, res) =>{
 })
 
 
+app.post("/getEmployees", (req, res)=>{
+    console.log(req.body)
+    res.json({yay:"yay"})
+})
+
+async function getTagEmployees(emps) {
+    let employees = []
+    let foundTag
+
+    for(let i=0; i<emps.length; i++){
+
+        foundEmp = await db.Employee.find( { _id : emps[i] }, (err, succEmp)=>{
+            if (err) {
+                console.log(err)
+            } else {
+                return succEmp
+            }  
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+
+        employees.push(foundEmp)
+
+    }
+    console.log("sending off data")
+
+    return employees
+}
+
 
 
 //Asynchronous function that goes through managers untill it reaches the CEO to give you the list of managers above you

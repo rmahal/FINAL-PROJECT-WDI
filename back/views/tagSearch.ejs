@@ -5,25 +5,29 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Project_HR</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta name="google-signin-client_id" content="792828454552-med48hcu42djec9q4c376du88id6hc72.apps.googleusercontent.com">
         <!-- Bootstrap core CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
         <!-- My CSS -->
-        <link rel="stylesheet" type="text/css" media="screen" href="../styles/styles.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="styles/search.css" />
         <!-- JQuery CDN -->
         <script
         src="https://code.jquery.com/jquery-3.3.1.js"
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-        crossorigin="anonymous" defer></script>
+        crossorigin="anonymous"></script>
         <!-- Popper CDN -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous" defer></script>
         <!-- BootStrap CDN -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous" defer></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <!-- <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script> -->
+        <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
         <!-- My JS-->
-        <script src="../scripts/tagsSearch.js" defer></script>
+        <script src="scripts/tagsSearch.js" defer></script>
     </head>
     <body>
-        <header>
+        <!-- <header>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                         <a class="navbar-brand" href="/">Project_HR</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,30 +52,150 @@
                           </ul>
                         </div>
                       </nav>
-        </header>
-            <h2 class="title">Search for tags here:</h2>
-            <br>
-            <div style="text-align: center;">
-              <form>
-                <input class="form-control" id="myInput" type="text" placeholder="Search..">
-                <input class="btn btn-info" type="button" id="search" value="Submit Button">
-              </form>
-              <a href="search">Search Page</a>
-              </div>
-            <br>
+        </header> -->
+            <h2 class="title" style="text-align:center;">Search for tags here</h2>
 
-            <br>
-            <div class="results">
+            <body>
 
-            </div>
-            <div>
-              <p hidden>hi</p>
-            </div>
-        </main>
-        <footer class="page-footer font-small bg-light">
-          <div class="footer-copyright text-center py-3">© 2018 Copyright:
-            <a href="/">PROJECT_HR, Raj Mahal</a>
-          </div>
+                <!-- Navigation -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+                   
+              <a class="navbar-brand" href="#"><img alt="logo" src="img/logo.jpg"></a>
+                     
+             <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                 
+                 
+                  <ul class="navbar-nav">  
+                    <!-- <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-bell alet-icon"></i> Notifications</a>
+                  </li> -->
+                  <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <img class="avtar" src="img/avatar.png">Tom Hard
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Dashboard</a>
+                                    <a class="dropdown-item" onclick="logout()">Logout</a>
+                                </div>
+                            </li>
+                  
+                    </ul>
+                    </div>  
+                      
+                
+            </nav>
+            
+                <!-- Page Content -->
+                  
+            <section class="search_bar">
+               <div class="container">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <form class="search-form">
+                           <div class="input-group">
+                          <input type="text" id="myInput" class="form-control" placeholder="Type a tag like 'director'..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                          <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" id="search" type="button"><i class="fas fa-search"></i></button>
+                          </div>
+                        </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>   
+                </section>    
+                <a href="search" style="margin-left: 4em;">Employee Search</a>
+                <table class="table" id="tab">
+                    <thead>
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col">Tags</th>
+                        <th scope="col"></th>
+                        <th scope="col">Employees</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                    </table>
+                <div class="container result-listing">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="result_count">
+                          <!-- <p>About 19,10,00,000 results (0.70 seconds)</p> -->
+                        </div>
+
+
+                        <ul class="list-unstyled">
+
+
+                        </ul>
+                    </div>
+                  </div>
+             </div>  
+                  
+                           <!-- <ul class="pagination pagination-md justify-content-center">
+              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul> -->
+                 
+                  
+                  <footer class="footer">
+                      <div class="container-fluid">
+                         <div class="row">
+                             <div class="col-lg-4 text-left copyright">
+                             <ul class="list-inline">
+              <li class="list-inline-item">© 2018. ACME</li>
+            </ul>
+                             
+                             </div>
+                             <!-- <div class="col-lg-4 text-center socialmedia">
+                                <ul class="list-inline">
+              <li class="list-inline-item"><a href="#"><img src="img/Facebook.svg"></a></li>
+              <li class="list-inline-item"><a href="#"><img src="img/Instagram.svg"></a></li>
+              <li class="list-inline-item"><a href="#"><img src="img/Twitter.svg"></a></li>
+            </ul>
+                             </div> -->
+                             <div class="col-lg-4 text-right otherlinks">
+                             <ul class="list-inline">
+              <!-- <li class="list-inline-item">Privacy Policy</li>
+              <li class="list-inline-item">Terms of Use</li> -->
+            </ul>
+                             </div>
+                          </div>
+                      </div>
         </footer>
+            <script>
+                function signout() {
+                  if(gapi.auth2){
+                    console.log("we now gapi")
+                    var auth2 = gapi.auth2.getAuthInstance();
+                    auth2.signOut().then(function () {
+                      console.log('User signed out.');
+                      localStorage.clear();
+                      window.location.assign("../");
+
+                    });
+                    window.location.assign("../");
+                  }
+                }
+
+                function onLoad() {
+                  gapi.load('auth2', function() {
+                    gapi.auth2.init();
+                  });
+                }
+              </script>
+        <script>
+          function logout() {
+            //localStorage.clear();
+            signout()
+            //window.location.assign("/");
+          }
+          </script>
     </body>
 </html>

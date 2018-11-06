@@ -59,12 +59,12 @@ $( document ).ready(function() {
 
         $.ajax({
           method: "GET",
-          url: 'http://localhost:3001/search/employees/'+val,
+          url: 'https://rmahal.com/projects/empdir/hr/search/employees/'+val,
           success: function success(succ) {
             //console.log(succ)
             $.ajax({
               method: "POST",
-              url: 'http://localhost:3002/getImages',
+              url: 'https://rmahal.com/projects/empdir/back/getImages',
               data: {
                 employees: succ
               }

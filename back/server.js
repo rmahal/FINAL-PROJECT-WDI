@@ -162,6 +162,7 @@ app.get('/tagProfile/:id', (req, res) => {
 app.get('/userprofile/:id', (req, res) => {
     var id = req.params.id;
     console.log("ID: "+id)
+    //https://rmahal.com/projects/empdir/hr/superLOOKUP/
     var url = "https://rmahal.com/projects/empdir/hr/superLOOKUP/"+id
     console.log("URL: "+url)
     let userMap
@@ -230,7 +231,7 @@ app.get('/userprofile/:id', (req, res) => {
                                         UserextInfo: successUserext,
                                         TagsInfo: successTags,
                                         allImages: chain,
-                                        managerImage: [101,"http://www.whur.com/wp-content/uploads/2014/10/African-American-Female-Executive.jpg"]
+                                        managerImage: [101,""]
                                     })
                                 }
                             })
@@ -405,13 +406,11 @@ app.post('/signup', (req,res)=>{
     console.log("email: "+req.body.email)
     var emailres = req.body.email;
     var password = req.body.password;
-
     fetch('http://localhost:3001/employee/email/'+emailres)
     .then(response => response.json())
     .then(response => {
     console.log("RESPONSE:")
     console.log(response)
-
     if(response === null){
         console.log("if was hit")
         return res.status(401).json({message: 'Username already used please try again'})
@@ -468,15 +467,12 @@ app.post('/signup', (req,res)=>{
         }
     })
 });
-
-
 app.post('/login', (req, res) => {
     console.log("LOGIN CALLED");
     var emailres = req.body.email;
     var password = req.body.password;
     console.log("emailres: "+emailres);
     console.log("Password: "+password);
-
     // FINDS THE USER IN THE DATABASE
     db.User.find({email: emailres}, (err, users) => {
         if(err){

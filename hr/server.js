@@ -57,30 +57,56 @@ app.get("/superLOOKUP/:id", (req, res) => {
         managerInfo: []
     }
     let id = req.params.id
-    db.Employee.find({_id: id}, (err, userFound) => {
+    db.Employee.find({_id: parseInt(id)}, (err, userFound) => {
         if(err){
             res.status(401);
         }else{
+            console.log(userFound)
+            if(userFound[0]._id === 101){
+                console.log("USER FOUND")
+                console.log(userFound)
+                userFound[0].manager = null
+                console.log("After adding null")
+                console.log(userFound)
+            }
             superFound.user = userFound
-            db.Employee.find({manager: id}, (err,succ)=>{
+            db.Employee.find({manager: parseInt(id)}, (err,succ)=>{
                 if(err){
                     res.status(401);
                 }else{
-                    console.log(userFound)
+                    //console.log(userFound)
                     superFound.underlings = succ
-                    console.log("User Found HR: ")
-                    console.log(userFound.HRrep)
-                    db.Employee.find({_id: superFound.user[0].HRrep}, (err,hrFound)=>{
+                    //console.log("User Found HR: ")
+                    let hrToLookup = userFound[0].HRrep;
+                    if(userFound[0].HRrep === undefined || userFound[0]._id === 101){
+
+                        //console.log(userFound.HRrep)
+                        hrToLookup = 115
+                        //console.log(hrToLookup)
+                        //_id: superFound.user[0].HRrep
+                    }
+                    db.Employee.find({_id: parseInt(hrToLookup)}, (err,hrFound)=>{
                         if(err){
                             res.status(401);
                         }else{
+                            //console.log(hrFound)
                             superFound.hrInfo = hrFound
-                            db.Employee.find({_id: superFound.user[0].manager}, (err,managerFound)=>{
+                            //console.log(userFound)
+                            console.log("MANAGER FOUND")
+                            if(superFound.user[0].manager === null){
+                                getOneStepUp(parseInt(id)).then(chain =>{
+                                    superFound.chainofcommand = chain
+                                    console.log("IM FINISHED HERE IS THE SUPER FOUND:")
+                                    console.log(superFound)
+                                    res.json(superFound)
+                                })
+                            }else{
+                            db.Employee.find({_id: parseInt(superFound.user[0].manager)}, (err,managerFound)=>{
                                 if(err){
                                     res.status(401);
                                 }else{
                                 superFound.managerInfo = managerFound
-                                getOneStepUp(id).then(chain =>{
+                                getOneStepUp(parseInt(id)).then(chain =>{
                                     superFound.chainofcommand = chain
                                     console.log("IM FINISHED HERE IS THE SUPER FOUND:")
                                     console.log(superFound)
@@ -88,6 +114,7 @@ app.get("/superLOOKUP/:id", (req, res) => {
                                 })
                                 }
                             })
+                            }
                         }
                     })
                 }
@@ -151,7 +178,7 @@ app.get("/search/employees/:search", (req,res)=>{
 app.get("/findUnderlings/:id", (req,res)=>{
     let id = req.params.id
     console.log("ID: "+id)
-    db.Employee.find({manager: id}, (err,succ)=>{
+    db.Employee.find({manager: parseInt(id)}, (err,succ)=>{
         if(err){
             res.status(404)
         }
@@ -165,7 +192,7 @@ app.get("/test/:id", (req, res) =>{
     let id = req.params.id
 
     let userChain
-    getOneStepUp(id).then(user =>{
+    getOneStepUp(parseInt(id)).then(user =>{
         console.log("IM FINISHED")
         res.json(user)
     })
@@ -181,9 +208,9 @@ async function getTagEmployees(emps) {
     let employees = []
     let foundTag
 
-    for(let i=0; i<emps.length; i++){
+    for(let i=0; i < emps.length; i++){
 
-        foundEmp = await db.Employee.find( { _id : emps[i] }, (err, succEmp)=>{
+        foundEmp = await db.Employee.find( { _id : parseInt(emps[i]) }, (err, succEmp)=>{
             if (err) {
                 console.log(err)
             } else {
@@ -210,9 +237,12 @@ async function getOneStepUp(id) {
     let listOfCommand = [];
     let inLoop = true
     let user
-    
+    if(id === null || id === undefined){
+        console.log("input was null / undefined getOneStepUp")
+        return listOfCommand
+    }else{
     while(inLoop){
-        user = await db.Employee.findOne({_id: id});
+        user = await db.Employee.findOne({_id: parseInt(id)});
         listOfCommand.push(user)
         if(user.manager === null || user.manager === undefined){
             inLoop = false
@@ -221,6 +251,7 @@ async function getOneStepUp(id) {
         }
     }
     return listOfCommand;
+    }
 }
 
 

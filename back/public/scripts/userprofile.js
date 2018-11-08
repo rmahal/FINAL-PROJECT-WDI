@@ -30,7 +30,11 @@ $( document ).ready(function() {
     
     function apiSuccess(response){
         console.log(response)
-        let time = response.formatted.slice(11, (response.formatted.length-3))
+        console.log("first 2")
+        let front = response.formatted.slice(11,13)
+        console.log(front)
+        let time = (front % 12 )+response.formatted.slice(13, (response.formatted.length-3))+" "+((front >= 12)? 'pm' : 'am')
+        console.log("Testing"+ time)
         console.log(response.formatted.slice(0,10));
         let format = getDayOfWeek(response.formatted.slice(0,10))+" "+time
         $("#timeZone").text(format)

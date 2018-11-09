@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="google-signin-client_id" content="792828454552-med48hcu42djec9q4c376du88id6hc72.apps.googleusercontent.com">
-    <title>UserProfile</title>
+    <title><%= userInfo.chainofcommand[0].FirstName %> <%= userInfo.chainofcommand[0].LastName %> Profile</title>
     <!-- Bootstrap core CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
@@ -136,19 +136,19 @@
                 <h3>Contact</h3>
                 <ul class="list-unstyled">
                       <li class="media">
-                        <img class="mr-3" src="../img/email.svg" alt="Generic placeholder image">
+                          <a href="mailto:<%= userInfo.user[0].Email %>"><img class="mr-3" src="../img/email.svg" alt="Generic placeholder image"></a>
                         <div class="media-body">
                           <h5 class="mt-0 mb-1"><a href="mailto:<%= userInfo.user[0].Email %>"><%= userInfo.user[0].Email %></a></h5>
                         </div>
                       </li>
                     <li class="media">
-                        <img class="mr-3" src="../img/phone.svg" alt="Generic placeholder image">
+                        <a href="tel:1<%= userInfo.user[0].Phone %>"><img class="mr-3" src="../img/phone.svg" alt="Generic placeholder image"></a>
                         <div class="media-body">
                           <h5 class="mt-0 mb-1"><a href="tel:1<%= userInfo.user[0].Phone %>" >+1 <%= userInfo.user[0].Phone %></a></h5>
                         </div>
                       </li>
                     <li class="media">
-                        <img class="mr-3" src="../img/mobile.svg" alt="Generic placeholder image">
+                      <a href="tel:1<%= userInfo.user[0].Phone %>"><img class="mr-3" src="../img/mobile.svg" alt="Generic placeholder image"></a>
                         <div class="media-body">
                           <h5 class="mt-0 mb-1"><a href="tel:1<%= userInfo.user[0].Phone %>" >+1 <%= userInfo.user[0].Phone %></a></h5>
                         </div>
@@ -179,7 +179,7 @@
              <% } %>
              <br>
              <div class="card card4" style="text-align:center;">
-               <p>Download VCF</p>
+               <p>Download Contact</p>
               <a href="../vcf/<%= userInfo.user[0]._id %>.vcf"><img src="../img/vcf.svg" height="40" width="40" /></a>
             </div>
             
@@ -267,18 +267,29 @@
           <span id="organization" data-id="<%= userInfo.user[0].Org %>"></span>
       </footer>
       <script>
-          function signout() {
-            if(gapi.auth2){
-              console.log("we now gapi")
-              var auth2 = gapi.auth2.getAuthInstance();
-              auth2.signOut().then(function () {
-                console.log('User signed out.');
+            function signout() {
+              var auth2 = gapi.auth2.getAuthInstance();
+              auth2.signOut().then(function () {
+                console.log('User signed out.');
                 localStorage.clear();
                 window.location.assign("../");
+              });
+              console.log("after signout was hit")
+            }
 
-              });
-            }
-          }
+//
+//           function signout() {
+//             if(gapi.auth2){
+//               console.log("we now gapi")
+//               var auth2 = gapi.auth2.getAuthInstance();
+//               auth2.signOut().then(function () {
+//                 console.log('User signed out.');
+//                 localStorage.clear();
+//                 window.location.assign("../");
+
+//               });
+//             }
+//           } 
 
           function onLoad() {
             gapi.load('auth2', function() {

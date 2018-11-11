@@ -4,10 +4,15 @@ $.ajax({
   success: function success(succ) {
     console.log('success')
     console.log(succ)
+    let count = 1;
     for(var i=0; i<succ.length;i++){
       console.log("appending")
-      $("table tbody").append("<tr><th scope='row'>"+i+"</th><td>-</td><td><a href= 'tags/'"+succ[i].tag[0]._id>+">"+succ[i].tag[0].TagName+" </a></td><td>-</td><td># "+succ[i].count+"</td></tr>") 
+      if(succ[i].tag.length >0){
+      $("tbody").append("<tr><td scope='row'>"+count+"</td><td></td><td><a href= 'tags/"+succ[i].tag[0]._id+"'>"+succ[i].tag[0].TagName+" </a></td><td></td><td># "+succ[i].count+"</td></tr>") 
+        count++;
+      }
     }
+    console.log("done appending")
   },
   error: function error(err){
     console.log(err)

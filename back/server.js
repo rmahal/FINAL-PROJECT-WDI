@@ -363,6 +363,16 @@ async function getTagInfo(result) {
 
 app.get('/tags/:id', (req, res) =>{
 
+    let id = req.params.id
+
+    db.Tag.find({_id: parseInt(id)}, (err, successTag) =>{
+        
+        
+
+        res.json(successTag)
+
+    })
+
     db.Tagjoin.find({user: req.params.id})
                     .populate('tag')
                     .exec( (errThree, successTags) => {

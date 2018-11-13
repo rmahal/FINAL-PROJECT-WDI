@@ -123,6 +123,11 @@ app.get("/superLOOKUP/:id", (req, res) => {
     })
 })
 
+app.get("/simpleLOOKUP/:id", (err, successEmp)=>{
+    
+})
+
+
 app.get("/employee/manager/populate/:id", (req,res)=>{
     
     db.Employee.find({_id: req.params.id}, (err, uFound) => {

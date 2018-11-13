@@ -162,7 +162,6 @@ app.post('/upload',multer(multerConfig).single('photo'),function(req,res){
 app.get('/userprofile/:id', (req, res) => {
     var id = req.params.id;
     console.log("ID: "+id)
-    //https://rmahal.com/projects/empdir/hr/superLOOKUP/
     var url = "https://rmahal.com/projects/empdir/hr/superLOOKUP/"+id
     console.log("URL: "+url)
     let userMap
@@ -211,6 +210,8 @@ app.get('/userprofile/:id', (req, res) => {
                         // }else{
                             console.log("ALL TAGS")
                             console.log(allTags)
+                            console.log("RESPONSE")
+                            console.log(response)
                                 getImages(response.underlings).then(chain =>{
                                 if(response.chainofcommand.length > 0){
                                 getManagerImages(response.chainofcommand[1]).then(managerChain =>{
@@ -367,8 +368,8 @@ app.get('/tags/:id', (req, res) =>{
     let userId;
     let user = {}
     let userIdArray = []
-    var url = "https://rmahal.com/projects/empdir/hr/superLOOKUP/"
-
+    //var url = "https://rmahal.com/projects/empdir/hr/superLOOKUP/"
+    var url = "https://rmahal.com/projects/empdir/hr/employee/"
     db.Tag.findOne({_id: parseInt(id)}, (err, successTag) =>{
         if(err){
             res.status(400)
@@ -377,11 +378,11 @@ app.get('/tags/:id', (req, res) =>{
         }else{
             db.Tagjoin.find({tag: parseInt(successTag._id)}, (errTwo, successTagjoin) =>{
                 for(let i = 0; i < successTagjoin.length; i++){
-
+                    console.log(successTagjoin[i].user)
                     userId = successTagjoin[i].user
-                    url = url+userId
-                    user = getUsersfromTags(userId, url)
+                    user = getUsersfromTags(userId, url+userId)
                     userIdArray.push(user)
+                    url = "https://rmahal.com/projects/empdir/hr/employee/"
             }
             res.json({userIdArray})
             
@@ -400,6 +401,8 @@ async function getUsersfromTags(userId, url) {
     let user
     let usid = userId
     let path = url
+    console.log("URL")
+    console.log(path)
 
     console.log("ID: ")
     console.log(userId)

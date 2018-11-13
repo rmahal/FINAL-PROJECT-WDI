@@ -31,3 +31,7 @@ body{
     flex-direction: row;
     justify-content: space-around;
 }
+
+.g-signin2 > div{
+  margin: 0 auto;
+}

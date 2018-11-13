@@ -1,6 +1,14 @@
+if(localStorage.getItem("name") === null){
+  window.location.assign("/")
+}else{
+  $("#fullname").text(localStorage.getItem("name"))
+  let googleimg = localStorage.getItem("img")
+  $(".googleImg").attr("src", googleimg)
+}
+
 $.ajax({
   method: "GET",
-  url: 'http://localhost:3002/allTags',
+  url: 'https://rmahal.com/projects/empdir/back/allTags',
   success: function success(succ) {
     console.log('success')
     console.log(succ)
@@ -8,7 +16,7 @@ $.ajax({
     for(var i=0; i<succ.length;i++){
       console.log("appending")
       if(succ[i].tag.length >0){
-      $("tbody").append("<tr><td scope='row'>"+count+"</td><td></td><td><a href= 'tags/"+succ[i].tag[0]._id+"'>"+succ[i].tag[0].TagName+" </a></td><td></td><td># "+succ[i].count+"</td></tr>") 
+      $("tbody").append("<tr><td></td><td scope='row'>"+count+"</td><td><a href= 'tags/"+succ[i].tag[0]._id+"'>"+succ[i].tag[0].TagName+" </a></td><td></td><td># "+succ[i].count+"</td></tr>") 
         count++;
       }
     }
@@ -30,10 +38,19 @@ $( document ).ready(function() {
 
       $("#myInput").on("keyup", function() {
         var value = $(this).val().toLowerCase();
-        $(".list-unstyled li").filter(function() {
+        $(".tbody tr").filter(function() {
           $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
       });
+
+      // let input = document.getElementById("myInput");
+      // input.addEventListener("keydown", (event) => {
+      //   event.preventDefault();
+      //   if (event.keyCode === 13) {
+      //     document.getElementById("search").click();
+      //   }
+      //   return ""
+      // })
     
   });
 

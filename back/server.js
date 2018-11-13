@@ -8,6 +8,7 @@ const fetch = require("node-fetch")
 const jwt = require('jsonwebtoken')
 const multer = require('multer')
 let vCard = require('vcards-js')
+var fs = require('file-system')
 const app = express()
 const bodyParser = require('body-parser');
 const favicon = require('serve-favicon')
@@ -162,7 +163,6 @@ app.post('/upload',multer(multerConfig).single('photo'),function(req,res){
 app.get('/userprofile/:id', (req, res) => {
     var id = req.params.id;
     console.log("ID: "+id)
-    //https://rmahal.com/projects/empdir/hr/superLOOKUP/
     var url = "https://rmahal.com/projects/empdir/hr/superLOOKUP/"+id
     console.log("URL: "+url)
     let userMap
@@ -211,6 +211,8 @@ app.get('/userprofile/:id', (req, res) => {
                         // }else{
                             console.log("ALL TAGS")
                             console.log(allTags)
+                            console.log("RESPONSE")
+                            console.log(response)
                                 getImages(response.underlings).then(chain =>{
                                 if(response.chainofcommand.length > 0){
                                 getManagerImages(response.chainofcommand[1]).then(managerChain =>{
@@ -367,8 +369,8 @@ app.get('/tags/:id', (req, res) =>{
     let userId;
     let user = {}
     let userIdArray = []
-    var url = "https://rmahal.com/projects/empdir/hr/superLOOKUP/"
-
+    //var url = "https://rmahal.com/projects/empdir/hr/superLOOKUP/"
+    var url = "https://rmahal.com/projects/empdir/hr/employee/"
     db.Tag.findOne({_id: parseInt(id)}, (err, successTag) =>{
         if(err){
             res.status(400)
@@ -377,58 +379,88 @@ app.get('/tags/:id', (req, res) =>{
         }else{
             db.Tagjoin.find({tag: parseInt(successTag._id)}, (errTwo, successTagjoin) =>{
                 for(let i = 0; i < successTagjoin.length; i++){
-
+                    console.log(successTagjoin[i].user)
                     userId = successTagjoin[i].user
-                    url = url+userId
-                    user = getUsersfromTags(userId, url)
+                    user = getUsersfromTags(url+userId)
+                    console.log("USER")
+                    console.log(user)
                     userIdArray.push(user)
+                    url = "https://rmahal.com/projects/empdir/hr/employee/"
             }
-            res.json({userIdArray})
-            
-        })
-
+            res.json({userIdArray})  
+            })
         }
-        
-
-
     })
 })
 
 
-async function getUsersfromTags(userId, url) {
-    let smallArr = []
-    let user
-    let usid = userId
-    let path = url
+async function getUsersfromTags(url) {
+    return await fetch(url)
+    .then(response => response.json())
+    .then(function(response) {
+    //console.log(response)
+    return response;
 
-    console.log("ID: ")
-    console.log(userId)
-    if(usid){
-        console.log("If hit")
-        path = path+usid
-        user = await fetch(path, {
-            method: 'GET',
-            mode: 'no-cors',
-            })
-            .then(response => response.json())
-            .then(response => {
-                console.log("RESPONSE")
-                console.log(response)
-                return response
-            })
-            .catch(function(err) {
-                console.log("user find for tags catch was hit")
-                return Promise.reject(["rejected", err])
-            })
-            return user
-    }else{
-        console.log("skipped cause null")
-        return smallArr
-    }
+    })
+    .catch(function(error) {
+        console.log(error);
+    }); 
+
+
+
+    // let smallArr = []
+    // let user
+    // let usid = userId
+    // let path = url
+    // console.log("URL")
+    // console.log(path)
+
+    // console.log("ID: ")
+    // console.log(userId)
+    // if(usid){
+    //     console.log("If hit")
+    //     path = path+usid
+    //     user = await fetch(path, {
+    //         method: 'GET',
+    //         mode: 'no-cors',
+    //         })
+    //         .then(response => response.json())
+    //         .then(response => {
+    //             console.log("RESPONSE")
+    //             console.log(response)
+    //             return response
+    //         })
+    //         .catch(function(err) {
+    //             console.log("user find for tags catch was hit")
+    //             return Promise.reject(["rejected", err])
+    //         })
+    //         return user
+    // }else{
+    //     console.log("skipped cause null")
+    //     return smallArr
+    // }
 
 }
 
+app.post('/editProfile/:id', (req,res)=>{
+    var id = req.params.id
+    console.log("ID:")
+    console.log(id)
+    var image = req.body.image
+    console.log("Image:")
+    console.log(image)
+    var fileName = "./public/img/profilepics/"+req.body.fileName
+    console.log("fName:")
+    console.log(fileName)
+    var data = image.replace(/^data:image\/\w+;base64,/, '')
+    console.log("data:")
+    console.log(data)
+    fs.writeFile(fileName, data, {encoding: 'base64'}, function(err){
+        //Finished
+        res.json({Success: "Image Uploaded"})
+      });
 
+})
 
 
 
@@ -454,6 +486,11 @@ app.put('/userext/:hrid', (req, res)=>{
         }
     })
 })
+
+app.get("/editProfile", (err, res)=>{
+    res.sendFile('views/editProfile.html', {root: __dirname});
+})
+
 
 
 /*

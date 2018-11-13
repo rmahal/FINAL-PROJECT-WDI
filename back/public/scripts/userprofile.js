@@ -13,7 +13,7 @@ $( document ).ready(function() {
     let zone = $("#timeZone").attr("data-id")
     $.ajax({
         method: 'GET',
-        url: "    https://api.timezonedb.com/v2.1/get-time-zone?key=LF4OCMBPWOOA&format=json&by=zone&zone="+zone ,
+        url: "https://api.timezonedb.com/v2.1/get-time-zone?key=LF4OCMBPWOOA&format=json&by=zone&zone="+zone ,
         success: apiSuccess,
         error: apiError
     })
@@ -70,7 +70,7 @@ $( document ).ready(function() {
                 workPhone: workPhone,
                 organization: organization
             },
-            url: "http://localhost:3002/vcard" ,
+            url: "https://rmahal.com/projects/empdir/back/vcard" ,
             success: cardSuccess,
             error: cardError
         })

@@ -170,31 +170,20 @@
                       </div>
         </footer>
             <script>
-            function signout() {
-              var auth2 = gapi.auth2.getAuthInstance();
-              auth2.signOut().then(function () {
-                console.log('User signed out.');
-                localStorage.clear();
-                window.location.assign("../");
-              });
-              console.log("after signout was hit")
-            }
+                function signout() {
+                  onLoad();
+                  if(gapi.auth2){
+                    console.log("we now gapi")
+                    var auth2 = gapi.auth2.getAuthInstance();
+                    auth2.signOut().then(function () {
+                      console.log('User signed out.');
+                      localStorage.clear();
+                      window.location.assign("../back/");
 
-
-
-                // function signout() {
-                //   if(gapi.auth2){
-                //     console.log("we now gapi")
-                //     var auth2 = gapi.auth2.getAuthInstance();
-                //     auth2.signOut().then(function () {
-                //       console.log('User signed out.');
-                //       localStorage.clear();
-                //       window.location.assign("../");
-
-                //     });
-                //     window.location.assign("../");
-                //   }
-                // }
+                    });
+                    window.location.assign("../back/");
+                  }
+                }
 
                 function onLoad() {
                   gapi.load('auth2', function() {

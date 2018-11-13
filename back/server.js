@@ -143,20 +143,20 @@ app.post('/upload',multer(multerConfig).single('photo'),function(req,res){
 
 
 
-app.get('/tagProfile/:id', (req, res) => {
-    var id = req.params.id;
+// app.get('/tagProfile/:id', (req, res) => {
+//     var id = req.params.id;
     
-    console.log("ID: "+id)
-    fetch('http://localhost:3001/getEmployees', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({a: 1, b: 'Textual content'})
-    })
+//     console.log("ID: "+id)
+//     fetch('http://localhost:3001/getEmployees', {
+//     method: 'POST',
+//     headers: {
+//       'Accept': 'application/json',
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify({a: 1, b: 'Textual content'})
+//     })
     
-})
+// })
 
 
 app.get('/userprofile/:id', (req, res) => {
@@ -364,28 +364,73 @@ async function getTagInfo(result) {
 app.get('/tags/:id', (req, res) =>{
 
     let id = req.params.id
+    let userId;
+    let user = {}
+    let userIdArray = []
+    var url = "https://rmahal.com/projects/empdir/hr/superLOOKUP/"
 
-    db.Tag.find({_id: parseInt(id)}, (err, successTag) =>{
-        
+    db.Tag.findOne({_id: parseInt(id)}, (err, successTag) =>{
+        if(err){
+            res.status(400)
+        }else if(successTag === null){
+           res.status(404)
+        }else{
+            db.Tagjoin.find({tag: parseInt(successTag._id)}, (errTwo, successTagjoin) =>{
+                for(let i = 0; i < successTagjoin.length; i++){
+
+                    userId = successTagjoin[i].user
+                    url = url+userId
+                    user = getUsersfromTags(userId, url)
+                    userIdArray.push(user)
+            }
+            res.json({userIdArray})
+            
+        })
+
+        }
         
 
-        res.json(successTag)
 
     })
-
-    db.Tagjoin.find({user: req.params.id})
-                    .populate('tag')
-                    .exec( (errThree, successTags) => {
-                    if(errThree){
-                        console.log(errTwo)
-                        res.status(404)
-                    }else{
-                        console.log("in exec")
-                        console.log(successTags)
-                        res.json(successTags)
-                    }
-                })
 })
+
+
+async function getUsersfromTags(userId, url) {
+    let smallArr = []
+    let user
+    let usid = userId
+    let path = url
+
+    console.log("ID: ")
+    console.log(userId)
+    if(usid){
+        console.log("If hit")
+        path = path+usid
+        user = await fetch(path, {
+            method: 'GET',
+            mode: 'no-cors',
+            })
+            .then(response => response.json())
+            .then(response => {
+                console.log("RESPONSE")
+                console.log(response)
+                return response
+            })
+            .catch(function(err) {
+                console.log("user find for tags catch was hit")
+                return Promise.reject(["rejected", err])
+            })
+            return user
+    }else{
+        console.log("skipped cause null")
+        return smallArr
+    }
+
+}
+
+
+
+
 
 app.put('/userext/:hrid', (req, res)=>{
     console.log(req.body)

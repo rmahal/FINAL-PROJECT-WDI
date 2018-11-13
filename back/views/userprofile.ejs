@@ -14,6 +14,9 @@
     <link rel="stylesheet" type="text/css" media="screen" href="../styles/userProfile.css" />
     <!-- JQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous" defer></script>
+    <script
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0hTl-vCRyk" async defer>
+</script>
     <!-- Popper CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous" defer></script>
      <!-- Bootstrap core JavaScript -->
@@ -166,6 +169,7 @@
             <div class="card card3">
                 <h3>Address</h3>
                 <p><%= userInfo.user[0].Street %>, <%= userInfo.user[0].City %>, <%= userInfo.user[0].State %> <%= userInfo.user[0].ZipCode %></p>
+                <div id="map"></div>
              </div>
             <% if(TagsInfo.length > 0){ %>
             <div class="card card4">
@@ -267,29 +271,44 @@
           <span id="organization" data-id="<%= userInfo.user[0].Org %>"></span>
       </footer>
       <script>
-            function signout() {
-              var auth2 = gapi.auth2.getAuthInstance();
-              auth2.signOut().then(function () {
-                console.log('User signed out.');
+        // Initialize and add the map
+        function initMap() {
+          // The location of Uluru
+          var uluru;
+          let CA = "CA"
+          let NY = "NY"
+          var state = <%= userInfo.user[0].State %>;
+          console.log("state")
+          console.log(state)
+          if(state === "CA"){
+            uluru = {lat: 37.3382, lng: -121.8863};
+          }else if(state === "NY"){
+            uluru = {lat: 40.730610, lng: -73.935242}
+          }
+          console.log(uluru)
+          // The map, centered at Uluru
+          var map = new google.maps.Map(
+              document.getElementById('map'), {zoom: 7, center: uluru});
+          // The marker, positioned at Uluru
+          var marker = new google.maps.Marker({position: uluru, map: map});
+        }
+        initMap()
+      </script>
+      <script>
+          function signout() {
+            onLoad();
+            if(gapi.auth2){
+              console.log("we now gapi")
+              var auth2 = gapi.auth2.getAuthInstance();
+              auth2.signOut().then(function () {
+                console.log('User signed out.');
                 localStorage.clear();
-                window.location.assign("../");
-              });
-              console.log("after signout was hit")
-            }
+                window.location.assign("../back/");
 
-//
-//           function signout() {
-//             if(gapi.auth2){
-//               console.log("we now gapi")
-//               var auth2 = gapi.auth2.getAuthInstance();
-//               auth2.signOut().then(function () {
-//                 console.log('User signed out.');
-//                 localStorage.clear();
-//                 window.location.assign("../");
-
-//               });
-//             }
-//           } 
+              });
+              window.location.assign("../back/");
+            }
+          }
 
           function onLoad() {
             gapi.load('auth2', function() {

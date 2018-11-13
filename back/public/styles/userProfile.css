@@ -8,6 +8,12 @@ body {
 }
 
 
+#map {
+    width: 200px;
+    height: 200px;
+    /* background-color: grey; */
+}
+
 .inactiveLink {
     pointer-events: none;
     cursor: default;

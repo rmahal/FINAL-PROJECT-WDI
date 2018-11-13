@@ -8,7 +8,7 @@ if(localStorage.getItem("name") === null){
 
 $.ajax({
   method: "GET",
-  url: 'http://localhost:3002/allTags',
+  url: 'https://rmahal.com/projects/empdir/back/allTags',
   success: function success(succ) {
     console.log('success')
     console.log(succ)

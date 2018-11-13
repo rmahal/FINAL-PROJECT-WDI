@@ -76,7 +76,7 @@
                                   <img class="avtar googleImg" src=""><span id="fullname"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">View my settings</a>
+                                    <a class="dropdown-item" href="../editProfile">View my settings</a>
                                     <a class="dropdown-item" onclick="logout()">Logout</a>
                                 </div>
                             </li>
@@ -161,7 +161,7 @@
         </footer>
             <script>
                 function signout() {
-		  onLoad();
+		              onLoad();
                   if(gapi.auth2){
                     console.log("we now gapi")
                     var auth2 = gapi.auth2.getAuthInstance();

@@ -168,7 +168,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
              <% } %>
             <div class="card card3">
                 <h3>Address</h3>
-                <p><%= userInfo.user[0].Street %>, <%= userInfo.user[0].City %>, <%= userInfo.user[0].State %> <%= userInfo.user[0].ZipCode %></p>
+                <a href="https://maps.google.com/?q=<%= userInfo.user[0].Street %>,<%= userInfo.user[0].City %>,<%= userInfo.user[0].State %><%= userInfo.user[0].ZipCode %>"><p><%= userInfo.user[0].Street %>, <%= userInfo.user[0].City %>, <%= userInfo.user[0].State %> <%= userInfo.user[0].ZipCode %></p></a>
                 <div id="map"></div>
              </div>
             <% if(TagsInfo.length > 0){ %>
@@ -325,6 +325,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
             gapi.load('auth2', function() {
               gapi.auth2.init();
             });
+            return true
           }
         </script>
   </body>

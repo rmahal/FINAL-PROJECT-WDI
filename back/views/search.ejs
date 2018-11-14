@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Project_HR</title>
+        <title>Employee Directory</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="google-signin-client_id" content="792828454552-med48hcu42djec9q4c376du88id6hc72.apps.googleusercontent.com">
         <!-- Bootstrap core CSS -->
@@ -76,7 +76,7 @@
                                   <img class="avtar googleImg" src=""><span id="fullname"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="../editProfile">View my settings</a>
+                                    <a class="dropdown-item" href="editProfile">View my settings</a>
                                     <a class="dropdown-item" onclick="logout()">Logout</a>
                                 </div>
                             </li>
@@ -179,6 +179,7 @@
                   gapi.load('auth2', function() {
                     gapi.auth2.init();
                   });
+                  return true
                 }
               </script>
         <script>

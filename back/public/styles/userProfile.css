@@ -13,7 +13,18 @@ body {
     height: 200px;
     /* background-color: grey; */
 }
+.form-inline{
+    width:100%;
 
+}
+
+@media (min-width: 576px){
+.form-inline .form-control {
+    display: inline-block;
+    width: 500px;
+    vertical-align: middle;
+}
+}
 .inactiveLink {
     pointer-events: none;
     cursor: default;
@@ -67,7 +78,7 @@ position:relative;
     position: absolute;
     left: 0;
     padding-left: 30px;
-    max-width: 200px;
+    max-width: 1000px;
 }
 .form-control:focus {
     color:#B3B3B3;

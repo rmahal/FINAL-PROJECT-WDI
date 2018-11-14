@@ -80,13 +80,25 @@ console.log(req.query)
 if(req.query === null || req.query === ""){
     res.status(404)
 }
+console.log("VCARD INFO:")
+console.log(req.query)
+let photoPath = "https://rmahal.com/projects/empdir/back/img/profilepics/"+req.query.id+".jpg"
 //set properties
-vCardret.firstName = req.query.firstName;
-vCardret.lastName = req.query.lastName;
-vCardret.job = req.query.jobTitle;
-vCardret.workPhone = req.query.workPhone;
-vCardret.organization = req.query.organization;
-//console.log(vCardret)
+vCardret.firstName = req.query.firstName
+vCardret.lastName = req.query.lastName
+vCardret.job = req.query.jobTitle
+vCardret.workPhone = req.query.workPhone
+vCardret.organization = req.query.organization
+vCardret.photo.attachFromUrl(photoPath, 'JPEG')
+vCardret.workEmail = req.query.email
+vCardret.cellPhone = req.query.cellPhone
+vCard.workAddress.label = 'Work Address';
+vCard.workAddress.street = req.query.street;
+vCard.workAddress.city = req.query.city;
+vCard.workAddress.stateProvince = req.query.state;
+vCard.workAddress.postalCode = req.query.zipCode;
+vCard.workAddress.countryRegion = req.query.countryCode;
+
 //set content-type and disposition including desired filename
 res.set('Content-Type', 'text/vcard; name="profile.vcf"');
 res.set('Content-Disposition', 'inline; filename="profile.vcf"');
@@ -94,6 +106,9 @@ res.set('Content-Disposition', 'inline; filename="profile.vcf"');
 let name = __dirname+"/public/vcf/"+req.query.id+".vcf"
 console.log(name)
 console.log("Routing")
+
+vCard.version = '3.0';
+
 vCardret.saveToFile(name);
 
 //send the response

@@ -34,13 +34,13 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand" href="../"><img alt="logo" src="../img/logo.jpg"></a>
+    <a class="navbar-brand" href="../../back"><img alt="logo" src="../img/logo.jpg"></a>
          
  <div class="collapse navbar-collapse" id="navbarNavDropdown">
      
       <ul class="navbar-nav mr-auto">
     
-           <form class="form-inline custom-search">
+    <form class="form-inline custom-search">
                <i class="fas fa-search" id="searchButton"></i>
       <input class="form-control mr-sm-2 search-box" type="search"  id="searchBar" placeholder="Type to search ..." aria-label="Search">
     </form>
@@ -269,6 +269,17 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
           <span id="jobTitle" data-id="<%= userInfo.user[0].JobTitle %>"></span>
           <span id="workPhone" data-id="<%= userInfo.user[0].Phone %>"></span>
           <span id="organization" data-id="<%= userInfo.user[0].Org %>"></span>
+          <span id="cellPhone" data-id="<%= userInfo.user[0].Org %>"></span>
+          <span id="email" data-id="<%= userInfo.user[0].Email %>"></span>
+          <span id="street" data-id="<%= userInfo.user[0].Street %>"></span>
+          <span id="city" data-id="<%= userInfo.user[0].City %>"></span>
+          <span id="state" data-id="<%= userInfo.user[0].State %>"></span>
+          <span id="zipCode" data-id="<%= userInfo.user[0].ZipCode %>"></span>
+          <span id="countryCode" data-id="<%= userInfo.user[0].CountryCode %>"></span>
+
+
+
+
       </footer>
       <script>
         // Initialize and add the map

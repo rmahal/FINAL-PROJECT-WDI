@@ -58,6 +58,16 @@ $( document ).ready(function() {
       let jobTitle = $("#jobTitle").attr("data-id")
       let workPhone = $("#workPhone").attr("data-id")
       let organization = $("#organization").attr("data-id")
+      let cellPhone = $("#cellPhone").attr("data-id")
+      let email = $("#email").attr("data-id")
+      let street = $("#street").attr("data-id")
+      let city = $("#city").attr("data-id")
+      let state = $("#state").attr("data-id")
+      let zipCode = $("#zipCode").attr("data-id")
+      let countryCode = $("#countryCode").attr("data-id")
+
+
+
 
 
         $.ajax({
@@ -68,7 +78,14 @@ $( document ).ready(function() {
                 lastName: lastName,
                 jobTitle: jobTitle,
                 workPhone: workPhone,
-                organization: organization
+                organization: organization,
+                cellPhone: cellPhone,
+                street: street,
+                email: email,
+                city: city,
+                state: state,
+                zipCode: zipCode,
+                countryCode: countryCode
             },
             url: "https://rmahal.com/projects/empdir/back/vcard" ,
             success: cardSuccess,

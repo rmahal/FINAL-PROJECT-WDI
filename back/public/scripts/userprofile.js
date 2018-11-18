@@ -66,31 +66,34 @@ $( document ).ready(function() {
       let zipCode = $("#zipCode").attr("data-id")
       let countryCode = $("#countryCode").attr("data-id")
 
-
+      let jsonPayload = {
+        payid: id,
+        payfirstName: firstName,
+        paylastName: lastName,
+        payjobTitle: jobTitle,
+        payworkPhone: workPhone,
+        payorganization: organization,
+        paycellPhone: cellPhone,
+        paystreet: street,
+        payemail: email,
+        paycity: city,
+        paystate: state,
+        payzipCode: zipCode,
+        paycountryCode: countryCode
+      }
 
 
 
         $.ajax({
-            method: 'GET',
+            method: 'POST',
             data: {
-                id: id,
-                firstName: firstName,
-                lastName: lastName,
-                jobTitle: jobTitle,
-                workPhone: workPhone,
-                organization: organization,
-                cellPhone: cellPhone,
-                street: street,
-                email: email,
-                city: city,
-                state: state,
-                zipCode: zipCode,
-                countryCode: countryCode
+                payload: jsonPayload
             },
-            url: "https://rmahal.com/projects/empdir/back/vcard" ,
+            url: "http://localhost:3002/vcard" ,
             success: cardSuccess,
             error: cardError
         })
+        //https://rmahal.com/projects/empdir/back/vcard
         
         function cardSuccess(response){
             console.log(response)

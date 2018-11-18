@@ -13,8 +13,16 @@ const app = express()
 const bodyParser = require('body-parser');
 const favicon = require('serve-favicon')
 const path = require('path')
-//alet salt = bcrypt.genSaltSync();
+var atob = require('atob');
 
+//alet salt = bcrypt.genSaltSync();
+app.use(
+    bodyParser.json(
+        {
+            limit: '50mb'
+        }
+    )
+)
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(function(req, res, next) {
@@ -72,12 +80,13 @@ app.get("/", (req, res) => {
 
 
 
-app.get("/vcard", (req,res)=>{
+app.post("/vcard", (req,res)=>{
 
 vCardret = vCard();
+console.log("CARD HIT")
 console.log("DATA")
-console.log(req.query)
-if(req.query === null || req.query === ""){
+console.log(req.body)
+if(req.query === null || req.body === ""){
     res.status(404)
 }
 console.log("VCARD INFO:")
@@ -86,13 +95,13 @@ let photoPath = "https://rmahal.com/projects/empdir/back/img/profilepics/"+req.q
 //set properties
 vCardret.firstName = req.query.firstName
 vCardret.lastName = req.query.lastName
-vCardret.job = req.query.jobTitle
+vCardret.title = req.query.jobTitle
 vCardret.workPhone = req.query.workPhone
 vCardret.organization = req.query.organization
-vCardret.photo.attachFromUrl(photoPath, 'JPEG')
+vCardret.photo.attachFromUrl(photoPath)
 vCardret.workEmail = req.query.email
 vCardret.cellPhone = req.query.cellPhone
-vCard.workAddress.label = 'Work Address';
+//vCard.workAddress.label = 'Work Address';
 vCard.workAddress.street = req.query.street;
 vCard.workAddress.city = req.query.city;
 vCard.workAddress.stateProvince = req.query.state;
@@ -378,12 +387,19 @@ async function getTagInfo(result) {
 }
 
 
+function resolveAfter2Seconds() {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve('resolved');
+      }, 2000);
+    });
+  }
+
+  
 app.get('/tags/:id', (req, res) =>{
 
     let id = req.params.id
-    let userId;
-    let user = {}
-    let userIdArray = []
+    var resp
     //var url = "https://rmahal.com/projects/empdir/hr/superLOOKUP/"
     var url = "https://rmahal.com/projects/empdir/hr/employee/"
     db.Tag.findOne({_id: parseInt(id)}, (err, successTag) =>{
@@ -392,35 +408,72 @@ app.get('/tags/:id', (req, res) =>{
         }else if(successTag === null){
            res.status(404)
         }else{
-            db.Tagjoin.find({tag: parseInt(successTag._id)}, (errTwo, successTagjoin) =>{
-                for(let i = 0; i < successTagjoin.length; i++){
-                    console.log(successTagjoin[i].user)
-                    userId = successTagjoin[i].user
-                    user = getUsersfromTags(url+userId)
-                    console.log("USER")
-                    console.log(user)
-                    userIdArray.push(user)
-                    url = "https://rmahal.com/projects/empdir/hr/employee/"
+            db.Tagjoin.find({tag: parseInt(id)}, (errTwo, successTagjoin) =>{
+                if(errTwo){
+                    res.json(400, {error: "Error"})
+                }else{
+                    getUsersfromTags(successTagjoin)
+                    .then(response => {
+                        console.log("Response")
+                        console.log(response)
+                        // userIdArray.push(response[0])
+                        // successTag = successTag.filter(function(item, index){
+                        //     return successTag.indexOf(item.user._id) >= index;
+                        // });
+                        // response = response.filter(function(item, index){
+                        //     return response.indexOf(item.user._id) >= index;
+                        // });
+                        // console.log("Succ Tag before EJS")
+                        // console.log(successTag)
+                        // console.log("Response before EJS")
+                        // console.log(response)
+                        res.render('tagPage',{
+                            tag: successTag,
+                            response: response
+                        })
+                        //return response
+                    })
+                    .catch(function(err) {
+                        console.log("user find for tags catch was hit")
+                        return Promise.reject(["rejected", err])
+                    })
+                    // console.log("R E S P")
+                    // console.log(resp)
+                    // res.json({resp})
+                }
+
+            
+                })
             }
-            res.json({userIdArray})  
-            })
+        })
+    })
+
+
+async function getUsersfromTags(people) {
+
+    var url = "https://rmahal.com/projects/empdir/hr/employee/"
+    var person
+    var personExt
+    var peopleList = []
+    for(let i = 0; i < people.length; i++){
+        person = await fetch(url+people[i].user).catch(err=> {console.log(err)})
+        person = await person.json()
+        console.log("P E R S O N:")
+        console.log(person)
+        personExt = await db.Userext.findOne({hrUID: parseInt(people[i].user)}).catch(err=> {console.log(err)})
+        console.log("P E R S O N E X T:")
+        console.log(personExt)
+
+        peopleList.push({
+            user: person[0],
+            userExt: personExt
+        })
+        url = "https://rmahal.com/projects/empdir/hr/employee/"
         }
-    })
-})
 
-
-async function getUsersfromTags(url) {
-    return await fetch(url)
-    .then(response => response.json())
-    .then(function(response) {
-    //console.log(response)
-    return response;
-
-    })
-    .catch(function(error) {
-        console.log(error);
-    }); 
-
+        return await peopleList
+        
+    }
 
 
     // let smallArr = []
@@ -455,28 +508,110 @@ async function getUsersfromTags(url) {
     //     return smallArr
     // }
 
+
+
+
+
+function decodeBase64Image(dataString) {
+  var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+  var response = {};
+
+//   if (matches.length !== 3){
+//     return new Error('Invalid input string');
+//   }
+
+  response.type = matches[1];
+  response.data = new Buffer(matches[2], 'base64');
+
+  return response;
 }
 
-app.post('/editProfile/:id', (req,res)=>{
+
+app.patch('/editProfile/:id', (req,res)=>{
     var id = req.params.id
     console.log("ID:")
     console.log(id)
     var image = req.body.image
     console.log("Image:")
     console.log(image)
-    var fileName = "./public/img/profilepics/"+req.body.fileName
+    if(image === undefined){
+        res.json(400, {error: "image is undefined"} )
+    }
+    var imageName = id+"."+req.body.fileExt
+    console.log(imageName)
+    var fileName = "./public/img/profilepics/"+imageName
     console.log("fName:")
     console.log(fileName)
     var data = image.replace(/^data:image\/\w+;base64,/, '')
     console.log("data:")
     console.log(data)
+
+    
     fs.writeFile(fileName, data, {encoding: 'base64'}, function(err){
         //Finished
-        res.json({Success: "Image Uploaded"})
+        var newImg = "img/profilepics/"+imageName
+        console.log("ID IN WRITE")
+        console.log(id)
+        db.Userext.findOneAndUpdate({hrUID: parseInt(req.params.id)}, {PhotoURL: newImg},(err, succ)=>{
+            if (err){
+                return res.send(500, { error: err })
+            }else if(succ === null){
+                return res.send(400, {error: "user not found"})
+            }else{
+                return res.json({Success: "Image Uploaded"})
+            }
+        })
       });
 
 })
 
+
+
+
+app.get("/userext/:id", (req,res)=>{
+    console.log(req.params.id)
+    let info={}
+    let id = req.params.id
+    db.Userext.findOne({hrUID: parseInt(id)}, (err, successFind)=>{
+        if(err){
+            res.status(500)
+        }else if(successFind === null){
+            res.json(404, {error: "no results"})
+        }else{
+            id= id.toString()
+            console.log(typeof id)
+            db.Contact.find({userID: id}, (err, successContact)=>{
+                if(err){
+                    res.status(500)
+                }else if(successContact === null){
+                    res.json(404, {error: "no results"})
+                }else{
+                    console.log("CONTACT")
+                    console.log(successContact)
+                    db.Tagjoin.find({user: parseInt(id)})
+                    .populate('tag')
+                    .exec( (err, successTags) => {
+                    if(err){
+                        console.log(errTwo)
+                        res.status(404)
+                    
+                    }
+                    console.log("TAGS:")
+                    let tagIds = successTags.map(tagId =>{
+                        return tagId.tag.TagName
+                    })
+                    info ={
+                        userext: successFind,
+                        contact: successContact,
+                        tags: tagIds
+                    }
+                    res.json(info)
+                    })
+                }
+            })
+        }
+    })
+})
 
 
 app.put('/userext/:hrid', (req, res)=>{

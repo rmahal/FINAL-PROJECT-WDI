@@ -16,7 +16,7 @@ $.ajax({
     for(var i=0; i<succ.length;i++){
       console.log("appending")
       if(succ[i].tag.length >0){
-      $("tbody").append("<tr><td></td><td scope='row'>"+count+"</td><td><a href= 'tags/"+succ[i].tag[0]._id+"'>"+succ[i].tag[0].TagName+" </a></td><td></td><td># "+succ[i].count+"</td></tr>") 
+      $("tbody").append("<tr><td></td><td scope='row'></td><td><a href= 'tags/"+succ[i].tag[0]._id+"'>"+succ[i].tag[0].TagName+" </a></td><td></td><td>"+succ[i].count+"</td></tr>") 
         count++;
       }
     }

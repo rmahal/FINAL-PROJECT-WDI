@@ -4,7 +4,6 @@ const ejs = require('ejs')
 const cors = require('cors')
 const axios = require('axios')
 const fetch = require("node-fetch")
-//const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const multer = require('multer')
 let vCard = require('vcards-js')
@@ -15,7 +14,6 @@ const favicon = require('serve-favicon')
 const path = require('path')
 var atob = require('atob');
 
-//alet salt = bcrypt.genSaltSync();
 app.use(
     bodyParser.json(
         {
@@ -51,7 +49,6 @@ const multerConfig = {
             
             //Then give the file a unique name
             filename: function(req, file, next){
-                console.log(file);
                 const ext = file.mimetype.split('/')[1];
                 next(null, file.fieldname + '-' + Date.now() + '.'+ext);
             }
@@ -62,11 +59,8 @@ const multerConfig = {
                 }
             const image = file.mimetype.startsWith('image/');
             if(image){
-                console.log('photo uploaded');
                 next(null, true);
             }else{
-                console.log("file not supported");
-                
                 return next();
             }
     }
@@ -127,13 +121,11 @@ res.sendFile(name);
 })
 
 app.post("/getImages", (req, res) =>{
-    console.log(req.body.employees)
     getImages(req.body.employees).then(empResults =>{
         res.json({
             userInfo: empResults,
         })
     }).catch((error) => {
-        console.log(error);
         res.status(404)
     })
 
@@ -142,18 +134,13 @@ app.post("/getImages", (req, res) =>{
 
 
 app.get("/search", (req,res)=>{
-    //console.log("SEARCH REQ:")
-    //console.log(req)
     let value= ""
 
     if(req.query.search !== undefined || req.query.search !== "" ){
-        console.log("I was hit query val")
         value = req.query.search
     }else{
-        console.log("I was hit, no query val")
         value = ""
     }
-    console.log(value)
     res.render('search', {search: value})
 })
 
@@ -162,33 +149,12 @@ app.get("/org", (req,res)=>{
 })
 
 app.post('/upload',multer(multerConfig).single('photo'),function(req,res){
-    //console.log(req.params.data)
     res.send('Complete!');
 })
 
-
-
-// app.get('/tagProfile/:id', (req, res) => {
-//     var id = req.params.id;
-    
-//     console.log("ID: "+id)
-//     fetch('http://localhost:3001/getEmployees', {
-//     method: 'POST',
-//     headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({a: 1, b: 'Textual content'})
-//     })
-    
-// })
-
-
 app.get('/userprofile/:id', (req, res) => {
     var id = req.params.id;
-    console.log("ID: "+id)
     var url = "https://rmahal.com/projects/empdir/hr/superLOOKUP/"+id
-    console.log("URL: "+url)
     let userMap
     fetch(url)
     .then(response => response.json())
@@ -200,7 +166,6 @@ app.get('/userprofile/:id', (req, res) => {
                 console.log(err)
                 res.status(404)
             }
-            //console.log(successContacts)
             db.Userext.find({hrUID: parseInt(id)}, (errTwo, successUserext)=>{
                 if(errTwo){
                     console.log(errTwo)
@@ -215,28 +180,16 @@ app.get('/userprofile/:id', (req, res) => {
                         res.status(404)
                     
                     }
-                    console.log("TAGS:")
+
                     let tagIds = successTags.map(tagId =>{
                         return tagId.tag
                     })
-                    console.log("TAG ID: ")
-                    console.log(tagIds)
 
-                    console.log("SUCCESS TAG")
-                    console.log(successTags)
                     let allTags = getTag(tagIds)
-                    //console.log(getTag(tagIds))
-
-                    console.log("\n\nUSER EXT: \n")
-                    console.log(successUserext)
                     // db.Userext.find({}, (errallUEXT, succUserExt)=>{
                         // if(errallUEXT){
                         //     res.status(404)
                         // }else{
-                            console.log("ALL TAGS")
-                            console.log(allTags)
-                            console.log("RESPONSE")
-                            console.log(response)
                                 getImages(response.underlings).then(chain =>{
                                 if(response.chainofcommand.length > 0){
                                 getManagerImages(response.chainofcommand[1]).then(managerChain =>{
@@ -250,7 +203,6 @@ app.get('/userprofile/:id', (req, res) => {
                                     })
                                 })
                                 }else{
-                                    console.log("I was hit no manager")
                                     res.render('userprofile',{
                                         userInfo: response,
                                         contactsInfo: successContacts,
@@ -319,21 +271,14 @@ app.get('/allTags', (req, res) => {
         if (err) {
             res.status(400)
         } else {
-            //console.log( result )
             getTagInfo(result).then(finished=>{
                 res.json(finished)
             })
-            console.log("test")
-            //console.log(ids)
-            console.log("done ids")
-            //res.json(result)
-
         }
     })
 })
 
 async function getTag(result) {
-    console.log(result[0])
     let tag = []
     let foundTag
 
@@ -416,17 +361,6 @@ app.get('/tags/:id', (req, res) =>{
                     .then(response => {
                         console.log("Response")
                         console.log(response)
-                        // userIdArray.push(response[0])
-                        // successTag = successTag.filter(function(item, index){
-                        //     return successTag.indexOf(item.user._id) >= index;
-                        // });
-                        // response = response.filter(function(item, index){
-                        //     return response.indexOf(item.user._id) >= index;
-                        // });
-                        // console.log("Succ Tag before EJS")
-                        // console.log(successTag)
-                        // console.log("Response before EJS")
-                        // console.log(response)
                         res.render('tagPage',{
                             tag: successTag,
                             response: response
@@ -437,9 +371,6 @@ app.get('/tags/:id', (req, res) =>{
                         console.log("user find for tags catch was hit")
                         return Promise.reject(["rejected", err])
                     })
-                    // console.log("R E S P")
-                    // console.log(resp)
-                    // res.json({resp})
                 }
 
             
@@ -476,49 +407,12 @@ async function getUsersfromTags(people) {
     }
 
 
-    // let smallArr = []
-    // let user
-    // let usid = userId
-    // let path = url
-    // console.log("URL")
-    // console.log(path)
-
-    // console.log("ID: ")
-    // console.log(userId)
-    // if(usid){
-    //     console.log("If hit")
-    //     path = path+usid
-    //     user = await fetch(path, {
-    //         method: 'GET',
-    //         mode: 'no-cors',
-    //         })
-    //         .then(response => response.json())
-    //         .then(response => {
-    //             console.log("RESPONSE")
-    //             console.log(response)
-    //             return response
-    //         })
-    //         .catch(function(err) {
-    //             console.log("user find for tags catch was hit")
-    //             return Promise.reject(["rejected", err])
-    //         })
-    //         return user
-    // }else{
-    //     console.log("skipped cause null")
-    //     return smallArr
-    // }
-
-
 
 
 
 function decodeBase64Image(dataString) {
   var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
   var response = {};
-
-//   if (matches.length !== 3){
-//     return new Error('Invalid input string');
-//   }
 
   response.type = matches[1];
   response.data = new Buffer(matches[2], 'base64');
@@ -529,29 +423,18 @@ function decodeBase64Image(dataString) {
 
 app.patch('/editProfile/:id', (req,res)=>{
     var id = req.params.id
-    console.log("ID:")
-    console.log(id)
     var image = req.body.image
-    console.log("Image:")
-    console.log(image)
     if(image === undefined){
         res.json(400, {error: "image is undefined"} )
     }
     var imageName = id+"."+req.body.fileExt
-    console.log(imageName)
     var fileName = "./public/img/profilepics/"+imageName
-    console.log("fName:")
-    console.log(fileName)
     var data = image.replace(/^data:image\/\w+;base64,/, '')
-    console.log("data:")
-    console.log(data)
 
     
     fs.writeFile(fileName, data, {encoding: 'base64'}, function(err){
         //Finished
         var newImg = "img/profilepics/"+imageName
-        console.log("ID IN WRITE")
-        console.log(id)
         db.Userext.findOneAndUpdate({hrUID: parseInt(req.params.id)}, {PhotoURL: newImg},(err, succ)=>{
             if (err){
                 return res.send(500, { error: err })
@@ -579,15 +462,12 @@ app.get("/userext/:id", (req,res)=>{
             res.json(404, {error: "no results"})
         }else{
             id= id.toString()
-            console.log(typeof id)
             db.Contact.find({userID: id}, (err, successContact)=>{
                 if(err){
                     res.status(500)
                 }else if(successContact === null){
                     res.json(404, {error: "no results"})
                 }else{
-                    console.log("CONTACT")
-                    console.log(successContact)
                     db.Tagjoin.find({user: parseInt(id)})
                     .populate('tag')
                     .exec( (err, successTags) => {
@@ -615,7 +495,6 @@ app.get("/userext/:id", (req,res)=>{
 
 
 app.put('/userext/:hrid', (req, res)=>{
-    console.log(req.body)
     let updatedText = req.body.overview
     let updatedPhoto = req.body.profpic
     let hrID = req.params.hrid
@@ -627,7 +506,6 @@ app.put('/userext/:hrid', (req, res)=>{
         BackdropURL: updatedBackdrop,
         OverviewText: updatedText,
     }
-    console.log(req.body)
     db.Userext.findOneAndUpdate({hrUID: req.params.hrid}, savedInfo,{new: true}, (err, succ)=>{
         if (err){
             return res.send(500, { error: err })
@@ -820,18 +698,11 @@ async function getImages(arr) {
     let userExtReportee
     let id
     let photo
-    console.log("ARR: ")
-    console.log(arr)
 
     if(arr.length > 0 && arr !== undefined ){
-        //console.log("before loop")
+
     for(let i =0; i < arr.length; i++){
-        //console.log("loop start")
-        console.log("Iteration: "+i)
-        console.log(arr[i]._id)
         id = parseInt(arr[i]._id)
-        console.log("ID IN IMAGES: ")
-        console.log(id)
         userExtReportee = await db.Userext.findOne({hrUID: parseInt(id)}, (err, succ)=>{
             if(err){
                 console.log("Error was hit userext reportees: ")
@@ -843,52 +714,15 @@ async function getImages(arr) {
                 return succ
             }
         })
-        // db.Userext.findOne({'hrUID': id})
-        //     .then( value => {
-        //         console.log("userext then hit")
-        //         console.log(value)
 
-        //         id = value._id
-        //         photo = value.PhotoURL
-        //         smallArr = [id, photo]
-        //         userimages.push(smallArr)
-        //         return "value"
-        //           // here I choose if I want to resolve or reject.
-        //     })
-        //     .catch(function(err) {
-        //         console.log("userext catch hit")
-        //         return Promise.reject(["rejected", err])
-        //     })
-
-
-        // .then(function(value) {
-        //     console.log("userext then hit")
-        //     console.log(value)
-        //     return value
-        //       // here I choose if I want to resolve or reject.
-        //   })
-        //   .catch(function(err) {
-        //     console.log("userext catch hit")
-        //     return Promise.reject(["rejected", err])
-        //   })
-        //console.log("await done for userext ")
-        //console.log(userExtReportee)
         if(userExtReportee === null){
-            // sleep(500).then(() => {
-            //     console.log("SLEEPING")
-            //   })
             console.log("user is NULL")
-
         }
         id = userExtReportee._id
         photo = userExtReportee.PhotoURL
         smallArr = [id, photo]
         userimages.push(smallArr)
     }
-
-    //manImg = await db.Userext.findOne({_id: manager._id})
-    //smallArr = [man.id, manImg.PhotoURL]
-    //userimages.push(smallArr)
     console.log("userimages done")
 
     return userimages;
@@ -925,9 +759,6 @@ async function getManagerImages(manager) {
                 return succ
             }
         }).then(finish =>{
-
-            console.log("user hit")
-            console.log(finish)
             id = finish._id
             photo = finish.PhotoURL
             smallArr = [id, photo]

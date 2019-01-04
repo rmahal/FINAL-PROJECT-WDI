@@ -45,7 +45,7 @@
                         <img class="avtar googleImg" src=""><span id="fullname"></span>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                          <a class="dropdown-item" href="../editProfile">View my settings</a>
+                          <a class="dropdown-item" id="editProfile" href="../editProfile">View my settings</a>
                           <a class="dropdown-item" onclick="logout()">Logout</a>
                       </div>
                   </li>
@@ -157,13 +157,18 @@
             }
           }
 
-
           function onLoad() {
             gapi.load('auth2', function() {
               gapi.auth2.init();
             });
+            return true
           }
         </script>
+  <script>
+    function logout() {
+      signout()
+    }
+    </script>
   </body>
 
 </html>

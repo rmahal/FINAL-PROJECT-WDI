@@ -23,6 +23,26 @@ if(localStorage.getItem("name") === null){
 
 $( document ).ready(function() {
 
+  console.log("LOCAL STORAGE ID")
+  console.log(localStorage.getItem("id"))
+  console.log("ID DONE")
+
+  $.ajax({
+    method: "GET",
+    url: 'https://rmahal.com/projects/empdir/hr/employee/'+localStorage.getItem("id"),
+    success: function succ(succ) {
+      console.log("SUCC")
+      console.log(succ)
+      if(succ.length < 1){
+        console.log("LESS THAN 1 WAS HIT")
+        $("#editProfile").css({ "cursor": "not-allowed", "text-decoration": "none", "pointer-events": "none"})
+      }
+    },
+    error: function err(err){
+      console.log(err)
+    }
+  })
+
     //checkForLogin();
     console.log("Document ready");
     if(localStorage.getItem("id") === null){
@@ -107,6 +127,8 @@ $( document ).ready(function() {
     console.log('Image URL: ' + profile.getImageUrl());
     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
   } 
+
+
 
 function checkForLogin(){
   if(localStorage.length > 0){

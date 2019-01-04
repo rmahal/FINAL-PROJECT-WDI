@@ -46,7 +46,7 @@
                                   <img class="avtar googleImg" src=""><span id="fullname"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="editProfile">View my settings</a>
+                                    <a class="dropdown-item" id="editProfile" href="editProfile">View my settings</a>
                                     <a class="dropdown-item" onclick="logout()">Logout</a>
                                 </div>
                             </li>
@@ -65,7 +65,7 @@
                     <div class="col-md-12">
                         <form class="search-form">
                            <div class="input-group">
-                          <input type="text" id="myInput" class="form-control" placeholder="Search employees by name (e.g. Raj Mahal)" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                          <input type="text" id="myInput" class="form-control" placeholder="Search employees by name (e.g. Raj Mahal) or by attribute" aria-label="Recipient's username" aria-describedby="basic-addon2">
                           <div class="input-group-append">
                             <button class="btn btn-outline-secondary" id="search" type="button"><i class="fas fa-search"></i></button>
                           </div>

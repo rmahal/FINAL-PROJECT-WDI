@@ -8,6 +8,27 @@ if(localStorage.getItem("name") === null){
 
 $( document ).ready(function() {
 
+
+
+  $.ajax({
+    method: "GET",
+    url: 'https://rmahal.com/projects/empdir/hr/employee/'+localStorage.getItem("id"),
+    success: function succ(succ) {
+      console.log("SUCC")
+      console.log(succ)
+      if(succ.length < 1){
+        console.log("LESS THAN 1 WAS HIT")
+        $("#editProfile").css({ "cursor": "not-allowed", "text-decoration": "none", "pointer-events": "none"})
+      }
+    },
+    error: function err(err){
+      console.log(err)
+    }
+  })
+
+
+
+
     console.log("Val")
     console.log($("#timeZone").attr("data-id"))
     let zone = $("#timeZone").attr("data-id")
@@ -65,21 +86,23 @@ $( document ).ready(function() {
       let state = $("#state").attr("data-id")
       let zipCode = $("#zipCode").attr("data-id")
       let countryCode = $("#countryCode").attr("data-id")
+      let photo = $("#photo").attr("data-id")
 
       let jsonPayload = {
-        payid: id,
-        payfirstName: firstName,
-        paylastName: lastName,
-        payjobTitle: jobTitle,
-        payworkPhone: workPhone,
-        payorganization: organization,
-        paycellPhone: cellPhone,
-        paystreet: street,
-        payemail: email,
-        paycity: city,
-        paystate: state,
-        payzipCode: zipCode,
-        paycountryCode: countryCode
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
+        jobTitle: jobTitle,
+        workPhone: workPhone,
+        organization: organization,
+        cellPhone: cellPhone,
+        street: street,
+        email: email,
+        city: city,
+        state: state,
+        zipCode: zipCode,
+        countryCode: countryCode,
+        photo: photo
       }
 
 

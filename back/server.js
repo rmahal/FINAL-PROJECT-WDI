@@ -77,40 +77,45 @@ app.get("/", (req, res) => {
 app.post("/vcard", (req,res)=>{
 
 vCardret = vCard();
-console.log("CARD HIT")
-console.log("DATA")
-console.log(req.body)
+//console.log("CARD HIT")
+//console.log("DATA")
+//console.log(req.body)
 if(req.query === null || req.body === ""){
     res.status(404)
 }
-console.log("VCARD INFO:")
-console.log(req.query)
-let photoPath = "https://rmahal.com/projects/empdir/back/img/profilepics/"+req.query.id+".jpg"
+//console.log("VCARD INFO:")
+//console.log(req.query)
+let photoPath = "http://localhost:3002/"+req.body.payload.photo
+console.log("IMG PATH TO ATTACH FOR VCARD:")
+console.log(photoPath)
 //set properties
-vCardret.firstName = req.query.firstName
-vCardret.lastName = req.query.lastName
-vCardret.title = req.query.jobTitle
-vCardret.workPhone = req.query.workPhone
-vCardret.organization = req.query.organization
-vCardret.photo.attachFromUrl(photoPath)
-vCardret.workEmail = req.query.email
-vCardret.cellPhone = req.query.cellPhone
-//vCard.workAddress.label = 'Work Address';
-vCard.workAddress.street = req.query.street;
-vCard.workAddress.city = req.query.city;
-vCard.workAddress.stateProvince = req.query.state;
-vCard.workAddress.postalCode = req.query.zipCode;
-vCard.workAddress.countryRegion = req.query.countryCode;
-
+vCardret.firstName = req.body.payload.firstName
+vCardret.lastName = req.body.payload.lastName
+vCardret.title = req.body.payload.jobTitle
+vCardret.workPhone = req.body.payload.workPhone
+vCardret.organization = req.body.payload.organization
+vCardret.photo.attachFromUrl(photoPath, 'JPEG')
+//vCardret.photo.embedFromFile(photoPath);
+//console.log(req.body.payload.photo)
+vCardret.workEmail = req.body.payload.email
+vCardret.cellPhone = req.body.payload.cellPhone
+vCardret.workAddress.label = 'Work Address';
+vCardret.workAddress.street = req.body.payload.street;
+vCardret.workAddress.city = req.body.payload.city;
+vCardret.workAddress.stateProvince = req.body.payload.state;
+vCardret.workAddress.postalCode = req.body.payload.zipCode;
+vCardret.workAddress.countryRegion = req.body.payload.countryCode;
+//console.log("Vcardret variable after values added: ")
+//console.log(vCardret)
 //set content-type and disposition including desired filename
 res.set('Content-Type', 'text/vcard; name="profile.vcf"');
 res.set('Content-Disposition', 'inline; filename="profile.vcf"');
 
-let name = __dirname+"/public/vcf/"+req.query.id+".vcf"
-console.log(name)
-console.log("Routing")
+let name = __dirname+"/public/vcf/"+req.body.payload.id+".vcf"
+//console.log(name)
+//console.log("Routing")
 
-vCard.version = '3.0';
+vCardret.version = '3.0';
 
 vCardret.saveToFile(name);
 
@@ -118,6 +123,16 @@ vCardret.saveToFile(name);
 res.sendFile(name);
 
 
+})
+
+app.get("/user/:id", (req,res) =>{
+    let userID = req.params.id
+    var url = "https://rmahal.com/projects/empdir/hr/employee/"+userID
+    fetch(url)
+    .then(response => response.json())
+    .then(response => {
+        res.json(response)
+    })
 })
 
 app.post("/getImages", (req, res) =>{
@@ -298,8 +313,8 @@ async function getTag(result) {
         tag.push({tag: foundTag})
 
     }
-    console.log("sending off data")
-    console.log(tag)
+    //console.log("sending off data")
+    //console.log(tag)
     return tag
 }
 
@@ -494,6 +509,13 @@ app.get("/userext/:id", (req,res)=>{
 })
 
 
+/**
+ * Lookup from user ext table by id.
+ * @constructor
+ * @param {number} id - The id to look up.
+ */
+
+
 app.put('/userext/:hrid', (req, res)=>{
     let updatedText = req.body.overview
     let updatedPhoto = req.body.profpic
@@ -520,7 +542,7 @@ app.get("/editProfile", (err, res)=>{
 })
 
 
-
+/* Self created signup and login routes to create users */
 /*
 app.post('/signup', (req,res)=>{
     console.log("email: "+req.body.email)
@@ -727,7 +749,7 @@ async function getImages(arr) {
 
     return userimages;
     }else{
-        console.log("no images")
+        //console.log("no images")
         return userimages
     }
 }
@@ -743,10 +765,10 @@ async function getManagerImages(manager) {
     let id
     let photo
 
-    console.log("Response")
-    console.log(manager)
+    //console.log("Response")
+    //console.log(manager)
     if(manager){
-        console.log("If hit")
+        //console.log("If hit")
         id = parseInt(manager._id)
         user = await db.Userext.findOne({hrUID: parseInt(id)}, (err, succ)=>{
             if(err){
@@ -754,8 +776,8 @@ async function getManagerImages(manager) {
                 console.log(err)
                 return {}
             }else{
-                console.log("Success was hit userext manager: ")
-                console.log(succ)
+                //console.log("Success was hit userext manager: ")
+                //console.log(succ)
                 return succ
             }
         }).then(finish =>{
@@ -770,6 +792,79 @@ async function getManagerImages(manager) {
         return smallArr
     }
 }
+
+app.get('/allInfo/:id', (req,res)=>{
+    let id = req.params.id
+    db.Userext.findOne({hrUID: parseInt(id)} , (err, succExt)=>{
+        if(err){
+            console.log("Error was hit userext: ")
+            console.log(err)
+            return {}
+        }else{
+            console.log("no error in userEXT")
+            db.Contact.find({userID: id} , (errTwo, succCont)=>{
+                if(errTwo){
+                    console.log("Error was hit contact: ")
+                    console.log(errTwo)
+                    return {}
+                }else{
+                    console.log("no error in contacts")
+                    db.Tagjoin.find({user: parseInt(id)})
+                    .populate('tag')
+                    .exec( (successTags) => {
+                        console.log("no error in tags")
+                        res.json({id: req.params.id , allcontacts: succCont, allext: succExt, alltags: successTags})
+                    
+                    })
+                }
+            })         
+        }
+    })
+})
+
+/* TAGS CRUD: Create Read Update Delete */
+app.get("/alltags", (req,res)=>{
+    db.Tag.find({}, (err, succ)=>{
+        if(err){
+            console.log(err)
+        }else{
+            res.json(succ)
+        }
+    })
+})
+
+app.post("/addtag", (req,res)=>{
+    db.Tag.create({}, (err, succ)=>{
+        if(err){
+            console.log(err)
+        }else{
+            res.json(succ)
+        }
+    })
+})
+
+/* Contacts CRUD: Create Read Update Delete */
+app.get("/allcontacts", (req,res)=>{
+    db.Contact.find({}, (err, succ)=>{
+        if(err){
+            console.log(err)
+        }else{
+            res.json(succ)
+        }
+    })
+})
+
+/* UserExts CRUD: Create Read Update Delete */
+app.get("/alluserexts", (req,res)=>{
+    db.Userext.find({}, (err, succ)=>{
+        if(err){
+            console.log(err)
+        }else{
+            res.json(succ)
+        }
+    })
+})
+
 
 
 app.listen(3002, () => {

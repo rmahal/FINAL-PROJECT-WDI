@@ -18,6 +18,27 @@ body {
 
 }
 
+#ulDirects {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+/* #ulDirects {
+    flex: 0 0 28%;
+    margin: 5px;
+    padding: 5px 0;
+    text-align: center;
+} */
+
+#ulDirects #liDirects {
+    flex: 0 0 31%;
+    margin: 5px;
+    padding: 5px 0;
+    text-align: center;
+}
+
 @media (min-width: 576px){
 .form-inline .form-control {
     display: inline-block;
@@ -300,7 +321,7 @@ footer.footer {
 }
 
 .table {
-	display: table;
+	display: flex;
 	margin: 0 auto;
 }
 

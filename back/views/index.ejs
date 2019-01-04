@@ -16,7 +16,7 @@
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
   crossorigin="anonymous" defer></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>   
-    <script src="scripts/home.js" defer></script>
+    <!-- <script src="scripts/home.js" defer></script> -->
     
 </head>
 <body>
@@ -25,7 +25,11 @@
             <div class="jumbotron" id="jumb">
 <img src="img/logo-gray.png">
               <h1 class="display-5 center">Employee Directory</h1>
-         <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <div  style="display:flex;align-items: center;justify-content: space-around;">
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <br>
+                <button style="text-align:center;" onclick="demoLogin()">Demo Account</button>
+            </div>
               <hr class="my-4">
               <div class="flexin">
                 <div class="center">
@@ -53,6 +57,16 @@
     console.log(localStorage.length)
     window.location.assign("search")
   }
+
+    /* Function to set values for the demo account */
+    function demoLogin(){
+        window.localStorage.setItem("id", 101)
+        window.localStorage.setItem("name", "Mary Jane")
+        window.localStorage.setItem("img", "../img/profilepics/1001.png")
+        window.localStorage.setItem("email", "mary.jane@acme.com")
+        console.log(localStorage.length)
+        window.location.assign("search")
+    }
 </script>
 </body>
 </html>

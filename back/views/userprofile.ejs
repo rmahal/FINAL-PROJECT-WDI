@@ -13,13 +13,14 @@
     <!-- My CSS -->
     <link rel="stylesheet" type="text/css" media="screen" href="../styles/userProfile.css" />
     <!-- JQuery CDN -->
-    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous" ></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous" defer></script>
     <script
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0hTl-vCRyk" async>
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0hTl-vCRyk" async defer>
 </script>
     <!-- Popper CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous" defer></script>
      <!-- Bootstrap core JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous" defer></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous" defer></script>
     <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>  
     <!-- My JS-->
@@ -50,7 +51,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
                       <img class="avtar googleImg" src=""><span id="fullname"></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="../../editProfile">View my settings</a>
+			<a class="dropdown-item" href="../../editProfile/editProfile.html">View my settings</a>
                         <a class="dropdown-item" onclick="signout()">Sign Out</a>
                     </div>
                 </li>
@@ -175,7 +176,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
                 <h3>Tags</h3>
                 <% for(let i = 0 ; i < TagsInfo.length; i++) { %>
                   <% if(TagsInfo[i].tag !== null){ %>
-                    <a class="tags" href="../tagPage/<%= TagsInfo[i].tag._id %>"><%= TagsInfo[i].tag.TagName %> </a>
+                    <a class="tags" href="../tags/<%= TagsInfo[i].tag._id %>"><%= TagsInfo[i].tag.TagName %> </a>
                   <% } %>
                 <% } %>
              </div>
@@ -195,7 +196,9 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
                       Reports
                         <nav class="custom-breadcrumb" aria-label="breadcrumb">
                           <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" ><a ><%= userInfo.chainofcommand.length %> Directs</a></li>
+                            <li class="breadcrumb-item active"><a ><%= userInfo.underlings.length %> Directs</a></li>
+                            <!-- <li class="breadcrumb-item active"><a ><%= userInfo.underlings.length %> Total </a></li>
+                              <li class="breadcrumb-item active" aria-current="page">Org Chart</li> -->
                           </ol>
                         </nav>
                    </h2>
@@ -247,11 +250,16 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
                  </div>
                  <div class="col-lg-4 text-center socialmedia">
                     <ul class="list-inline">
-                    </ul>
+  <!-- <li class="list-inline-item"><a href="#"><img src="assets/images/Facebook.svg"></a></li>
+  <li class="list-inline-item"><a href="#"><img src="assets/images/Instagram.svg"></a></li>
+  <li class="list-inline-item"><a href="#"><img src="assets/images/Twitter.svg"></a></li> -->
+</ul>
                  </div>
                  <div class="col-lg-4 text-right otherlinks">
                  <ul class="list-inline">
-                 </ul>
+  <!-- <li class="list-inline-item">Privacy Policy</li>
+  <li class="list-inline-item">Terms of Use</li> -->
+</ul>
                  </div>
               </div>
           </div>

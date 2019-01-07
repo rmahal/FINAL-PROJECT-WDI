@@ -11,10 +11,8 @@ app.use(function(req, res, next) {
 });
 app.use(cors())
 
-
-/* Route to get all employees from database */
 app.get("/allemployees", (req,res)=>{
-
+    
     db.Employee.find({}, (err, usersFound) => {
         if(err){
             res.status(401);
@@ -24,10 +22,10 @@ app.get("/allemployees", (req,res)=>{
     })
 })
 
-/* Route to get one specific employee from database based on id parameter*/
+
 app.get("/employee/:id", (req,res)=>{
 
-    db.Employee.find({_id: parseInt(req.params.id)}, (err, uFound) => {
+    db.Employee.find({_id: req.params.id}, (err, uFound) => {
         if(err){
             res.status(401);
         }else{
@@ -36,7 +34,7 @@ app.get("/employee/:id", (req,res)=>{
     })
 })
 
-/* Route to get one specific employee from database based on email parameter*/
+
 app.get("/employee/email/:email", (req,res)=>{
 
     db.Employee.findOne({Email: req.params.email}, (err, uFound) => {
@@ -49,7 +47,7 @@ app.get("/employee/email/:email", (req,res)=>{
 })
 
 
-/* Route to get one json paylod based on id parameter with  information like employee, chain of command, hr employee info, manager employee info and all those who report to this employee*/
+
 app.get("/superLOOKUP/:id", (req, res) => {
     let superFound = {
         user: {},
@@ -125,8 +123,11 @@ app.get("/superLOOKUP/:id", (req, res) => {
     })
 })
 
+app.get("/simpleLOOKUP/:id", (err, successEmp)=>{
+    
+})
 
-/* Route to populate the manager of a specific employee based on the employees id */
+
 app.get("/employee/manager/populate/:id", (req,res)=>{
     
     db.Employee.find({_id: req.params.id}, (err, uFound) => {
@@ -143,7 +144,6 @@ app.get("/employee/manager/populate/:id", (req,res)=>{
 
 })
 
-/* Route to populate the hr rep of a specific employee based on the employees id */
 app.get("/employee/hr/populate/:id", (req,res)=>{
     
     db.Employee.find({_id: req.params.id}, (err, uFound) => {
@@ -160,7 +160,6 @@ app.get("/employee/hr/populate/:id", (req,res)=>{
     
 })
 
-/* Route to populate a specific employee based on the employees id */
 app.get("/search/employees/:search", (req,res)=>{
     let search=req.params.search
     console.log("Search: "+search)
@@ -180,7 +179,7 @@ app.get("/search/employees/:search", (req,res)=>{
 
 })
 
-/* Route to populate all employees who report to the employees whose id is provided */
+
 app.get("/findUnderlings/:id", (req,res)=>{
     let id = req.params.id
     console.log("ID: "+id)
@@ -193,7 +192,7 @@ app.get("/findUnderlings/:id", (req,res)=>{
     })
 })
 
-/* Route to test the one step up function */
+
 app.get("/test/:id", (req, res) =>{
     let id = req.params.id
 
@@ -204,12 +203,11 @@ app.get("/test/:id", (req, res) =>{
     })
 })
 
-/* Route to test if server was working */
+
 app.post("/getEmployees", (req, res)=>{
     console.log(req.body)
     res.json({yay:"yay"})
 })
-
 
 async function getTagEmployees(emps) {
     let employees = []

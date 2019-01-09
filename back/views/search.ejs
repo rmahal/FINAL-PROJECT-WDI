@@ -76,7 +76,7 @@
                                   <img class="avtar googleImg" src=""><span id="fullname"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="../editProfile/editProfile.html">View my settings</a>
+                                    <a class="dropdown-item" href="../editProfile">View my settings</a>
                                     <a class="dropdown-item" onclick="logout()">Logout</a>
                                 </div>
                             </li>
@@ -161,17 +161,21 @@
         </footer>
             <script>
                 function signout() {
-		              onLoad();
-                  if(gapi.auth2){
+                  if(localStorage.getItem("type") === "demo"){
+                    localStorage.clear();
+                    window.location.assign("../")
+                  }else{
+                    onLoad();
+                    if(gapi.auth2){
                     console.log("we now gapi")
                     var auth2 = gapi.auth2.getAuthInstance();
                     auth2.signOut().then(function () {
                       console.log('User signed out.');
                       localStorage.clear();
-                      window.location.assign("../back/");
+                      window.location.assign("../");
 
                     });
-                    window.location.assign("../back/");
+                    }
                   }
                 }
 

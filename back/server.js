@@ -321,6 +321,26 @@ app.get("/userext/:id", (req,res)=>{
 
 
 
+app.get("/user/:id", (req,res)=>{
+    var url = "https://rmahal.com/projects/empdir/hr/superLOOKUP/"+req.params.id
+    fetch(url)
+    .then(response => response.json())
+    .then(response => {
+        db.Userext.find({hrUID: req.params.id}, (err, successImg)=>{
+            if(err){
+                res.status(400)
+            }else{
+                console.log(successImg)        
+                res.json({
+                    id: response.user[0]._id,
+                    name: response.user[0].FirstName+" "+response.user[0].LastName,
+                    image: successImg[0].PhotoURL,
+                    email: response.user[0].Email,
+                })
+            }
+        })
+    })
+})
 
 
 app.get('/login', function logInPage(req, res) {

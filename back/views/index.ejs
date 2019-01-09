@@ -56,6 +56,8 @@
     window.localStorage.setItem("img", profile.getImageUrl())
     console.log('Email: ' + profile.getEmail()) // This is null if the 'email' scope is not present.
     window.localStorage.setItem("email", profile.getEmail())
+    window.localStorage.setItem("type", "google")
+    window.localStorage
     console.log("Done with items")
     console.log(localStorage.length)
     window.location.assign("search")
@@ -72,12 +74,19 @@
 </script> -->
 <script>
     function demoLogin(){
-        window.localStorage.setItem("id", 101)
-        window.localStorage.setItem("name", "Mary Jane")
-        window.localStorage.setItem("img", "../img/profilepics/101.png")
-        window.localStorage.setItem("email", "mary.jane@acme.com")
-        console.log(localStorage.length)
-        window.location.assign("search")
+        //https://rmahal.com/projects/empdir/back/user/106
+        fetch("http://localhost:3002/user/106")
+        .then(response => response.json())
+        .then(response => {
+            window.localStorage.setItem("id", response.id)
+            window.localStorage.setItem("name", response.name)
+            window.localStorage.setItem("img", response.image)
+            window.localStorage.setItem("email", response.email)
+            window.localStorage.setItem("type", "demo")
+            console.log(localStorage.length)
+            window.location.assign("search")
+        })
+
     }
 </script>
 </body>

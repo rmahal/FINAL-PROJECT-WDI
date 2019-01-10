@@ -2,7 +2,7 @@ const mongoose = require('../db/connection')
 Schema = mongoose.Schema;
 
 const ContactSchema = new mongoose.Schema({
-    userID: String,
+    userID: Number,
     Label: String,
     Value: String,
 })

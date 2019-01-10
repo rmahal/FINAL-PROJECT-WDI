@@ -190,6 +190,32 @@ app.post('/upload',multer(multerConfig).single('photo'),function(req,res){
     
 // })
 
+app.get("/allcontacts/:id", (req, res) => {
+    var id = ""+req.params.id;
+    console.log("ID: "+id)
+    console.log(typeof id)
+    db.Contact.find({userID: id}, (err, successContacts)=>{
+        if(err){
+            console.log(err)
+            res.status(404)
+        }else{
+            res.json(successContacts)
+        }
+    })
+})
+
+
+app.get("/allcontacts", (req, res) => {
+
+    db.Contact.find({}, (err, successContacts)=>{
+        if(err){
+            console.log(err)
+            res.status(404)
+        }else{
+            res.json(successContacts)
+        }
+    })
+})
 
 app.get('/userprofile/:id', (req, res) => {
     var id = req.params.id;
@@ -614,8 +640,36 @@ app.put('/userext/:hrid', (req, res)=>{
     })
 })
 
-app.get("/editProfile", (err, res)=>{
+app.get("/editProfile", (req, res)=>{
     res.sendFile('views/editProfile.html', {root: __dirname});
+})
+
+
+app.post("/editInfo/:id", (req, res)=>{
+    let id = req.params.id
+//    req.body.payload.length
+    let userExtInfo = req.body.payload[0]
+    let contacts = req.body.payload.slice(1, req.body.payload.length)
+    console.log("Contacts:")
+    console.log(contacts)
+    //let tags = req.body.payload.tags
+
+    let overviewText = userExtInfo.overview-text
+    let mobilePhone = userExtInfo.mobile-phone
+    db.Userext.findOneAndUpdate({hrUID: id}, {OverviewText: overviewText}, (err, succ)=>{
+        if(err){
+            res.status(400)
+        }
+    })
+
+    // db.Contact.find({hrUID: id}, (err, succ)=>{
+    //     if(err){
+    //         res.status(400)
+    //     }
+    // })
+
+    res.send(200)
+
 })
 
 

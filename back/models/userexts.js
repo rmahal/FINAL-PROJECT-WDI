@@ -7,6 +7,7 @@ const UserextSchema = new mongoose.Schema({
     PhotoURL: String,
     BackdropURL: String,
     OverviewText: String,
+    MobilePhone: String,
 })
 
 

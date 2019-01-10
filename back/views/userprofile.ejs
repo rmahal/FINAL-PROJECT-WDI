@@ -162,7 +162,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
             <div class="card card2">
                 <h3>More Info</h3>
                 <% for(let i = 0 ; i < contactsInfo.length; i++) { %>
-                <p><strong><%= contactsInfo[i].Label %> :</strong> <%= contactsInfo[i].Value %></p>
+                <p><strong><%= contactsInfo[i].Label %> :</strong> <%- contactsInfo[i].Value %></p>
                 <% } %>
              </div>
              <% } %>

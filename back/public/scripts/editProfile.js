@@ -25,6 +25,27 @@ if(localStorage.getItem("name") === null){
 }
 
 
+$.ajax({
+  method: "GET",
+  url: "/getEditInfo/"+localStorage.getItem("id"),
+  success: function success(succ) {
+    console.log("Success, data retrieved: ")
+    console.log(succ)
+    handleData(succ)
+    
+  },
+  error: function error(err){
+    console.log(err)
+  }
+})
+
+
+
+function handleData(data){
+
+}
+
+
 
 
 // retrieve user attributes information from the server to populate as editable text

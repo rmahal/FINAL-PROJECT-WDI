@@ -190,6 +190,32 @@ app.post('/upload',multer(multerConfig).single('photo'),function(req,res){
     
 // })
 
+app.get("/allcontacts/:id", (req, res) => {
+    var id = ""+req.params.id;
+    console.log("ID: "+id)
+    console.log(typeof id)
+    db.Contact.find({userID: id}, (err, successContacts)=>{
+        if(err){
+            console.log(err)
+            res.status(404)
+        }else{
+            res.json(successContacts)
+        }
+    })
+})
+
+
+app.get("/allcontacts", (req, res) => {
+
+    db.Contact.find({}, (err, successContacts)=>{
+        if(err){
+            console.log(err)
+            res.status(404)
+        }else{
+            res.json(successContacts)
+        }
+    })
+})
 
 app.get('/userprofile/:id', (req, res) => {
     var id = req.params.id;
@@ -614,9 +640,93 @@ app.put('/userext/:hrid', (req, res)=>{
     })
 })
 
-app.get("/editProfile", (err, res)=>{
+app.get("/editProfile", (req, res)=>{
     res.sendFile('views/editProfile.html', {root: __dirname});
 })
+
+
+app.post("/editInfo/:id", (req, res)=>{
+    let id = req.params.id
+//    req.body.payload.length
+    let userExtInfo = req.body.payload[0]
+    let contacts = req.body.payload.slice(1, req.body.payload.length)
+    console.log("Contacts:")
+    console.log(contacts)
+    //let tags = req.body.payload.tags
+
+    let overviewText = userExtInfo["overview-text"]
+    let mobilePhone = userExtInfo["mobile-phone"]
+    db.Userext.findOneAndUpdate({hrUID: id}, {OverviewText: overviewText, MobilePhone: mobilePhone}, (err, succ)=>{
+        if(err){
+            res.status(400)
+        }else if(succ){
+            res.send(200)
+        }
+    })
+
+    db.Contact.deleteMany({userID: id}, (err, succ)=>{
+        if(err){
+            console.log(err)
+        }
+    })
+    var contactToAdd
+
+    console.log("CONTACT TO ADD: ")
+    console.log(contactToAdd)
+
+
+    for(var i=0; i<contacts.length; i++){
+        contactToAdd = {
+            userID: id,
+            Label: contacts[i].name,
+            Value: contacts[i].val,
+        }
+        db.Contact.create(contactToAdd, (err, succ)=>{
+            if(err){
+                console.log(err)
+            }
+        })
+    }
+})
+
+
+
+app.get("/getEditInfo/:id", (req, res)=>{
+    let id = req.params.id
+
+    db.Userext.find({hrUID: id}, (err, succ) =>{
+        if(err){
+            console.log(err)
+            res.send(404)
+        }else if(succ){
+            db.Contact.find({userID: id}, (errTwo, succTwo)=>{
+                if(errTwo){
+                    console.log(errTwo)
+                    res.send(404)
+                }else if(succTwo){
+
+                    db.Tagjoin.find({user: parseInt(id)})
+                    .populate('tag')
+                    .exec( (errThree, succThree) => {
+                        if(errThree){
+                            console.log(errTwo)
+                            res.send(404)
+                        
+                        }else{
+                            res.json({
+                                userExt: succ,
+                                contacts: succTwo,
+                                tags: succThree,
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    })
+
+})
+
 
 
 

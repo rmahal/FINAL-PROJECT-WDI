@@ -16,6 +16,17 @@ const current_userID = localStorage.getItem('id')
 let url_user = `${baseURL}/userext/101`
 let userAttributes = ""
 
+if(localStorage.getItem("name") === null){
+  window.location.assign("/")
+}else{
+  $("#fullname").text(localStorage.getItem("name"))
+  let googleimg = localStorage.getItem("img")
+  $(".googleImg").attr("src", googleimg)
+}
+
+
+
+
 // retrieve user attributes information from the server to populate as editable text
 fetch(url_user)
   .then(function(response) {
@@ -199,3 +210,107 @@ $('form').on('submit', e=>{
           console.log(response)
       }
 })
+
+
+
+function addRow()
+{
+    /* Iterate the counter of rows */
+    let rows = $('#contactRows');
+    let iterations = rows.data('iterations');
+    let newId;
+
+    switch(typeof iterations)
+    {
+        case 'undefined':
+            newId = 0;
+            break;
+        case 'number':
+            newId = ++rows.data().iterations;
+            break;
+        default:
+            break;
+    }
+
+    rows.attr('data-iterations', newId);
+
+    /* Create and add new element to the DOM */
+    let newRow = $("#contactData-0").clone();
+    newRow.attr('id', `contactData-${newId}`);
+    newRow.appendTo('#contactRows');
+}
+
+function prepData()
+{
+    let payload = [];
+
+    /* Obtain Overview Text, Mobile Phone, and Tags Data */
+    
+    let ovVal = $('#inputOverviewText').val();
+    let mobileVal = $('#inputMobilePhone').val();
+    // let tags = $('inputTags');
+
+    let data = {
+        "id": localStorage.getItem("id"),
+        "overview-text": ovVal,
+        "mobile-phone": mobileVal
+    };
+
+    payload.push(data);
+
+    /* ************ */
+
+    /* Obtain Contact Data */
+    let topLevelChildren = $('#contactRows').children();
+    let counter = $('#contactRows').data('iterations') + 1;
+
+    for (let i = 0; i < counter; i++)
+    {
+        let tempId = `contactData-${i}`;
+        let child = topLevelChildren[i];
+
+        let subChildren = child.childNodes;
+        
+        let contactNameElem = subChildren[3];
+        let contactValueElem = subChildren[5];
+
+        let contactName = contactNameElem.childNodes[3].value;
+        let contactValue = contactValueElem.childNodes[3].value;
+
+        let data = {
+            "name": contactName,
+            "val": contactValue
+        };
+
+        payload.push(data);
+    }
+
+    /* ************ */
+
+    console.log(payload);
+    sendData(payload)
+
+}
+
+
+function sendData(obj){
+
+
+  //https://rmahal.com/projects/empdir/back/allTags
+  let editURL = "http://localhost:3002/editInfo/"+obj[0].id
+
+
+  $.ajax({
+    method: "POST",
+    url: editURL,
+    data:{
+      payload: obj
+    },
+    success: function success(succ) {
+      console.log("Success, done saving")
+    },
+    error: function error(err){
+      console.log(err)
+    }
+  })
+}

@@ -654,23 +654,79 @@ app.post("/editInfo/:id", (req, res)=>{
     console.log(contacts)
     //let tags = req.body.payload.tags
 
-    let overviewText = userExtInfo.overview-text
-    let mobilePhone = userExtInfo.mobile-phone
-    db.Userext.findOneAndUpdate({hrUID: id}, {OverviewText: overviewText}, (err, succ)=>{
+    let overviewText = userExtInfo["overview-text"]
+    let mobilePhone = userExtInfo["mobile-phone"]
+    db.Userext.findOneAndUpdate({hrUID: id}, {OverviewText: overviewText, MobilePhone: mobilePhone}, (err, succ)=>{
         if(err){
             res.status(400)
+        }else if(succ){
+            res.send(200)
         }
     })
 
-    // db.Contact.find({hrUID: id}, (err, succ)=>{
-    //     if(err){
-    //         res.status(400)
-    //     }
-    // })
+    db.Contact.deleteMany({userID: id}, (err, succ)=>{
+        if(err){
+            console.log(err)
+        }
+    })
+    var contactToAdd
 
-    res.send(200)
+    console.log("CONTACT TO ADD: ")
+    console.log(contactToAdd)
+
+
+    for(var i=0; i<contacts.length; i++){
+        contactToAdd = {
+            userID: id,
+            Label: contacts[i].name,
+            Value: contacts[i].val,
+        }
+        db.Contact.create(contactToAdd, (err, succ)=>{
+            if(err){
+                console.log(err)
+            }
+        })
+    }
+})
+
+
+
+app.get("/getEditInfo/:id", (req, res)=>{
+    let id = req.params.id
+
+    db.Userext.find({hrUID: id}, (err, succ) =>{
+        if(err){
+            console.log(err)
+            res.send(404)
+        }else if(succ){
+            db.Contact.find({userID: id}, (errTwo, succTwo)=>{
+                if(errTwo){
+                    console.log(errTwo)
+                    res.send(404)
+                }else if(succTwo){
+
+                    db.Tagjoin.find({user: parseInt(id)})
+                    .populate('tag')
+                    .exec( (errThree, succThree) => {
+                        if(errThree){
+                            console.log(errTwo)
+                            res.send(404)
+                        
+                        }else{
+                            res.json({
+                                userExt: succ,
+                                contacts: succTwo,
+                                tags: succThree,
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    })
 
 })
+
 
 
 

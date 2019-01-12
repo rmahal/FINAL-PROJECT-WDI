@@ -372,7 +372,7 @@ function prepData()
     }
 
     /* ************ */
-    let tagString = $("#inputTags").html()
+    let tagString = $("#inputTags").val()
     console.log("TAGS")
     console.log(tagString);
     let tagData = tagString.split(",")

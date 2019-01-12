@@ -13,7 +13,7 @@ const current_userID = localStorage.getItem('id')
 // Set up page with current user on first load
 
 // url_user = `${baseURL}/userext/${current_userID}`
-let url_user = `${baseURL}/userext/101`
+let url_user = `${baseURL}/userext/${current_userID}`
 let userAttributes = ""
 
 if(localStorage.getItem("name") === null){
@@ -41,8 +41,73 @@ $.ajax({
 
 
 
-function handleData(data){
+function handleData(data)
+{ 
+    populateContacts(data);
+    populateTags(data.tags)
+}
 
+function populateTags(data){
+  console.log(data)
+  let compiledTags = ""
+  if(data.length >= 1){
+    console.log("not broken yet")
+    compiledTags+=data[0].tag.TagName
+    console.log(compiledTags)
+    for(let i=1 ; i< data.length; i++){
+      console.log("i was hit")
+      compiledTags+="," 
+      compiledTags+=data[i].tag.TagName
+    }
+  }
+  $("#inputTags").html(compiledTags)
+}
+
+function populateContacts(data)
+{
+    let rows = $('#contactRows');
+    let contacts = data.contacts;
+    let len = contacts.length;
+
+    if (len <= 0)
+    {
+        return;
+    }
+
+    let finalId = --rows.data().iterations;
+    rows.attr('data-iterations', finalId);
+
+    for (let i = 0; i < len; i++)
+    {
+        let name = contacts[i].Label;
+        let value = contacts[i].Value; // stringified HTML object
+            value = $(value); // casted to DOM object (jQ)
+            value = value[0].innerHTML; // obtain inner value
+
+        let id = ++rows.data().iterations;
+
+        rows.attr('data-iterations', id);
+        
+        createContact(name, value, id)
+    }
+
+    $("#contactData-0").remove();
+}
+
+function createContact(name, value, id)
+{    
+    let newRow = $("#contactData-0").clone();
+    newRow.attr('id', `contactData-${id}`);
+
+    let children = newRow.children();
+        
+    let contactNameDOM = children[1];
+    let contactValueDOM = children[2];
+
+    contactNameDOM.childNodes[3].value = name;
+    contactValueDOM.childNodes[3].value = value;
+
+    newRow.appendTo('#contactRows');
 }
 
 
@@ -307,14 +372,17 @@ function prepData()
     }
 
     /* ************ */
-
-    console.log(payload);
-    sendData(payload)
+    let tagString = $("#inputTags").html()
+    console.log("TAGS")
+    console.log(tagString);
+    let tagData = tagString.split(",")
+    sendData(payload, tagData)
 
 }
 
 
-function sendData(obj){
+
+function sendData(obj, tagData){
 
 
   //https://rmahal.com/projects/empdir/back/allTags
@@ -325,13 +393,25 @@ function sendData(obj){
     method: "POST",
     url: editURL,
     data:{
-      payload: obj
+      payload: obj,
+      tags: tagData,
     },
     success: function success(succ) {
       console.log("Success, done saving")
+      succ = "Your settings have been saved."
+      
+      let banner = $('#successBanner');
+      banner.html(`<strong>Success!</strong> ${succ}`);
+      banner.show();
+      window.scrollTo(0, 0);
     },
     error: function error(err){
       console.log(err)
+      
+      let banner = $('dangerBanner');
+      banner.html(`<strong>Error!</strong> ${err}`);
+      banner.show();
+      window.scrollTo(0, 0);
     }
   })
 }

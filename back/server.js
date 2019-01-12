@@ -331,6 +331,60 @@ app.get('/users', (req, res) => {
 });
 
 
+app.get("/testTag/:tagname", (req, res)=>{
+    let id = 106
+    let sentTag = req.params.tagname
+    console.log(typeof sentTag)
+    db.Tag.find({TagName: sentTag}, (err, succ)=>{
+        if(err){
+            console.log("error finding tag")
+            res.send(500)
+        }else if(succ.length < 1){
+            db.Tag.find({}, (err,succFind)=>{
+                if(err){
+                    console.log("error finding all tags")
+                    res.send(500)
+                }else{
+                    console.log(succFind)
+                    let highest = 1
+                    for(var k=0; k<succFind.length; k++){
+                        if(highest < succFind[k]._id){
+                            highest = succFind[k]._id
+                            console.log(highest)
+                        }
+                    }
+                    highest = highest+1
+                    var tagToCreate = {
+                        _id: highest, 
+                        TagName: req.params.tagname
+                    }
+                    db.Tag.create(tagToCreate, (err, succCreated)=>{
+                        if(err){
+                            console.log(err)
+                            console.log("error creating tag")
+                            res.send(500, {error: "Could not create tag"})
+                        }else{
+                            let tagJoinToAdd = {
+                                tag: succCreated._id,
+                                user: id,
+                            }
+                            db.Tagjoin.create(tagJoinToAdd,(err, succTagJoin) =>{
+                                if(err){
+                                    console.log(err)
+                                    console.log("error creating tagjoin")
+                                    res.send(500, {error: "Could not create tagjoin"})
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }else{
+            res.json(succ)
+        }
+    })
+})
+
 app.get("/userext/:id", (req,res)=>{
     console.log(req.params.id)
     let id = req.params.id
@@ -650,8 +704,9 @@ app.post("/editInfo/:id", (req, res)=>{
 //    req.body.payload.length
     let userExtInfo = req.body.payload[0]
     let contacts = req.body.payload.slice(1, req.body.payload.length)
-    console.log("Contacts:")
-    console.log(contacts)
+    let tags = req.body.tags
+    console.log("TAGS")
+    console.log(tags)
     //let tags = req.body.payload.tags
 
     let overviewText = userExtInfo["overview-text"]
@@ -660,7 +715,7 @@ app.post("/editInfo/:id", (req, res)=>{
         if(err){
             res.status(400)
         }else if(succ){
-            res.send(200)
+            res.status(200)
         }
     })
 
@@ -669,24 +724,86 @@ app.post("/editInfo/:id", (req, res)=>{
             console.log(err)
         }
     })
-    var contactToAdd
-
-    console.log("CONTACT TO ADD: ")
-    console.log(contactToAdd)
-
 
     for(var i=0; i<contacts.length; i++){
-        contactToAdd = {
-            userID: id,
-            Label: contacts[i].name,
-            Value: contacts[i].val,
+        if(contacts[i].name !== "" && contacts[i].val !== ""){
+            contactToAdd = {
+                userID: id,
+                Label: contacts[i].name,
+                Value: "<a>"+contacts[i].val+"</a>",
+            }
+            db.Contact.create(contactToAdd, (err, succ)=>{
+                if(err){
+                    console.log(err)
+                }
+            })
         }
-        db.Contact.create(contactToAdd, (err, succ)=>{
-            if(err){
-                console.log(err)
+    }
+
+
+    let sentTag = tags
+    for(let v=0; v< sentTag.length; v++){
+        db.Tag.find({TagName: sentTag[v]}, (err, succFoundOne)=>{
+        if(err){
+            console.log("error finding tag")
+            res.send(500)
+        }else if(succFoundOne.length < 1){
+            db.Tag.find({}, (err,succFind)=>{
+                if(err){
+                    console.log("error finding all tags")
+                    res.send(500)
+                }else{
+                    console.log(succFind)
+                    let highest = 1
+                    for(var k=0; k<succFind.length; k++){
+                        if(highest < succFind[k]._id){
+                            highest = succFind[k]._id
+                            console.log(highest)
+                        }
+                    }
+                    highest = highest+1
+                    var tagToCreate = {
+                        _id: highest, 
+                        TagName: sentTag[v]
+                    }
+                    db.Tag.create(tagToCreate, (err, succCreated)=>{
+                        if(err){
+                            console.log(err)
+                            console.log("error creating tag")
+                            res.send(500, {error: "Could not create tag"})
+                        }else{
+                            let tagJoinToAdd = {
+                                tag: succCreated._id,
+                                user: id,
+                            }
+                            db.Tagjoin.create(tagJoinToAdd,(err, succTagJoin) =>{
+                                if(err){
+                                    console.log(err)
+                                    console.log("error creating tagjoin")
+                                    res.send(500, {error: "Could not create tagjoin"})
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+            // res.json({Name: "Less than 1 was hit"})
+            }else{
+                let tagJoinToAdd = {
+                    tag: succFoundOne._id,
+                    user: id,
+                }
+                db.Tagjoin.create(tagJoinToAdd,(err, succTagJoin) =>{
+                    if(err){
+                        console.log(err)
+                        console.log("error creating tagjoin")
+                        res.send(500, {error: "Could not create tagjoin"})
+                    }
+                })
             }
         })
     }
+    res.send(200)
 })
 
 

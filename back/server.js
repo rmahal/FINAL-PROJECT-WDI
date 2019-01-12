@@ -815,11 +815,20 @@ app.get("/testTag/:tagname", (req, res)=>{
     let sentTag = req.params.tagname
     console.log(typeof sentTag)
 
-    addTag(req, res, id, sentTag);
+    db.Tag.find({TagName: sentTag}, (err, succFoundTag)=>{
+        if(err){
+            console.log(err)
+            res.send(500)
+        }else{
+            res.json(succFoundTag)
+        }
+    })
 })
 
 function addTag(req, res, id, sentTag){
     db.Tag.find({TagName: sentTag}, (err, succ)=>{
+        console.log("TESTING LOOKUP OF TAG:")
+        console.log(succ)
         if(err){
             console.log("error finding tag")
             res.send(500)
@@ -863,10 +872,22 @@ function addTag(req, res, id, sentTag){
                     })
                 }
             })
+        }else if(succ.length >= 1){
+            let tagToAdd = {
+                tag: succ[0]._id,
+                user: id
+            }
+            db.Tagjoin.create(tagToAdd, (err, succTagJoin)=>{
+                if(err){
+                    console.log(err)
+                    console.log("error creating tagjoin")
+                    res.send(500, {error: "Could not create tagjoin"})
+                }
+            })      
         }else{
-            //res.json(succ)
             return
         }
+        return
     })
 }
 
@@ -912,6 +933,12 @@ app.post("/editInfo/:id", (req, res)=>{
         }
     }
 
+    db.Tagjoin.deleteMany({user: id}, (err, succ)=>{
+        if(err){
+            console.log(err)
+            res.send(500)
+        }
+    })
 
     let tag
     for(let v = 0; v < tags.length; v++){

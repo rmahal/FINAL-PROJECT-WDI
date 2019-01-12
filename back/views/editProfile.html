@@ -168,5 +168,39 @@
         <script src="../scripts/editProfile.js"></script>
 
 </body>
+<script>
+    function signout() {
+      if(localStorage.getItem("type") === "demo"){
+        localStorage.clear();
+        window.location.assign("../")
+      }else{
+        onLoad();
+        if(gapi.auth2){
+        console.log("we now gapi")
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+          localStorage.clear();
+          window.location.assign("../");
 
+        });
+        }
+        window.location.assign("../");
+      }
+    }
+
+    function onLoad() {
+      gapi.load('auth2', function() {
+        gapi.auth2.init();
+      });
+      return true
+    }
+  </script>
+<script>
+function logout() {
+//localStorage.clear();
+signout()
+//window.location.assign("/");
+}
+</script>
 </html>

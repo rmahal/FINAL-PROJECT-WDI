@@ -7,6 +7,24 @@
  * 
 */
 
+
+$.ajax({
+  method: "GET",
+  url: 'https://rmahal.com/projects/empdir/hr/employee/'+localStorage.getItem("id"),
+  success: function succ(succ) {
+    console.log("SUCC")
+    console.log(succ)
+    if(succ.length < 1){
+      console.log("LESS THAN 1 WAS HIT")
+      window.location.assign("../");
+    }
+  },
+  error: function err(err){
+    console.log(err)
+  }
+})
+
+
 const baseURL = 'https://rmahal.com/projects/empdir/back'
 const current_userID = localStorage.getItem('id')
 

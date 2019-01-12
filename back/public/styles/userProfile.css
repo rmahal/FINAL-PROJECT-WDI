@@ -26,7 +26,7 @@ body {
 }
 
 #ulDirects #liDirects {
-    flex: 0 0 31%;
+    flex: 0 0 30%;
     margin: 5px;
     padding: 5px 0;
     text-align: center;

@@ -54,7 +54,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
                         <img class="avtar googleImg" src=""><span id="fullname"></span>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                          <a class="dropdown-item" href="../editProfile">View my settings</a>
+                          <a class="dropdown-item" id="editProfile" href="../editProfile">View my settings</a>
                           <a class="dropdown-item" onclick="logout()">Logout</a>
                       </div>
                   </li>
@@ -156,7 +156,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
                     <li class="media">
                       <a href="tel:1<%= userInfo.user[0].Phone %>"><img class="mr-3" src="../img/mobile.svg" alt="Generic placeholder image"></a>
                         <div class="media-body">
-                          <h5 class="mt-0 mb-1"><a href="tel:1<%= userInfo.user[0].Phone %>" >+1 <%= userInfo.user[0].Phone %></a></h5>
+                          <h5 class="mt-0 mb-1"><a href="tel:1<%= userInfo.user[0].Phone %>" >+1 <%= UserextInfo[0].MobilePhone %></a></h5>
                         </div>
                       </li>
                     </ul>

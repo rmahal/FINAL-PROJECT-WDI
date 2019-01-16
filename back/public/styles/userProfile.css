@@ -430,3 +430,8 @@ body {
     display: block;
 }
 }
+
+
+.navbar a{
+    color:black;
+}

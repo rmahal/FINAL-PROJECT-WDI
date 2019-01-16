@@ -81,3 +81,7 @@ a{
     color:whitesmoke;
     text-align: center;
 }
+
+.navbar a{
+    color:black;
+}

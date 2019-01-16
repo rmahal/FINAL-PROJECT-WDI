@@ -227,15 +227,15 @@ function handleFiles(files) {
 }
 
 function uploadFile(file) {
-  //let id = localStorage.getItem('id')
-  let id = '101' //hardcoding for demo.  This should be replaced by line above
+  let id = localStorage.getItem('id')
+  //let id = '101' //hardcoding for demo.  This should be replaced by line above
   let url = baseURL + '/editProfile/' + id
   let file_ext = file.name.split('.').pop().toLowerCase()
   let reader = new FileReader()
   reader.readAsDataURL(file)
   reader.onloadend = function() {
     let obj = {"image" : reader.result, "fileExt" : file_ext, "id" : id}
-
+    console.log(`New profile pic,has been saved to the server: ` + JSON.stringify(obj))
     fetch(url, {
       method: 'PATCH',
       headers: {
@@ -244,10 +244,10 @@ function uploadFile(file) {
       body: JSON.stringify(obj)
     })
     .then(() => { 
-	console.log(`New profile pic,${file_name},has been saved to the server: ` + JSON.stringify(obj))
+	console.log(`New profile pic,has been saved to the server: ` + JSON.stringify(obj))
 	window.location.reload(true) 
      })
-    .catch(() => { console.log("Error: Profile-pic save to server")})
+    .catch((err) => { console.log("Error: Profile-pic save to server "+err)})
   }
 }
 
@@ -340,14 +340,18 @@ function addRow()
 
     /* Create and add new element to the DOM */
     let newRow = $("#contactData-0").clone();
+    newRow.find("#inputContact").val("");
+    newRow.find("#inputContactValue").val("");
     newRow.attr('id', `contactData-${newId}`);
     newRow.appendTo('#contactRows');
 }
 
-function prepData()
-{
-    let payload = [];
+function prepData(){
 
+    let payload = [];
+    let sendDataBool = true;
+    let banner = $('#dangerBanner');
+    banner.hide();
     /* Obtain Overview Text, Mobile Phone, and Tags Data */
     
     let ovVal = $('#inputOverviewText').val();
@@ -359,8 +363,13 @@ function prepData()
         "overview-text": ovVal,
         "mobile-phone": mobileVal
     };
-
-    payload.push(data);
+    console.log("MOBILE VAL:")
+    console.log(mobileVal)
+    if(ovVal == "" || mobileVal == ""){
+      sendDataBool = false;
+    }else{
+      payload.push(data);
+    }
 
     /* ************ */
 
@@ -380,12 +389,14 @@ function prepData()
 
         let contactName = contactNameElem.childNodes[3].value;
         let contactValue = contactValueElem.childNodes[3].value;
-
+        if(contactName == "" || contactValue == ""){
+          sendDataBool = false;
+        }
         let data = {
             "name": contactName,
             "val": contactValue
         };
-
+        
         payload.push(data);
     }
 
@@ -394,8 +405,17 @@ function prepData()
     console.log("TAGS")
     console.log(tagString);
     let tagData = tagString.split(",")
-    sendData(payload, tagData)
 
+    if(sendDataBool === true){
+    console.log("DATA SENDING!")
+    sendData(payload, tagData)
+    }else{
+      console.log("DATA NOT SENT!")
+      banner.html(`<strong>Error! Missing values data not sent!</strong>`);
+      banner.show();
+      window.scrollTo(0, 0);
+      payload = [];
+    }
 }
 
 
@@ -426,7 +446,7 @@ function sendData(obj, tagData){
     error: function error(err){
       console.log(err)
       
-      let banner = $('dangerBanner');
+      let banner = $('#dangerBanner');
       banner.html(`<strong>Error!</strong> ${err}`);
       banner.show();
       window.scrollTo(0, 0);

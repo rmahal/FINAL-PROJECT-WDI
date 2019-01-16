@@ -2,7 +2,11 @@ if(localStorage.getItem("name") === null){
     window.location.assign("/")
   }else{
     $("#fullname").text(localStorage.getItem("name"))
-    let googleimg = "../"+localStorage.getItem("img")
+    if(localStorage.getItem("type") == "google"){
+      let googleimg = localStorage.getItem("img")
+    }else{
+      let googleimg = "../"+localStorage.getItem("img")
+    }
     $(".googleImg").attr("src", googleimg)
 }
 
@@ -18,7 +22,7 @@ $( document ).ready(function() {
         console.log(succ)
         if(succ.length < 1){
           console.log("LESS THAN 1 WAS HIT")
-          $("#editProfile").css({ "cursor": "not-allowed", "text-decoration": "none", "pointer-events": "none"})
+          $("#editProfile").css({ "cursor": "not-allowed", "text-decoration": "none", "pointer-events": "none", "color": "#D8D8D8"})
         }
       },
       error: function err(err){

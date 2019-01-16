@@ -22,7 +22,8 @@ position:relative;
 }
 
 .navbar a{
-    color:#D8D8D8;
+    color: black;
+    /* color:#D8D8D8; */
 }
 .alet-icon{
     margin-top:18px;
@@ -59,7 +60,8 @@ position:relative;
     max-width: 200px;
 }
 .form-control:focus {
-    color:#B3B3B3;
+    color:black;
+    /* color:#B3B3B3; */
     background-color: #fff;
     outline: 0;
     box-shadow: none;

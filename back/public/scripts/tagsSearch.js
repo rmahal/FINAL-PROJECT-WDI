@@ -38,7 +38,7 @@ $( document ).ready(function() {
       console.log(succ)
       if(succ.length < 1){
         console.log("LESS THAN 1 WAS HIT")
-        $("#editProfile").css({ "cursor": "not-allowed", "text-decoration": "none", "pointer-events": "none"})
+        $("#editProfile").css({ "cursor": "not-allowed", "text-decoration": "none", "pointer-events": "none", "color": "#D8D8D8"})
       }
     },
     error: function err(err){

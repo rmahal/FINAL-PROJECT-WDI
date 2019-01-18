@@ -1,11 +1,12 @@
 if(localStorage.getItem("name") === null){
     window.location.assign("/")
   }else{
+    let googleimg = ""
     $("#fullname").text(localStorage.getItem("name"))
     if(localStorage.getItem("type") == "google"){
-      let googleimg = localStorage.getItem("img")
+      googleimg = localStorage.getItem("img")
     }else{
-      let googleimg = "../"+localStorage.getItem("img")
+      googleimg = "../"+localStorage.getItem("img")
     }
     $(".googleImg").attr("src", googleimg)
 }

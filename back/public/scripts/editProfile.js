@@ -37,8 +37,13 @@ let userAttributes = ""
 if(localStorage.getItem("name") === null){
   window.location.assign("/")
 }else{
+  let googleimg = ""
   $("#fullname").text(localStorage.getItem("name"))
-  let googleimg = localStorage.getItem("img")
+  if(localStorage.getItem("type") == "google"){
+    googleimg = localStorage.getItem("img")
+  }else{
+    googleimg = localStorage.getItem("img")
+  }
   $(".googleImg").attr("src", googleimg)
 }
 
@@ -121,7 +126,6 @@ function createContact(name, value, id)
         
     let contactNameDOM = children[1];
     let contactValueDOM = children[2];
-
     contactNameDOM.childNodes[3].value = name;
     contactValueDOM.childNodes[3].value = value;
 
@@ -340,8 +344,11 @@ function addRow()
 
     /* Create and add new element to the DOM */
     let newRow = $("#contactData-0").clone();
+    newRow.find('label').remove()
     newRow.find("#inputContact").val("");
     newRow.find("#inputContactValue").val("");
+    newRow.find("#inputContact").val("");
+
     newRow.attr('id', `contactData-${newId}`);
     newRow.appendTo('#contactRows');
 }
@@ -350,8 +357,7 @@ function prepData(){
 
     let payload = [];
     let sendDataBool = true;
-    let banner = $('#dangerBanner');
-    banner.hide();
+    hideBanners();
     /* Obtain Overview Text, Mobile Phone, and Tags Data */
     
     let ovVal = $('#inputOverviewText').val();
@@ -405,7 +411,11 @@ function prepData(){
     console.log("TAGS")
     console.log(tagString);
     let tagData = tagString.split(",")
-
+    for(let it = 0; it< tagData.length; it++){
+      if(tagData[it] === ""){
+        tagData.splice(it, 1)
+      }
+    }
     if(sendDataBool === true){
     console.log("DATA SENDING!")
     sendData(payload, tagData)
@@ -437,7 +447,7 @@ function sendData(obj, tagData){
     success: function success(succ) {
       console.log("Success, done saving")
       succ = "Your settings have been saved."
-      
+      hideBanners();
       let banner = $('#successBanner');
       banner.html(`<strong>Success!</strong> ${succ}`);
       banner.show();
@@ -445,11 +455,22 @@ function sendData(obj, tagData){
     },
     error: function error(err){
       console.log(err)
-      
+      hideBanners();
       let banner = $('#dangerBanner');
       banner.html(`<strong>Error!</strong> ${err}`);
       banner.show();
       window.scrollTo(0, 0);
     }
   })
+}
+
+
+function hideBanners(){
+  let succBanner = $('#successBanner');
+  let dangBanner = $('#dangerBanner');
+
+  dangBanner.hide();
+  succBanner.hide();
+
+  return 0;
 }

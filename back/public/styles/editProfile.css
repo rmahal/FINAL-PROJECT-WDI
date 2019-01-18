@@ -59,6 +59,9 @@ position:relative;
     padding-left: 30px;
     max-width: 200px;
 }
+.form-control{
+    color:#B3B3B3;
+}
 .form-control:focus {
     color:black;
     /* color:#B3B3B3; */

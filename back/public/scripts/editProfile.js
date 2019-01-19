@@ -25,7 +25,8 @@ $.ajax({
 })
 
 
-const baseURL = 'https://rmahal.com/projects/empdir/back'
+//const baseURL = 'https://rmahal.com/projects/empdir/back'
+const baseURL = 'https://rmahal.com/projects/empdirTest/back'
 const current_userID = localStorage.getItem('id')
 
 // Set up page with current user on first load
@@ -42,7 +43,7 @@ if(localStorage.getItem("name") === null){
   if(localStorage.getItem("type") == "google"){
     googleimg = localStorage.getItem("img")
   }else{
-    googleimg = localStorage.getItem("img")
+    googleimg = "../"+localStorage.getItem("img")
   }
   $(".googleImg").attr("src", googleimg)
 }
@@ -395,7 +396,7 @@ function prepData(){
 
         let contactName = contactNameElem.childNodes[3].value;
         let contactValue = contactValueElem.childNodes[3].value;
-        if(contactName == "" || contactValue == ""){
+        if( (contactName == "" && contactValue != "" )|| (contactName != "" && contactValue == "")){
           sendDataBool = false;
         }
         let data = {
@@ -434,7 +435,7 @@ function sendData(obj, tagData){
 
 
   //https://rmahal.com/projects/empdir/back/allTags
-  let editURL = "http://localhost:3002/editInfo/"+obj[0].id
+  let editURL = "https://rmahal.com/projects/empdirTest/back/editInfo/"+obj[0].id
 
 
   $.ajax({

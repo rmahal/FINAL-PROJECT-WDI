@@ -74,8 +74,8 @@
 </script> -->
 <script>
     function demoLogin(){
-        //https://rmahal.com/projects/empdir/back/user/106
-        fetch("http://localhost:3002/user/106")
+        //http://localhost:3002/user/106
+        fetch("https://rmahal.com/projects/empdir/back/user/106")
         .then(response => response.json())
         .then(response => {
             window.localStorage.setItem("id", response.id)

@@ -61,7 +61,7 @@
                      <span class="navbar-toggler-icon"></span>
                    </button>
                         
-                   <a class="navbar-brand" href="../"><img alt="logo" src="img/logo.jpg"></a>
+                   <a class="navbar-brand" href="../back"><img alt="logo" src="img/logo.jpg"></a>
                           
                   <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                       
@@ -75,7 +75,7 @@
                                        <img class="avtar googleImg" src=""><span id="fullname"></span>
                                      </a>
                                      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-					<a class="dropdown-item" id="editProfile" href="../editProfile">View my settings</a>
+					<a class="dropdown-item" id="editProfile" href="editProfile/">View my settings</a>
                                          <a class="dropdown-item" onclick="logout()">Logout</a>
                                      </div>
                                  </li>
@@ -172,17 +172,21 @@
         </footer>
             <script>
                 function signout() {
-                  onLoad();
-                  if(gapi.auth2){
+                  if(localStorage.getItem("type") === "demo"){
+                    localStorage.clear();
+                    window.location.assign("../back")
+                  }else{
+                    onLoad();
+                    if(gapi.auth2){
                     console.log("we now gapi")
                     var auth2 = gapi.auth2.getAuthInstance();
                     auth2.signOut().then(function () {
                       console.log('User signed out.');
                       localStorage.clear();
-                      window.location.assign("../back/");
+                      window.location.assign("../back");
 
                     });
-                    window.location.assign("../back/");
+                    }
                   }
                 }
 

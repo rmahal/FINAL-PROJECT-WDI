@@ -116,6 +116,7 @@ function populateContacts(data)
     }
 
     $("#contactData-0").remove();
+    
 }
 
 function createContact(name, value, id)
@@ -271,16 +272,6 @@ function previewFile(file) {
 }
 
 
-if(localStorage.getItem("name") === null){
-  window.location.assign("/")
-}else{
-  $("#fullname").text(localStorage.getItem("name"))
-  let googleimg = localStorage.getItem("img")
-  $(".googleImg").attr("src", googleimg)
-}
-
-
-
 $("#searchBar").keypress((e)=>{
   if (e.keyCode === 13) {
           e.preventDefault();
@@ -372,7 +363,9 @@ function prepData(){
     };
     console.log("MOBILE VAL:")
     console.log(mobileVal)
-    if(ovVal == "" || mobileVal == ""){
+    sendDataBool = checkMobileNum(mobileVal)
+
+    if(ovVal == ""){
       sendDataBool = false;
     }else{
       payload.push(data);
@@ -383,12 +376,14 @@ function prepData(){
     /* Obtain Contact Data */
     let topLevelChildren = $('#contactRows').children();
     let counter = $('#contactRows').data('iterations') + 1;
-
+    console.log("PREPDATA Function:")
+    console.log(topLevelChildren)
     for (let i = 0; i < counter; i++)
     {
         let tempId = `contactData-${i}`;
         let child = topLevelChildren[i];
-
+        console.log("Iterator at: "+i)
+        console.log("child value:")
         let subChildren = child.childNodes;
         
         let contactNameElem = subChildren[3];
@@ -418,13 +413,11 @@ function prepData(){
       }
     }
     if(sendDataBool === true){
-    console.log("DATA SENDING!")
-    sendData(payload, tagData)
+    console.log("DATA SENDING!");
+    sendData(payload, tagData);
     }else{
-      console.log("DATA NOT SENT!")
-      banner.html(`<strong>Error! Missing values data not sent!</strong>`);
-      banner.show();
-      window.scrollTo(0, 0);
+      console.log("DATA NOT SENT!");
+      setDangerBanner();
       payload = [];
     }
 }
@@ -447,20 +440,13 @@ function sendData(obj, tagData){
     },
     success: function success(succ) {
       console.log("Success, done saving")
-      succ = "Your settings have been saved."
       hideBanners();
-      let banner = $('#successBanner');
-      banner.html(`<strong>Success!</strong> ${succ}`);
-      banner.show();
-      window.scrollTo(0, 0);
+      setSuccessBanner();
     },
     error: function error(err){
       console.log(err)
       hideBanners();
-      let banner = $('#dangerBanner');
-      banner.html(`<strong>Error!</strong> ${err}`);
-      banner.show();
-      window.scrollTo(0, 0);
+      setDangerBanner();
     }
   })
 }
@@ -474,4 +460,31 @@ function hideBanners(){
   succBanner.hide();
 
   return 0;
+}
+
+
+function checkMobileNum(phoneInput){
+  let mobileExpression = new RegExp('[^0-9]')
+  let regex = /^\d{3}-\d{3}-\d{4}?$/;
+  let regexTwo = /^\+\d{1,2}-\(\d{3}\)-\d{3}-\d{4}?$/;
+  
+  if(regex.test(phoneInput)|| regexTwo.test(phoneInput)){
+    return true
+  }else{
+    return false
+  }
+}
+
+function setDangerBanner(){
+  let banner = $('#dangerBanner');
+  banner.html(`<strong>Error! Missing/Invalid values data not sent!</strong>`);
+  banner.show();
+  window.scrollTo(0, 0);
+}
+
+function setSuccessBanner(){
+  let banner = $('#successBanner');
+  banner.html(`<strong>Success!</strong>`);
+  banner.show();
+  window.scrollTo(0, 0);
 }

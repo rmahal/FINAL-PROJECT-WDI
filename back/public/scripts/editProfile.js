@@ -12,8 +12,8 @@ $.ajax({
   method: "GET",
   url: 'https://rmahal.com/projects/empdir/hr/employee/'+localStorage.getItem("id"),
   success: function succ(succ) {
-    console.log("SUCC")
-    console.log(succ)
+    //console.log("SUCC")
+    //console.log(succ)
     if(succ.length < 1){
       console.log("LESS THAN 1 WAS HIT")
       window.location.assign("../");
@@ -72,24 +72,30 @@ function handleData(data)
 }
 
 function populateTags(data){
-  console.log(data)
+  //console.log(data)
   let compiledTags = ""
   if(data.length >= 1){
-    console.log("not broken yet")
+    //console.log("not broken yet")
     compiledTags+=data[0].tag.TagName
-    console.log(compiledTags)
+    //console.log(compiledTags)
     for(let i=1 ; i< data.length; i++){
-      console.log("i was hit")
+      //console.log("i was hit")
       compiledTags+="," 
       compiledTags+=data[i].tag.TagName
     }
   }
+  console.log("Compiled Tags:")
+  console.log(compiledTags)
   $("#inputTags").html(compiledTags)
 }
 
-function populateContacts(data)
-{
+function populateContacts(data){
+    console.log("POPULATING CONTACTS")
     let rows = $('#contactRows');
+    console.log("ROWS CONTACTS POPULATE DATA")
+    console.log(rows)
+    console.log("DATA PASSED IN:")
+    console.log(data)
     let contacts = data.contacts;
     let len = contacts.length;
 
@@ -128,8 +134,8 @@ function createContact(name, value, id)
         
     let contactNameDOM = children[1];
     let contactValueDOM = children[2];
-    contactNameDOM.childNodes[3].value = name;
-    contactValueDOM.childNodes[3].value = value;
+    contactNameDOM.childNodes[1].value = name;
+    contactValueDOM.childNodes[1].value = value;
 
     newRow.appendTo('#contactRows');
 }
@@ -281,7 +287,7 @@ $("#searchBar").keypress((e)=>{
 
   $("#searchButton").on("click", ()=>{
   let val = $("#searchBar").val()
-  console.log(val)
+  //console.log(val)
   window.location.assign("../search?search="+val)
 })
 
@@ -291,7 +297,7 @@ $("#searchBar").keypress((e)=>{
 $('form').on('submit', e=>{
   //e.preventDefault();
 
-      console.log($('form').serialize())
+      //console.log($('form').serialize())
       let pageId = parseInt($("#editButton").data("id")[0])
       $.ajax({
           method: 'PUT',
@@ -378,20 +384,21 @@ function prepData(){
     let counter = $('#contactRows').data('iterations') + 1;
     console.log("PREPDATA Function:")
     console.log(topLevelChildren)
-    for (let i = 0; i < counter; i++)
-    {
+    for (let i = 0; i < counter; i++){
+
         let tempId = `contactData-${i}`;
         let child = topLevelChildren[i];
         console.log("Iterator at: "+i)
-        console.log("child value:")
         let subChildren = child.childNodes;
-        
+        console.log("Sub Children: ")
+        console.log(subChildren)
         let contactNameElem = subChildren[3];
         let contactValueElem = subChildren[5];
 
-        let contactName = contactNameElem.childNodes[3].value;
-        let contactValue = contactValueElem.childNodes[3].value;
-        if( (contactName == "" && contactValue != "" )|| (contactName != "" && contactValue == "")){
+        let contactName = contactNameElem.childNodes[1].value;
+        let contactValue = contactValueElem.childNodes[1].value;
+        if( (contactName === "" && contactValue !== "" )|| (contactName !== "" && contactValue === "")){
+          console.log("Null contact was hit")
           sendDataBool = false;
         }
         let data = {
@@ -406,14 +413,13 @@ function prepData(){
     let tagString = $("#inputTags").val()
     console.log("TAGS")
     console.log(tagString);
-    let tagData = tagString.split(",")
-    for(let it = 0; it< tagData.length; it++){
-      if(tagData[it] === ""){
-        tagData.splice(it, 1)
-      }
-    }
+    let tagsFromString = tagString.split(",");
+    let tagData = tagsFromString.filter(tag => tag !== "");
+
     if(sendDataBool === true){
     console.log("DATA SENDING!");
+    console.log("Tags:")
+    console.log(tagData)
     sendData(payload, tagData);
     }else{
       console.log("DATA NOT SENT!");

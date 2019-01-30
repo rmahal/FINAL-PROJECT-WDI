@@ -51,7 +51,7 @@ if(localStorage.getItem("name") === null){
 
 $.ajax({
   method: "GET",
-  url: "/getEditInfo/"+localStorage.getItem("id"),
+  url: "https://rmahal.com/projects/empdirTest/back/getEditInfo/"+localStorage.getItem("id"),
   success: function success(succ) {
     console.log("Success, data retrieved: ")
     console.log(succ)
@@ -229,6 +229,7 @@ function handleDrop(e) {
   let files = dt.files
 
   handleFiles(files)
+
 }
 
 // for each file, do an upload
@@ -261,6 +262,8 @@ function uploadFile(file) {
      })
     .catch((err) => { console.log("Error: Profile-pic save to server "+err)})
   }
+  let setImg = "img/profilepics/"+localStorage.getItem('id')+"."+file_ext
+  window.localStorage.setItem("img", setImg)
 }
 
 function previewFile(file) {
@@ -354,7 +357,12 @@ function addRow()
 function prepData(){
 
     let payload = [];
+    let invalidArr = [];
     let sendDataBool = true;
+    let overviewTrigger = false;
+    let mobileTrigger = false;
+    let contactTrigger = false;
+
     hideBanners();
     /* Obtain Overview Text, Mobile Phone, and Tags Data */
     
@@ -371,7 +379,12 @@ function prepData(){
     console.log(mobileVal)
     sendDataBool = checkMobileNum(mobileVal)
 
+    if(sendDataBool == false){
+      mobileTrigger = true;
+    }
+
     if(ovVal == ""){
+      overviewTrigger = true;
       sendDataBool = false;
     }else{
       payload.push(data);
@@ -399,6 +412,8 @@ function prepData(){
         let contactValue = contactValueElem.childNodes[1].value;
         if( (contactName === "" && contactValue !== "" )|| (contactName !== "" && contactValue === "")){
           console.log("Null contact was hit")
+          invalidArr.push(i)
+          contactTrigger = true;
           sendDataBool = false;
         }
         let data = {
@@ -423,6 +438,19 @@ function prepData(){
     sendData(payload, tagData);
     }else{
       console.log("DATA NOT SENT!");
+      if(overviewTrigger){
+        console.log("Overtrigger = "+overviewTrigger)
+        setOverviewDangerBanner();
+      }
+      if(mobileTrigger){
+        console.log("Mobiletrigger = "+mobileTrigger)
+        setMobileDangerBanner();
+      }
+      if(contactTrigger){
+        console.log("Contacttrigger = "+contactTrigger)
+        setContactDangerBanner(invalidArr);
+      }
+      console.log("sendDataBool = "+sendDataBool)
       setDangerBanner();
       payload = [];
     }
@@ -457,18 +485,6 @@ function sendData(obj, tagData){
   })
 }
 
-
-function hideBanners(){
-  let succBanner = $('#successBanner');
-  let dangBanner = $('#dangerBanner');
-
-  dangBanner.hide();
-  succBanner.hide();
-
-  return 0;
-}
-
-
 function checkMobileNum(phoneInput){
   let mobileExpression = new RegExp('[^0-9]')
   let regex = /^\d{3}-\d{3}-\d{4}?$/;
@@ -481,11 +497,34 @@ function checkMobileNum(phoneInput){
   }
 }
 
+function hideBanners(){
+  let succBanner = $('#successBanner');
+  let dangBanner = $('#dangerBanner');
+  let overviewDangerBanner = $('#overviewDangerBanner');
+  let mobileDangerBanner = $('#mobileDangerBanner');
+  let contactDangerBanner = $('#contactDangerBanner');
+
+  dangBanner.hide();
+  succBanner.hide();
+  overviewDangerBanner.hide();
+  mobileDangerBanner.hide();
+  contactDangerBanner.hide();
+
+  console.log("clearing set values")
+  $('#inputOverviewText').css({ "border": "0", "background-color": "transparent"})
+  $('#inputMobilePhone').css({ "border": "0", "background-color": "transparent"})
+  $('#contactRows').find('input').css({ "border": "0", "background-color": "transparent"})
+
+
+  return 0;
+}
+
 function setDangerBanner(){
   let banner = $('#dangerBanner');
   banner.html(`<strong>Error! Missing/Invalid values data not sent!</strong>`);
   banner.show();
   window.scrollTo(0, 0);
+  return 0;
 }
 
 function setSuccessBanner(){
@@ -493,4 +532,35 @@ function setSuccessBanner(){
   banner.html(`<strong>Success!</strong>`);
   banner.show();
   window.scrollTo(0, 0);
+  return 0;
+}
+
+function setOverviewDangerBanner(){
+  let banner = $('#overviewDangerBanner');
+  banner.html(`<strong>Overview is empty please type something into Overview Text!</strong>`);
+  banner.show();
+  window.scrollTo(0, 0);
+  $('#inputOverviewText').css({ "border": "5px solid #ffdddd", "background-color": "#ffdddd"})
+  return 0;
+}
+
+function setMobileDangerBanner(){
+  console.log("Mobile Danger Banner Hit")
+  let banner = $('#mobileDangerBanner');
+  banner.html(`<strong>Invalid Phone Format. Valid format: ###-###-#### !</strong>`);
+  banner.show();
+  window.scrollTo(0, 0);
+  $('#inputMobilePhone').css({ "border": "5px solid #ffdddd", "background-color": "#ffdddd"})
+  return 0;
+}
+
+function setContactDangerBanner(arr){
+  let banner = $('#contactDangerBanner');
+  banner.html(`<strong>Invalid contact data, missing either Contact Name or Contact Value input!</strong>`);
+  banner.show();
+  window.scrollTo(0, 0);
+  for(let i = 0; i<arr.length; i++){
+    $('#contactData-'+arr[i]).find('input').css({ "border": "5px solid #ffdddd", "background-color": "#ffdddd"})
+  }
+  return 0;
 }

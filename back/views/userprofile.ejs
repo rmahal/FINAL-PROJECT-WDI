@@ -54,7 +54,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
                         <img class="avtar googleImg" src=""><span id="fullname"></span>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                          <a class="dropdown-item" id="editProfile" href="../editProfile">View my settings</a>
+                          <a class="dropdown-item" id="editProfile" href="../editProfile/">View my settings</a>
                           <a class="dropdown-item" onclick="logout()">Logout</a>
                       </div>
                   </li>
@@ -311,17 +311,22 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8qHzIw_3UlkxHTxSfXEy5o0h
       </script>
       <script>
           function signout() {
-            onLoad();
-            if(gapi.auth2){
-              console.log("we now gapi")
-              var auth2 = gapi.auth2.getAuthInstance();
-              auth2.signOut().then(function () {
-                console.log('User signed out.');
-                localStorage.clear();
-                window.location.assign("../../back/");
+            if(localStorage.getItem("type") === "demo"){
+                    localStorage.clear();
+                    window.location.assign("../../back")
+            }else{
+              onLoad();
+              if(gapi.auth2){
+                console.log("we now gapi")
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                  console.log('User signed out.');
+                  localStorage.clear();
+                  window.location.assign("../../back/");
 
-              });
-              window.location.assign("../../back/");
+                });
+                window.location.assign("../../back/");
+              }
             }
           }
 

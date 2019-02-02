@@ -12,8 +12,8 @@ $.ajax({
   method: "GET",
   url: 'https://rmahal.com/projects/empdir/hr/employee/'+localStorage.getItem("id"),
   success: function succ(succ) {
-    //console.log("SUCC")
-    //console.log(succ)
+    console.log("SUCC")
+    console.log(succ)
     if(succ.length < 1){
       console.log("LESS THAN 1 WAS HIT")
       window.location.assign("../");
@@ -25,7 +25,6 @@ $.ajax({
 })
 
 
-//const baseURL = 'https://rmahal.com/projects/empdir/back'
 const baseURL = 'https://rmahal.com/projects/empdirTest/back'
 const current_userID = localStorage.getItem('id')
 
@@ -43,9 +42,22 @@ if(localStorage.getItem("name") === null){
   if(localStorage.getItem("type") == "google"){
     googleimg = localStorage.getItem("img")
   }else{
+    console.log("account not google")
     googleimg = "../"+localStorage.getItem("img")
-  }
-  $(".googleImg").attr("src", googleimg)
+    console.log("GOOGLE IMG:")
+    console.log(googleimg)
+    console.log("Local storage-img: ")
+    console.log(localStorage.getItem("img"))
+ }
+  let googleImgList = document.getElementsByClassName("googleImg")
+  if(googleImgList.length > 0){
+   googleImgList[0].src = googleimg
+   console.log("Google Img List Src")
+   console.log(googleImgList[0].src)
+  } 
+  //$(".googleImg").attr("src", googleimg)
+  console.log("google image 2: ")
+  console.log(googleimg)
 }
 
 
@@ -72,30 +84,24 @@ function handleData(data)
 }
 
 function populateTags(data){
-  //console.log(data)
+  console.log(data)
   let compiledTags = ""
   if(data.length >= 1){
-    //console.log("not broken yet")
+    console.log("not broken yet")
     compiledTags+=data[0].tag.TagName
-    //console.log(compiledTags)
+    console.log(compiledTags)
     for(let i=1 ; i< data.length; i++){
-      //console.log("i was hit")
+      console.log("i was hit")
       compiledTags+="," 
       compiledTags+=data[i].tag.TagName
     }
   }
-  console.log("Compiled Tags:")
-  console.log(compiledTags)
   $("#inputTags").html(compiledTags)
 }
 
-function populateContacts(data){
-    console.log("POPULATING CONTACTS")
+function populateContacts(data)
+{
     let rows = $('#contactRows');
-    console.log("ROWS CONTACTS POPULATE DATA")
-    console.log(rows)
-    console.log("DATA PASSED IN:")
-    console.log(data)
     let contacts = data.contacts;
     let len = contacts.length;
 
@@ -122,7 +128,6 @@ function populateContacts(data){
     }
 
     $("#contactData-0").remove();
-    
 }
 
 function createContact(name, value, id)
@@ -134,8 +139,8 @@ function createContact(name, value, id)
         
     let contactNameDOM = children[1];
     let contactValueDOM = children[2];
-    contactNameDOM.childNodes[1].value = name;
-    contactValueDOM.childNodes[1].value = value;
+    contactNameDOM.childNodes[3].value = name;
+    contactValueDOM.childNodes[3].value = value;
 
     newRow.appendTo('#contactRows');
 }
@@ -229,7 +234,6 @@ function handleDrop(e) {
   let files = dt.files
 
   handleFiles(files)
-
 }
 
 // for each file, do an upload
@@ -262,8 +266,6 @@ function uploadFile(file) {
      })
     .catch((err) => { console.log("Error: Profile-pic save to server "+err)})
   }
-  let setImg = "img/profilepics/"+localStorage.getItem('id')+"."+file_ext
-  window.localStorage.setItem("img", setImg)
 }
 
 function previewFile(file) {
@@ -281,6 +283,16 @@ function previewFile(file) {
 }
 
 
+if(localStorage.getItem("name") === null){
+  window.location.assign("/")
+}else{
+  $("#fullname").text(localStorage.getItem("name"))
+  let googleimg = localStorage.getItem("img")
+  $(".googleImg").attr("src", googleimg)
+}
+
+
+
 $("#searchBar").keypress((e)=>{
   if (e.keyCode === 13) {
           e.preventDefault();
@@ -290,7 +302,7 @@ $("#searchBar").keypress((e)=>{
 
   $("#searchButton").on("click", ()=>{
   let val = $("#searchBar").val()
-  //console.log(val)
+  console.log(val)
   window.location.assign("../search?search="+val)
 })
 
@@ -300,7 +312,7 @@ $("#searchBar").keypress((e)=>{
 $('form').on('submit', e=>{
   //e.preventDefault();
 
-      //console.log($('form').serialize())
+      console.log($('form').serialize())
       let pageId = parseInt($("#editButton").data("id")[0])
       $.ajax({
           method: 'PUT',
@@ -357,12 +369,7 @@ function addRow()
 function prepData(){
 
     let payload = [];
-    let invalidArr = [];
     let sendDataBool = true;
-    let overviewTrigger = false;
-    let mobileTrigger = false;
-    let contactTrigger = false;
-
     hideBanners();
     /* Obtain Overview Text, Mobile Phone, and Tags Data */
     
@@ -377,14 +384,7 @@ function prepData(){
     };
     console.log("MOBILE VAL:")
     console.log(mobileVal)
-    sendDataBool = checkMobileNum(mobileVal)
-
-    if(sendDataBool == false){
-      mobileTrigger = true;
-    }
-
-    if(ovVal == ""){
-      overviewTrigger = true;
+    if(ovVal == "" || mobileVal == ""){
       sendDataBool = false;
     }else{
       payload.push(data);
@@ -395,26 +395,22 @@ function prepData(){
     /* Obtain Contact Data */
     let topLevelChildren = $('#contactRows').children();
     let counter = $('#contactRows').data('iterations') + 1;
-    console.log("PREPDATA Function:")
-    console.log(topLevelChildren)
-    for (let i = 0; i < counter; i++){
 
+    for (let i = 0; i < counter; i++)
+    {
         let tempId = `contactData-${i}`;
         let child = topLevelChildren[i];
-        console.log("Iterator at: "+i)
+
         let subChildren = child.childNodes;
-        console.log("Sub Children: ")
-        console.log(subChildren)
+        
         let contactNameElem = subChildren[3];
         let contactValueElem = subChildren[5];
 
-        let contactName = contactNameElem.childNodes[1].value;
-        let contactValue = contactValueElem.childNodes[1].value;
-        if( (contactName === "" && contactValue !== "" )|| (contactName !== "" && contactValue === "")){
-          console.log("Null contact was hit")
-          invalidArr.push(i)
-          contactTrigger = true;
-          sendDataBool = false;
+        let contactName = contactNameElem.childNodes[3].value;
+        let contactValue = contactValueElem.childNodes[3].value;
+        if( (contactName == "" && contactValue != "" )|| (contactName != "" && contactValue == "")){
+            console.log("sendDataBool for contact value now set to false")
+	    sendDataBool = false;
         }
         let data = {
             "name": contactName,
@@ -428,30 +424,20 @@ function prepData(){
     let tagString = $("#inputTags").val()
     console.log("TAGS")
     console.log(tagString);
-    let tagsFromString = tagString.split(",");
-    let tagData = tagsFromString.filter(tag => tag !== "");
-
+    let tagData = tagString.split(",")
+    for(let it = 0; it< tagData.length; it++){
+      if(tagData[it] === ""){
+        tagData.splice(it, 1)
+      }
+    }
     if(sendDataBool === true){
-    console.log("DATA SENDING!");
-    console.log("Tags:")
-    console.log(tagData)
-    sendData(payload, tagData);
+    console.log("DATA SENDING!")
+    sendData(payload, tagData)
     }else{
-      console.log("DATA NOT SENT!");
-      if(overviewTrigger){
-        console.log("Overtrigger = "+overviewTrigger)
-        setOverviewDangerBanner();
-      }
-      if(mobileTrigger){
-        console.log("Mobiletrigger = "+mobileTrigger)
-        setMobileDangerBanner();
-      }
-      if(contactTrigger){
-        console.log("Contacttrigger = "+contactTrigger)
-        setContactDangerBanner(invalidArr);
-      }
-      console.log("sendDataBool = "+sendDataBool)
-      //setDangerBanner();
+      console.log("DATA NOT SENT!")
+      banner.html(`<strong>Error! Missing values data not sent!</strong>`);
+      banner.show();
+      window.scrollTo(0, 0);
       payload = [];
     }
 }
@@ -474,93 +460,31 @@ function sendData(obj, tagData){
     },
     success: function success(succ) {
       console.log("Success, done saving")
+      succ = "Your settings have been saved."
       hideBanners();
-      setSuccessBanner();
+      let banner = $('#successBanner');
+      banner.html(`<strong>Success!</strong> ${succ}`);
+      banner.show();
+      window.scrollTo(0, 0);
     },
     error: function error(err){
       console.log(err)
       hideBanners();
-      setDangerBanner();
+      let banner = $('#dangerBanner');
+      banner.html(`<strong>Error!</strong> ${err}`);
+      banner.show();
+      window.scrollTo(0, 0);
     }
   })
 }
 
-function checkMobileNum(phoneInput){
-  let mobileExpression = new RegExp('[^0-9]')
-  let regex = /^\d{3}-\d{3}-\d{4}?$/;
-  let regexTwo = /^\+\d{1,2}-\(\d{3}\)-\d{3}-\d{4}?$/;
-  
-  if(regex.test(phoneInput)|| regexTwo.test(phoneInput)){
-    return true
-  }else{
-    return false
-  }
-}
 
 function hideBanners(){
   let succBanner = $('#successBanner');
   let dangBanner = $('#dangerBanner');
-  let overviewDangerBanner = $('#overviewDangerBanner');
-  let mobileDangerBanner = $('#mobileDangerBanner');
-  let contactDangerBanner = $('#contactDangerBanner');
 
   dangBanner.hide();
   succBanner.hide();
-  overviewDangerBanner.hide();
-  mobileDangerBanner.hide();
-  contactDangerBanner.hide();
 
-  console.log("clearing set values")
-  $('#inputOverviewText').css({ "border": "0", "background-color": "transparent"})
-  $('#inputMobilePhone').css({ "border": "0", "background-color": "transparent"})
-  $('#contactRows').find('input').css({ "border": "0", "background-color": "transparent"})
-
-
-  return 0;
-}
-
-function setDangerBanner(){
-  let banner = $('#dangerBanner');
-  banner.html(`<strong>Error! Missing/Invalid values data not sent!</strong>`);
-  banner.show();
-  window.scrollTo(0, 0);
-  return 0;
-}
-
-function setSuccessBanner(){
-  let banner = $('#successBanner');
-  banner.html(`<strong>Success!</strong>`);
-  banner.show();
-  window.scrollTo(0, 0);
-  return 0;
-}
-
-function setOverviewDangerBanner(){
-  let banner = $('#overviewDangerBanner');
-  banner.html(`<strong>Overview is empty please type something into Overview Text!</strong>`);
-  banner.show();
-  window.scrollTo(0, 0);
-  $('#inputOverviewText').css({ "border": "5px solid #ffdddd", "background-color": "#ffdddd"})
-  return 0;
-}
-
-function setMobileDangerBanner(){
-  console.log("Mobile Danger Banner Hit")
-  let banner = $('#mobileDangerBanner');
-  banner.html(`<strong>Invalid Phone Format. Valid format: ###-###-#### !</strong>`);
-  banner.show();
-  window.scrollTo(0, 0);
-  $('#inputMobilePhone').css({ "border": "5px solid #ffdddd", "background-color": "#ffdddd"})
-  return 0;
-}
-
-function setContactDangerBanner(arr){
-  let banner = $('#contactDangerBanner');
-  banner.html(`<strong>Invalid contact data, missing either Contact Name or Contact Value input!</strong>`);
-  banner.show();
-  window.scrollTo(0, 0);
-  for(let i = 0; i<arr.length; i++){
-    $('#contactData-'+arr[i]).find('input').css({ "border": "5px solid #ffdddd", "background-color": "#ffdddd"})
-  }
   return 0;
 }

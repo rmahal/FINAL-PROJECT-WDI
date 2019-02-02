@@ -35,13 +35,3 @@ body{
 .g-signin2 > div{
   margin: 0 auto;
 }
-
-.authUser{
-    color: black;
-}
-.nonAuthUser{
-    cursor: "not-allowed";
-    text-decoration: "none"; 
-    pointer-events: "none";
-    color: "#D8D8D8";
-}

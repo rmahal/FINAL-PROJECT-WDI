@@ -559,12 +559,3 @@ body {
     display: block;
 }
 }
-.authUser{
-    color: black;
-}
-.nonAuthUser{
-    cursor: "not-allowed";
-    text-decoration: "none"; 
-    pointer-events: "none";
-    color: "#D8D8D8";
-}

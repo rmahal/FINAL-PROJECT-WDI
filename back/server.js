@@ -1297,7 +1297,7 @@ async function getManagerImages(manager) {
 }
 
 
-app.listen(3002, () => {
+app.listen(3010, () => {
     console.log("Test Dirname")
     console.log(__dirname)
     console.log('Backend server listening on port 3002 ...')

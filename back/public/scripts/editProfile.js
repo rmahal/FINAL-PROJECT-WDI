@@ -451,7 +451,7 @@ function prepData(){
         setContactDangerBanner(invalidArr);
       }
       console.log("sendDataBool = "+sendDataBool)
-      setDangerBanner();
+      //setDangerBanner();
       payload = [];
     }
 }

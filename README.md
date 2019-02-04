@@ -1,28 +1,40 @@
-# Project-HR / Human Rajsources
+# Employee Directory / Empdir
+<table>
+<tr>
+<td>
+EmpDir is an Employee Directory portal, which includes a mock HR system that is extended by this Employee Directory portal. This app is accessible by endusers via web and mobile. 
+</td>
+</tr>
+</table>
 
-* Apllication for employees to sign up and find other employees and see their profile page for information like how to contact them as well as who is their boss and climb as clickable links to see their pages as well.
 
-* Link to Heroku: WIP
+## Demo
+Here is the working live demo :  https://rmahal.com/projects/empdir/back/
 
-
-* Link to Trello:
+Link to Trello:
 * https://trello.com/b/hun8GhPX/final-project
+
+## Site
+![Landing Page Image](https://raw.githubusercontent.com/rmahal/FINAL-PROJECT-WDI/master/back/public/img/readmepics/indexPic.png?raw=true "Landing Page Image")
+
+![UserProfile Page Image](https://raw.githubusercontent.com/rmahal/FINAL-PROJECT-WDI/master/back/public/img/readmepics/userProfilePic.png?raw=true "UserProfile Page Image")
+
+![Edit Page Image](https://raw.githubusercontent.com/rmahal/FINAL-PROJECT-WDI/master/back/public/img/readmepics/editPic.png?raw=true "Edit Page Image")
+
 
 ## Technologies Used
 
-* MongoDB
-* AJAX
-* JQuery
-* Node 
+* Node
 * Express
+* MongoDB
+* REST
 * EJS
-* JWT
-* async functions
+* TimeZoneDB - Looks up current time for every employee profile page based on their timezone.
+* Google Auth - Allows users to signin and use the site with their gmail account.
 
 
 ## Existing Features
 
-* Account creation and login with bcryption on passwords
 * Ability to search through employees and veiw their profile
 * JWT tokens generated to handle remembering user login
 * Users can edit their profile as well as that of profiles of those who report to them
@@ -33,15 +45,22 @@
 
 ## Planned Features
 
-* Allow users to upload Profile pictures and save them to the backend
-* Allow users to create and assign tags to themselves and their reportees
-* Change the search to scale for a bigger set of users and be a true elastic search, searching through tags/emails/phone numbers/
-* Show a little more information like who are people one level above you ex: same employee level as your boss.
-* Fix back end bug where it hangs showing user profile info.
+* Change the search to scale for a bigger set of users and be a true elastic search
+* Add AWS Facial Recognition to the photo upload to help provide a better profile picture
 
 
 
-##Code Snippets
+##Contributors
+
+
+[![Raj Mahal](https://avatars0.githubusercontent.com/u/15217218?s=460&v=4)](https://github.com/rmahal)
+
+[Raj Mahal ](https://github.com/rmahal) 
+
+
+
+
+## Favorite code Snippets
 
 
 ```javascript                       

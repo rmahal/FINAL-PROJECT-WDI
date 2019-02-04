@@ -68,7 +68,7 @@ Edit Page
 
 [![Raj Mahal](https://avatars0.githubusercontent.com/u/15217218?s=460&v=4)](https://github.com/rmahal)
 </th>
-<td>
+</tr>
 </thead>
 <tbody>
 <tr>

@@ -2,7 +2,7 @@
 <table>
 <tr>
 <td>
-EmpDir is an Employee Directory portal, which includes a mock HR system that is extended by this Employee Directory portal. This app is accessible by endusers via web and mobile. 
+EmpDir is an Employee Directory portal, which includes a mock HR system that is extended by this Employee Directory portal.
 </td>
 </tr>
 </table>
@@ -15,9 +15,16 @@ Link to Trello:
 * https://trello.com/b/hun8GhPX/final-project
 
 ## Site
+
+Landing Page
+
 ![Landing Page Image](https://raw.githubusercontent.com/rmahal/FINAL-PROJECT-WDI/master/back/public/img/readmepics/indexPic.png?raw=true "Landing Page Image")
 
+UserProfile Page
+
 ![UserProfile Page Image](https://raw.githubusercontent.com/rmahal/FINAL-PROJECT-WDI/master/back/public/img/readmepics/userProfilePic.png?raw=true "UserProfile Page Image")
+
+Edit Page
 
 ![Edit Page Image](https://raw.githubusercontent.com/rmahal/FINAL-PROJECT-WDI/master/back/public/img/readmepics/editPic.png?raw=true "Edit Page Image")
 
@@ -35,10 +42,12 @@ Link to Trello:
 
 ## Existing Features
 
-* Ability to search through employees and veiw their profile
-* JWT tokens generated to handle remembering user login
-* Users can edit their profile as well as that of profiles of those who report to them
-* User signup connects to the hr backend and uses a lookup to authenticate email as a valid one if they exist in the HR back end
+* Ability to search for employees and view their profile pages
+* Ability for employees to edit their profile page infromation/ profile picture
+* Users can also look for employees via tags
+* Timezone lookup allows users to see an employees current time based on their timezone on their profile pages
+* Google Signin for users to be able to log in and view the site through their gmail account
+* Demo account for users to navigate the site as an employee
 
 
 
@@ -50,13 +59,26 @@ Link to Trello:
 
 
 
-##Contributors
+## Contributors
 
+<table>
+<thead>
+<tr>
+<th>
 
 [![Raj Mahal](https://avatars0.githubusercontent.com/u/15217218?s=460&v=4)](https://github.com/rmahal)
+</th>
+<td>
+</thead>
+<tbody>
+<tr>
+<td>
 
 [Raj Mahal ](https://github.com/rmahal) 
-
+</td>
+</tr>
+</tbody>
+</table>
 
 
 

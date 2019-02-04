@@ -2,7 +2,7 @@
 <table>
 <tr>
 <td>
-EmpDir is an Employee Directory portal, which includes a mock HR system that is extended by this Employee Directory portal.
+EmpDir is an Employee Directory portal, which includes a mock HR system that is extended by this Employee Directory portal. EmpDir allows employees to find other employees and view their user profile information using the portal.
 </td>
 </tr>
 </table>

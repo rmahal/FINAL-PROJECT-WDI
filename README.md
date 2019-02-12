@@ -11,8 +11,6 @@ EmpDir is an Employee Directory portal, which includes a mock HR system that is 
 ## Demo
 Here is the working live demo :  https://rmahal.com/projects/empdir/back/
 
-Link to Trello:
-* https://trello.com/b/hun8GhPX/final-project
 
 ## Site
 
@@ -57,7 +55,11 @@ Edit Page
 * Change the search to scale for a bigger set of users and be a true elastic search
 * Add AWS Facial Recognition to the photo upload to help provide a better profile picture
 
-
+## Planned Enhancements
+* Improve JSDoc comments 
+* Incorporate a bundler  - grunt / webback / gulp / or TBD
+* Store config in environment (server-side) and in build profiles
+* Improve logging 
 
 ## Contributors
 
@@ -84,28 +86,34 @@ Edit Page
 
 ## Favorite code Snippets
 
+* This is an sync function that returns the employee and their manager all the way up to the board of directors
 
 ```javascript                       
 
 
 async function getOneStepUp(id) {
-    let listOfCommand = [];
-    let inLoop = true
-    let user
+    let listOfCommand = []; // Array for list of employee and managers
+    let inLoop = true; // Boolean to stay in loop
+    let user; // Var to set current employee
     
     while(inLoop){
+        // Sets user to employee of id we passed in
         user = await db.Employee.findOne({_id: id});
-        console.log("Thing reponse")
-        console.log(user)
+
+        // Pushes employee to array
         listOfCommand.push(user)
+
+        // Checks for manager
         if(user.manager === null || user.manager === undefined){
+            // If no manager then break loop
             inLoop = false
         }else{
-            console.log("this was hit val is",user.manager)
+            // Sets id to manager id if manager exists
             id = user.manager
         }
     }
-    console.log("\n\n\n\n CHAIN OF COMMAND:", listOfCommand)
+
+    // Returns Array
     return listOfCommand;
 }
 

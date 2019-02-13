@@ -83,6 +83,10 @@ Edit Page
 </table>
 
 
+## [License](https://github.com/rmahal/FINAL-PROJECT-WDI/blob/master/LICENSE.md)
+
+MIT © [Raj Mahal ](https://github.com/rmahal)
+
 
 ## Favorite code Snippets
 
